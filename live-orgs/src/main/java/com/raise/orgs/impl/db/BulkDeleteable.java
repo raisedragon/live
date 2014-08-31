@@ -1,0 +1,10 @@
+package com.raise.orgs.impl.db;
+
+/**
+ * Marker interface to indicate the entity can be deleted in bulk.
+ * 
+ * @author Joram Barrez
+ */
+public interface BulkDeleteable {
+
+}
