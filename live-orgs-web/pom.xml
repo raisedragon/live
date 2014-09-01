@@ -3,13 +3,13 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<name>R1-Orgs</name>
-	<artifactId>orgs</artifactId>
+	<name>live-orgs-web</name>
+	<artifactId>live-orgs-web</artifactId>
 	<packaging>war</packaging>
 
 	<parent>
 		<groupId>com.raise</groupId>
-		<artifactId>parent</artifactId>
+		<artifactId>live-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../..</relativePath>
 	</parent>
@@ -19,7 +19,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.raise</groupId>
-			<artifactId>IdGenerator</artifactId>
+			<artifactId>live-IdGenerator</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
