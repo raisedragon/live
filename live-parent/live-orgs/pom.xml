@@ -11,9 +11,7 @@
 		<groupId>com.raise</groupId>
 		<artifactId>live-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../..</relativePath>
 	</parent>
-
 
 
 	<dependencies>

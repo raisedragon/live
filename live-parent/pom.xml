@@ -946,4 +946,11 @@
 		<connection>scm:git:git@github.com:Activiti/Activiti.git</connection>
 		<developerConnection>scm:git:git@github.com:Activiti/Activiti.git</developerConnection>
 	</scm>
+	<modules>
+		<module>live-IdGenerator</module>
+		<module>live-orgs</module>
+		<module>live-spring</module>
+		<module>live-orgs-web</module>
+		<module>live-test</module>
+	</modules>
 </project>
