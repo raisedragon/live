@@ -46,6 +46,12 @@ public class UserEntity implements User, Serializable, PersistentObject, HasRevi
     this.id = id;
   }
   
+  public void insert(UserEntity entity){
+	  Context.getCommandContext()
+		  .getUserIdentityManager()
+		  .insertUser(entity);
+  }
+  
   public void delete() {
     Context.getCommandContext()
       .getDbSqlSession()

@@ -8,7 +8,7 @@
 <title>Organization Management System</title>
 </head>
 <body>
-	<a href="ceateUser.do">添加用户</a> 
+	<a href="user/ceateUser.do">添加用户</a> 
 	<br/>
 	<a href="#">查询用户</a>
 </body>

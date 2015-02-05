@@ -1,0 +1,119 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.raise</groupId>
+		<artifactId>live-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>live-rbac</artifactId>
+
+	<properties>
+		<db.driver.class>com.mysql.jdbc.Driver</db.driver.class>
+		<db.driver.jar>mysql-connector-java-5.1.9.jar</db.driver.jar>
+		<db.connection.url>jdbc:mysql://localhost:3306/live?useUnicode=yes&amp;characterEncoding=UTF8&amp;zeroDateTimeBehavior=convertToNull</db.connection.url>
+		<db.connection.username>root</db.connection.username>
+		<db.connection.password>root</db.connection.password>
+
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>prepare-db</id>
+						<phase>process-test-resources</phase>
+						<configuration>
+							<tasks>
+								<echo message="DB Driver = ${db.driver.class}" />
+								<echo message="DB URL    = ${db.connection.url}" />
+								<echo message="DB User   = ${db.connection.username}" />
+								<echo message="DB Pwd    = ${db.connection.password}" />
+								<sql autocommit="true" onerror="continue" driver="${db.driver.class}"
+									url="${db.connection.url}" userid="${db.connection.username}"
+									password="${db.connection.password}" encoding="${project.build.sourceEncoding}">
+									<transaction
+										src="${basedir}/src/test/resources/sql/01.drop-objects.sql" />
+									<transaction
+										src="${basedir}/src/test/resources/sql/02.rbac-schema.sql" />
+									<transaction
+										src="${basedir}/src/test/resources/sql/03.rbac-data.sql" />
+									<classpath refid="maven.test.classpath" />
+								</sql>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-antrun-plugin</artifactId>
+										<versionRange>[0.1,)</versionRange>
+										<goals>
+											<goal>run</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-dependency-plugin</artifactId>
+										<versionRange>[1.0,)</versionRange>
+										<goals>
+											<goal>copy-dependencies</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+
+			</plugins>
+		</pluginManagement>
+
+	</build>
+</project>

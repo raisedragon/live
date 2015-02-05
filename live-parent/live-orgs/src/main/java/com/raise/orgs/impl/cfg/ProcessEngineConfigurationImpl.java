@@ -546,6 +546,8 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
       dbSqlSessionFactory.setDatabaseSchema(databaseSchema);
       addSessionFactory(dbSqlSessionFactory);
       
+      addSessionFactory(new GenericManagerFactory(PropertyEntityManager.class));
+      
       addSessionFactory(new GenericManagerFactory(ResourceEntityManager.class));
       addSessionFactory(new GenericManagerFactory(ByteArrayEntityManager.class));
       addSessionFactory(new GenericManagerFactory(TableDataManager.class));
