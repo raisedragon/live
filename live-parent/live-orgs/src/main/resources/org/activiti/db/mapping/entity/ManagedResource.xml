@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+  
+<mapper namespace="com.raise.orgs.impl.persistence.entity.ManagedResourceEntity">
+
+  <!-- MANAGED RESOURCE INSERT -->
+
+  <insert id="insertManagedResource" parameterType="com.raise.orgs.impl.persistence.entity.ManagedResourceEntity">
+    insert into ${prefix}rbac_resource (ID_, REV_, name_, uri_, type_, desc_, subsystem_id_)
+    values (
+      #{id ,jdbcType=VARCHAR},
+      1,
+      #{name ,jdbcType=VARCHAR},
+      #{uri ,jdbcType=VARCHAR},
+      #{type ,jdbcType=VARCHAR},
+      #{desc ,jdbcType=VARCHAR},
+      #{subsystemId ,jdbcType=VARCHAR}
+    )
+  </insert>
+
+  <!-- MANAGED RESOURCE UPDATE -->
+
+  <update id="updateManagedResource" parameterType="com.raise.orgs.impl.persistence.entity.ManagedResourceEntity">
+    update ${prefix}rbac_resource set
+      REV_ = #{revisionNext ,jdbcType=INTEGER},
+      name_ = #{name ,jdbcType=VARCHAR},
+      uri_ = #{uri ,jdbcType=VARCHAR},
+      type_ = #{type ,jdbcType=VARCHAR},
+      desc_ = #{desc ,jdbcType=VARCHAR},
+      subsystem_id_ = #{subsystemId ,jdbcType=VARCHAR}
+    where ID_ = #{id}
+      and REV_ = #{revision}
+  </update>
+  
+  <!-- MANAGED RESOURCE DELETE -->
+
+  <delete id="deleteManagedResource" parameterType="com.raise.orgs.impl.persistence.entity.ManagedResourceEntity">
+    delete from ${prefix}rbac_resource where ID_ = #{id} and REV_ = #{revision}
+  </delete>
+
+  <!-- MANAGED RESOURCE RESULTMAP -->
+
+  <resultMap id="rightsResultMap" type="com.raise.orgs.impl.persistence.entity.ManagedResourceEntity">
+    <id property="id" column="ID_" jdbcType="VARCHAR" />
+    <result property="revision" column="REV_" jdbcType="INTEGER" />
+    <result property="name" column="name_" jdbcType="VARCHAR" />
+    <result property="uri" column="uri_" jdbcType="VARCHAR" />
+    <result property="type" column="type_" jdbcType="VARCHAR" />
+    <result property="desc" column="desc_" jdbcType="VARCHAR" />
+    <result property="subsystemId" column="subsystem_id_" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!-- MANAGED RESOURCE SELECT -->
+
+  <select id="selectManagedResourceById" parameterType="string" resultMap="rightsResultMap">
+    select * from ${prefix}rbac_resource where ID_ = #{id,jdbcType=VARCHAR}
+  </select>
+</mapper>

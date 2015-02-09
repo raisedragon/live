@@ -17,6 +17,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.raise.orgs.AuthenticateService;
 import com.raise.orgs.IdentityService;
 import com.raise.orgs.ManagementService;
 import com.raise.orgs.ProcessEngine;
@@ -36,6 +37,7 @@ public class ProcessEngineImpl implements ProcessEngine {
   private static Logger log = LoggerFactory.getLogger(ProcessEngineImpl.class);
 
   protected String name;
+  protected AuthenticateService authenticateService;
   protected IdentityService identityService;
   protected ManagementService managementService;
   protected CommandExecutor commandExecutor;
@@ -46,6 +48,7 @@ public class ProcessEngineImpl implements ProcessEngine {
   public ProcessEngineImpl(ProcessEngineConfigurationImpl processEngineConfiguration) {
     this.processEngineConfiguration = processEngineConfiguration;
     this.name = processEngineConfiguration.getProcessEngineName();
+    this.authenticateService = processEngineConfiguration.getAuthenticateService();
     this.identityService = processEngineConfiguration.getIdentityService();
     this.managementService = processEngineConfiguration.getManagementService();
     this.commandExecutor = processEngineConfiguration.getCommandExecutor();
@@ -94,6 +97,10 @@ public class ProcessEngineImpl implements ProcessEngine {
     return identityService;
   }
 
+  public AuthenticateService getAuthenticateService() {
+    return authenticateService;
+  }
+  
   public ManagementService getManagementService() {
     return managementService;
   }

@@ -1,0 +1,15 @@
+<taglib>
+  <tlib-version>1.0</tlib-version>
+  <jsp-version>2.0</jsp-version>
+  <short-name>Custom TLD</short-name>
+  <tag>
+    <name>NavigationTag</name>
+    <tag-class>com.raise.orgs.jsp.tag.NavigationTag</tag-class>
+    <body-content>empty</body-content>
+  </tag>
+   <tag>
+    <name>SubNavigationTag</name>
+    <tag-class>com.raise.orgs.jsp.tag.SubNavigationTag</tag-class>
+    <body-content>empty</body-content>
+  </tag>
+</taglib>

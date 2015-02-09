@@ -49,6 +49,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.raise.orgs.ActivitiException;
+import com.raise.orgs.AuthenticateService;
 import com.raise.orgs.IdentityService;
 import com.raise.orgs.ManagementService;
 import com.raise.orgs.ProcessEngine;
@@ -58,6 +59,7 @@ import com.raise.orgs.delegate.event.ActivitiEventDispatcher;
 import com.raise.orgs.delegate.event.ActivitiEventListener;
 import com.raise.orgs.delegate.event.ActivitiEventType;
 import com.raise.orgs.delegate.event.impl.ActivitiEventDispatcherImpl;
+import com.raise.orgs.impl.AuthenticateServiceImpl;
 import com.raise.orgs.impl.IdentityServiceImpl;
 import com.raise.orgs.impl.ManagementServiceImpl;
 import com.raise.orgs.impl.ProcessEngineImpl;
@@ -82,8 +84,11 @@ import com.raise.orgs.impl.persistence.MembershipEntityManagerFactory;
 import com.raise.orgs.impl.persistence.UserEntityManagerFactory;
 import com.raise.orgs.impl.persistence.entity.ByteArrayEntityManager;
 import com.raise.orgs.impl.persistence.entity.EventLogEntryEntityManager;
+import com.raise.orgs.impl.persistence.entity.ManagedResourceEntity;
+import com.raise.orgs.impl.persistence.entity.ManagedResourceManager;
 import com.raise.orgs.impl.persistence.entity.PropertyEntityManager;
 import com.raise.orgs.impl.persistence.entity.ResourceEntityManager;
+import com.raise.orgs.impl.persistence.entity.RightsManager;
 import com.raise.orgs.impl.persistence.entity.TableDataManager;
 import com.raise.orgs.impl.persistence.entity.VariableInstanceEntityManager;
 import com.raise.orgs.impl.util.IoUtil;
@@ -108,6 +113,9 @@ import com.raise.orgs.impl.variable.UUIDType;
 import com.raise.orgs.impl.variable.VariableType;
 import com.raise.orgs.impl.variable.VariableTypes;
 
+import freemarker.template.DefaultObjectWrapper;
+import freemarker.template.Version;
+
 
 /**
  * @author Tom Baeyens
@@ -128,7 +136,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
 
   protected IdentityService identityService = new IdentityServiceImpl();
   protected ManagementService managementService = new ManagementServiceImpl();
-  
+  protected AuthenticateService authenticateService = new AuthenticateServiceImpl();
   // COMMAND EXECUTORS ////////////////////////////////////////////////////////
   
   protected CommandConfig defaultCommandConfig;
@@ -176,7 +184,8 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
   protected DataSource idGeneratorDataSource;
   protected String idGeneratorDataSourceJndiName;
   
-  
+  // freemarker configuration
+  protected freemarker.template.Configuration freemarkerConfig;
   
 
   // OTHER ////////////////////////////////////////////////////////////////////
@@ -337,6 +346,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
   
   protected void initServices() {
     initService(identityService);
+    initService(authenticateService);
     initService(managementService);
   }
 
@@ -558,6 +568,9 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
       addSessionFactory(new UserEntityManagerFactory());
       addSessionFactory(new GroupEntityManagerFactory());
       addSessionFactory(new MembershipEntityManagerFactory());
+      addSessionFactory(new GenericManagerFactory(ManagedResourceManager.class));
+      addSessionFactory(new GenericManagerFactory(RightsManager.class));
+      
     }
     
     if (customSessionFactories!=null) {
@@ -676,6 +689,16 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
     }
   }
 
+  
+  // freemarker configuration
+  protected void initFreemarkerConfiguration(){
+	  if(freemarkerConfig==null){
+		  freemarkerConfig = new freemarker.template.Configuration(freemarker.template.Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
+		  freemarkerConfig.setObjectWrapper(new DefaultObjectWrapper(freemarker.template.Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS));
+	  }
+  }
+  
+  
   // OTHER ////////////////////////////////////////////////////////////////////
   
   protected void initCommandContextFactory() {
@@ -860,6 +883,15 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
     return this;
   }
   
+  public AuthenticateService getAuthenticateService() {
+	    return authenticateService;
+	  }
+	  
+  public ProcessEngineConfigurationImpl setAuthenticateService(AuthenticateService authenticateService) {
+    this.authenticateService = authenticateService;
+    return this;
+  }
+  
   public ManagementService getManagementService() {
     return managementService;
   }
@@ -913,6 +945,14 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
   
   public ProcessEngineConfigurationImpl setIdGenerator(IdGenerator idGenerator) {
     this.idGenerator = idGenerator;
+    return this;
+  }
+  public freemarker.template.Configuration getFreemarkerConfig() {
+	return freemarkerConfig;
+  }
+  
+  public ProcessEngineConfigurationImpl setFreemarkerConfig(freemarker.template.Configuration freemarkerConfig) {
+    this.freemarkerConfig = freemarkerConfig;
     return this;
   }
   

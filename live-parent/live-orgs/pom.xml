@@ -18,7 +18,11 @@
 		<dependency>
 			<groupId>com.raise</groupId>
 			<artifactId>live-IdGenerator</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.freemarker</groupId>
+		    <artifactId>freemarker</artifactId>
+		    <version>2.3.21</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mybatis</groupId>

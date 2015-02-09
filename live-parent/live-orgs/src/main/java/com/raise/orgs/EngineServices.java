@@ -22,6 +22,7 @@ public interface EngineServices {
 
   
   IdentityService getIdentityService();
+  AuthenticateService getAuthenticateService();
   
   ManagementService getManagementService();
   

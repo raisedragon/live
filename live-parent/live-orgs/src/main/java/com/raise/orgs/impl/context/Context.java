@@ -15,6 +15,7 @@ package com.raise.orgs.impl.context;
 
 import java.util.Stack;
 
+import com.raise.orgs.identity.User;
 import com.raise.orgs.impl.cfg.ProcessEngineConfigurationImpl;
 import com.raise.orgs.impl.interceptor.CommandContext;
 
@@ -28,6 +29,8 @@ public class Context {
   protected static ThreadLocal<Stack<CommandContext>> commandContextThreadLocal = new ThreadLocal<Stack<CommandContext>>();
   protected static ThreadLocal<Stack<ProcessEngineConfigurationImpl>> processEngineConfigurationStackThreadLocal = new ThreadLocal<Stack<ProcessEngineConfigurationImpl>>();
 
+  protected static ThreadLocal<User> userThreadLocal = new ThreadLocal<User>();
+  
   public static CommandContext getCommandContext() {
     Stack<CommandContext> stack = getStack(commandContextThreadLocal);
     if (stack.isEmpty()) {
@@ -72,4 +75,15 @@ public class Context {
   }
   
   
+  public static void setUser(User user){
+	  userThreadLocal.set(user);
+  }
+  
+  public static User getUser(){
+	  return userThreadLocal.get();
+  }
+  
+  public static void removeUser(User user){
+	  userThreadLocal.remove();
+  }
 }

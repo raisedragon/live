@@ -14,7 +14,6 @@ package com.raise.orgs.impl.interceptor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,23 +22,25 @@ import org.slf4j.LoggerFactory;
 
 import com.raise.orgs.ActivitiException;
 import com.raise.orgs.ActivitiOptimisticLockingException;
-import com.raise.orgs.ActivitiTaskAlreadyClaimedException;
 import com.raise.orgs.delegate.event.ActivitiEventDispatcher;
 import com.raise.orgs.impl.cfg.ProcessEngineConfigurationImpl;
 import com.raise.orgs.impl.cfg.TransactionContext;
-import com.raise.orgs.impl.context.Context;
 import com.raise.orgs.impl.db.DbSqlSession;
 import com.raise.orgs.impl.persistence.entity.ByteArrayEntityManager;
 import com.raise.orgs.impl.persistence.entity.EventLogEntryEntityManager;
 import com.raise.orgs.impl.persistence.entity.GroupIdentityManager;
 import com.raise.orgs.impl.persistence.entity.IdentityInfoEntityManager;
+import com.raise.orgs.impl.persistence.entity.ManagedResourceManager;
 import com.raise.orgs.impl.persistence.entity.MembershipIdentityManager;
 import com.raise.orgs.impl.persistence.entity.PropertyEntityManager;
 import com.raise.orgs.impl.persistence.entity.ResourceEntityManager;
+import com.raise.orgs.impl.persistence.entity.RightsManager;
 import com.raise.orgs.impl.persistence.entity.TableDataManager;
 import com.raise.orgs.impl.persistence.entity.UserIdentityManager;
 import com.raise.orgs.impl.persistence.entity.VariableInstanceEntityManager;
 import com.raise.orgs.logging.LogMDC;
+
+import freemarker.template.Configuration;
 
 /**
  * @author Tom Baeyens
@@ -56,9 +57,8 @@ public class CommandContext {
   protected Map<Class< ? >, Session> sessions = new HashMap<Class< ? >, Session>();
   protected Throwable exception = null;
   protected ProcessEngineConfigurationImpl processEngineConfiguration;
-	protected List<CommandContextCloseListener> closeListeners;
+  protected List<CommandContextCloseListener> closeListeners;
   protected Map<String, Object> attributes; // General-purpose storing of anything during the lifetime of a command context
-
 
   public CommandContext(Command<?> command, ProcessEngineConfigurationImpl processEngineConfiguration) {
     this.command = command;
@@ -263,6 +263,18 @@ public class CommandContext {
     return getSession(PropertyEntityManager.class);
   }
   
+  public ManagedResourceManager getManagedResourceManager() {
+    return getSession(ManagedResourceManager.class);
+  }
+  
+  public RightsManager getRightsManager() {
+    return getSession(RightsManager.class);
+  }
+	  
+  
+  public Configuration getFreeMarkerConfiguration(){
+	  return processEngineConfiguration.getFreemarkerConfig();
+  }
 
   public Map<Class< ? >, SessionFactory> getSessionFactories() {
     return sessionFactories;

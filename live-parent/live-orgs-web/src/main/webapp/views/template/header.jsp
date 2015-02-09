@@ -1,8 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@taglib prefix="rs" uri="/WEB-INF/custom.tld" %>
 <!-- Navigation -->
 <div class="header navbar">
 	<div class="navbar-inner">
+		<%--
 		<ul id="MainMenu" class="nav nav-collapse">
 			<li><a id="getOrderListView"
 				href="#"><span
@@ -16,5 +18,7 @@
 			<li><a id="country" href="#"><span
 					class="arrow"></span>System Rule</a></li>
 		</ul>
+		 --%>
+		 <rs:NavigationTag/>
 	</div>
 </div>

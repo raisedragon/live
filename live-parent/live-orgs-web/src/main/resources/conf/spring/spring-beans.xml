@@ -23,4 +23,12 @@
   <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService" />
   <!-- 工作流唯一服务 -->
   <bean id="IdentityService" factory-bean="processEngine" factory-method="getIdentityService" />
+  
+  
+	<!-- 文件模版引擎配置 -->
+	<bean id="freemarkerConfiguration" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
+	    <property name="templateLoaderPath" value="classpath:freemarker/template/" />
+	    <property name="defaultEncoding" value="UTF-8"/>
+	</bean>
+   
 </beans>

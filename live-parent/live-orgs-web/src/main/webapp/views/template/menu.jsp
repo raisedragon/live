@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@taglib prefix="rs" uri="/WEB-INF/custom.tld" %>
+
+<%--
 <ul class="nav nav-list well">
 	<li class="nav-header">
 		列表标题
@@ -28,3 +31,6 @@
 		<a href="#">帮助</a>
 	</li>
 </ul>
+ --%>
+ <rs:SubNavigationTag/>
+ 

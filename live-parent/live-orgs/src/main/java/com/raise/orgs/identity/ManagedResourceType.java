@@ -1,7 +1,7 @@
 package com.raise.orgs.identity;
 
 
-public enum ResourceType {
+public enum ManagedResourceType {
 	MENU,
 	NAVIGATOR,
 	ACTION;
@@ -9,7 +9,7 @@ public enum ResourceType {
 		return name();
 	}
 
-	public static ResourceType fromValue(String v) {
+	public static ManagedResourceType fromValue(String v) {
 		return valueOf(v);
 	}
 	

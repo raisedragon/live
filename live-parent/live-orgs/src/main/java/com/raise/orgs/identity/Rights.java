@@ -1,13 +1,18 @@
 package com.raise.orgs.identity;
 
-public interface Rights {
+import java.io.Serializable;
+
+public interface Rights extends Serializable{
 	  String getId();
 	  void setId(String id);
 	  
 	  String getGroupId();
-	  void setResource();
+	  void setGroupId(String groupId);
 	  
-	  String getResourceId();
-	  void setResourceId();
+	  String getManagedResourceId();
+	  void setManagedResourceId(String managedResourceId);
+	  
+	  RightsType getType();
+	  void setType(RightsType type);
 	  
 }
