@@ -1,4 +1,4 @@
-package com.raise.live.acc.cmd;
+package com.raise.live.identity.cmd;
 
 import com.raise.live.core.command.Command;
 import com.raise.live.core.command.context.CommandContext;

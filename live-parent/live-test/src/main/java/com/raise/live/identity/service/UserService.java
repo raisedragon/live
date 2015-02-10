@@ -1,7 +1,7 @@
-package com.raise.live.acc.service;
+package com.raise.live.identity.service;
 
-import com.raise.live.acc.query.UserQuery;
 import com.raise.live.core.service.Service;
+import com.raise.live.identity.query.UserQuery;
 
 /**
  * 用户服务

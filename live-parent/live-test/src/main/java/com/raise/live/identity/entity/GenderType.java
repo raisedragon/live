@@ -1,4 +1,4 @@
-package com.raise.live.acc.entity;
+package com.raise.live.identity.entity;
 
 
 public enum GenderType {

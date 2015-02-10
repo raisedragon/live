@@ -1,7 +1,7 @@
-package com.raise.live.acc.query;
+package com.raise.live.identity.query;
 
-import com.raise.live.acc.entity.User;
 import com.raise.live.core.query.Query;
+import com.raise.live.identity.entity.User;
 
 /**
  * 用户查询对象

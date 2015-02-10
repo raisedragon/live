@@ -15,9 +15,9 @@ package com.raise.live.core.context;
 
 import java.util.Stack;
 
-import com.raise.live.acc.entity.User;
 import com.raise.live.core.cfg.LiveConfiguration;
 import com.raise.live.core.command.context.CommandContext;
+import com.raise.live.identity.entity.User;
 
 
 
