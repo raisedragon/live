@@ -12,31 +12,21 @@ import com.raise.live.core.command.interceptor.SessionFactory;
 import com.raise.live.core.persistence.GenericManagerFactory;
 
 public class LiveConfiguration implements ApplicationContextAware {
-	protected ApplicationContext springContext;
-	protected Map<Class<?>,SessionFactory> sessionFactories;
+	protected ApplicationContext applicationContext;
 	
 	
 	protected void init(){
-		initSessionFactories();
 	}
 
-	protected void initSessionFactories(){
-		Map<String,SessionFactory> factories = springContext.getBeansOfType(SessionFactory.class);
-		for(SessionFactory sessionFactory: factories.values()){
-			sessionFactories.put(sessionFactory.getSessionType(), sessionFactory);
-		}
-		Map<String,Session> sessions = springContext.getBeansOfType(Session.class);
-		for(Session session:sessions.values()){
-			if(!sessionFactories.containsKey(session.getClass())){
-				sessionFactories.put(session.getClass(), new GenericManagerFactory(session.getClass()));
-			}
-		}
-		
+	
+	public void setApplicationContext(ApplicationContext applicationContext)
+			throws BeansException {
+		this.applicationContext = applicationContext;
 	}
 	
-	public void setApplicationContext(ApplicationContext springContext)
-			throws BeansException {
-		this.springContext = springContext;
+	public ApplicationContext getApplicationContext() {
+		return applicationContext;
 	}
+	
 	
 }
