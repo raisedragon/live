@@ -12,9 +12,6 @@
         <dependent-module archiveName="live-orgs-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/live-orgs/live-orgs">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="live-spring-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/live-spring/live-spring">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <property name="context-root" value="live-orgs-web"/>
         <property name="java-output-path" value="/live-orgs-web/src/main/webapp/WEB-INF/classes"/>
     </wb-module>

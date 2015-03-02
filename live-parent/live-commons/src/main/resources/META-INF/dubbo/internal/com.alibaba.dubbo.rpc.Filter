@@ -1,0 +1,7 @@
+commandContextFilter=com.winit.common.spi.context.support.CommandContextDubboConsumerFilter
+dubboProviderFilter=com.winit.common.spi.context.support.CommandContextDubboProviderFilter
+
+dubboConsumerContextFilter=com.winit.common.spi.context.support.CommandContextDubboConsumerFilter
+dubboProviderContextFilter=com.winit.common.spi.context.support.CommandContextDubboProviderFilter
+
+dateConvertDubboFilter=com.winit.common.spi.support.LocalUTCDateTransformDubboFilter
