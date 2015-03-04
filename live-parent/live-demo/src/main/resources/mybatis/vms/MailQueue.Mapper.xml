@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winit.vms.system.dao.MailQueueDao">
+	<resultMap id="MailQueue" type="com.winit.vms.system.entity.MailQueue">
+		<id property="id" column="ID" jdbcType="NUMERIC"/>
+		<result property="manifestNo" column="MANIFEST_NO" jdbcType="VARCHAR"/>
+		<result property="subject" column="SUBJECT" jdbcType="VARCHAR"/>
+		<result property="content" column="CONTENT" jdbcType="VARCHAR"/>
+		<result property="attachment" column="ATTACHMENT" jdbcType="VARCHAR"/>
+		<result property="sendTo" column="SEND_TO" jdbcType="VARCHAR"/>
+		<result property="cc" column="CC" jdbcType="VARCHAR"/>
+		<result property="bcc" column="BCC" jdbcType="VARCHAR"/>
+		<result property="status" column="STATUS" jdbcType="VARCHAR"/>
+		<result property="organizationId" column="ORGANIZATION_ID" jdbcType="NUMERIC"/>
+		<result property="created" column="CREATED" jdbcType="TIMESTAMP"/>
+		<result property="createdby" column="CREATEDBY" jdbcType="VARCHAR"/>
+		<result property="updated" column="UPDATED" jdbcType="TIMESTAMP"/>
+		<result property="updatedby" column="UPDATEDBY" jdbcType="VARCHAR"/>
+		<result property="isActive" column="IS_ACTIVE" jdbcType="VARCHAR"/>
+		<result property="isDelete" column="IS_DELETE" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<sql id="columns">
+			ID,
+			MANIFEST_NO,
+			SUBJECT,
+			CONTENT,
+			ATTACHMENT,
+			SEND_TO,
+			CC,
+			BCC,
+			STATUS,
+			ORGANIZATION_ID,
+			CREATED,
+			CREATEDBY,
+			UPDATED,
+			UPDATEDBY,
+			IS_ACTIVE,
+			IS_DELETE
+	</sql>
+	
+	<insert id="add" useGeneratedKeys="true" keyProperty="id"  parameterType="com.winit.vms.system.entity.MailQueue">
+		INSERT INTO VMS_SYS_MAIL_QUEUE
+		(ID,MANIFEST_NO,SUBJECT,CONTENT,ATTACHMENT,SEND_TO,CC,BCC,STATUS,ORGANIZATION_ID,CREATED,CREATEDBY,UPDATED,UPDATEDBY,IS_ACTIVE,IS_DELETE)
+		VALUES 
+		(#{id,jdbcType=NUMERIC}, #{manifestNo,jdbcType=VARCHAR}, #{subject,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{attachment,jdbcType=VARCHAR}, #{sendTo,jdbcType=VARCHAR}, #{cc,jdbcType=VARCHAR}, #{bcc,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{organizationId,jdbcType=NUMERIC}, #{created,jdbcType=TIMESTAMP}, #{createdby,jdbcType=VARCHAR}, #{updated,jdbcType=TIMESTAMP}, #{updatedby,jdbcType=VARCHAR}, #{isActive,jdbcType=VARCHAR}, #{isDelete,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.Long" resultMap="MailQueue">
+		SELECT <include refid="columns" /> FROM VMS_SYS_MAIL_QUEUE 
+		WHERE 
+			IS_DELETE='N'
+			AND ID=#{id}
+	</select>
+	
+	<select 
+	    id="find" parameterType="com.winit.common.query.Searchable"
+	    resultMap="MailQueue"
+	    timeout="60000">
+		SELECT <include refid="columns" /> FROM VMS_SYS_MAIL_QUEUE
+	</select>
+	
+	<update id="update" parameterType="com.winit.vms.system.entity.MailQueue">
+		UPDATE VMS_SYS_MAIL_QUEUE SET
+		MANIFEST_NO=#{manifestNo,jdbcType=VARCHAR},
+		SUBJECT=#{subject,jdbcType=VARCHAR},
+		CONTENT=#{content,jdbcType=VARCHAR},
+		ATTACHMENT=#{attachment,jdbcType=VARCHAR},
+		SEND_TO=#{sendTo,jdbcType=VARCHAR},
+		CC=#{cc,jdbcType=VARCHAR},
+		BCC=#{bcc,jdbcType=VARCHAR},
+		STATUS=#{status,jdbcType=VARCHAR},
+		ORGANIZATION_ID=#{organizationId,jdbcType=NUMERIC},
+		CREATED=#{created,jdbcType=TIMESTAMP},
+		CREATEDBY=#{createdby,jdbcType=VARCHAR},
+		UPDATED=#{updated,jdbcType=TIMESTAMP},
+		UPDATEDBY=#{updatedby,jdbcType=VARCHAR},
+		IS_ACTIVE=#{isActive,jdbcType=VARCHAR},
+		IS_DELETE=#{isDelete,jdbcType=VARCHAR}
+		WHERE
+		ID=#{id}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.Long">
+		DELETE FROM VMS_SYS_MAIL_QUEUE 
+		WHERE
+		ID=#{id}
+	</delete>
+	
+	<update id="tombstoned" parameterType="java.lang.Long">
+		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()"/>
+		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()"/>
+		UPDATE VMS_SYS_MAIL_QUEUE SET
+			IS_DELETE='Y',
+			UPDATED=#{currentTime,jdbcType=TIMESTAMP},
+			UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
+		WHERE
+			ID=#{id}
+	</update>
+	
+	<update id="disable" parameterType="java.lang.Long">
+		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()"/>
+		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()"/>
+		UPDATE VMS_SYS_MAIL_QUEUE SET
+			IS_ACTIVE='N',
+			UPDATED=#{currentTime,jdbcType=TIMESTAMP},
+			UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
+		WHERE
+			ID=#{id}
+	</update>
+	<update id="enable" parameterType="java.lang.Long">
+		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()"/>
+		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()"/>
+		UPDATE VMS_SYS_MAIL_QUEUE SET
+			IS_ACTIVE='Y',
+			UPDATED=#{currentTime,jdbcType=TIMESTAMP},
+			UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
+		WHERE
+			ID=#{id}
+	</update>
+	
+	<!-- Operate by criteria -->
+	
+	<select id="queryByCriteria" parameterType="com.winit.vms.system.query.MailQueueQuery$FindQuery" resultMap="MailQueue">
+		SELECT 
+			RES.ID,
+			RES.MANIFEST_NO,
+			RES.SUBJECT,
+			RES.CONTENT,
+			RES.ATTACHMENT,
+			RES.SEND_TO,
+			RES.CC,
+			RES.BCC,
+			RES.STATUS,
+			RES.ORGANIZATION_ID,
+			RES.CREATED,
+			RES.CREATEDBY,
+			RES.UPDATED,
+			RES.UPDATEDBY,
+			RES.IS_ACTIVE,
+			RES.IS_DELETE
+		<include refid="queryByCriteriaSql" />
+		<include refid="orderByClauseSql"/>
+		<if test="first">
+			limit 1
+		</if>
+	</select>
+	
+	<select id="queryCountByCriteria" parameterType="com.winit.vms.system.query.MailQueueQuery$FindQuery" resultType="Long">
+		SELECT count(1)
+		<include refid="queryByCriteriaSql" />
+	</select>
+
+	<sql id="queryByCriteriaSql">
+		from VMS_SYS_MAIL_QUEUE RES
+		<include refid="criteriaSql"/>
+	</sql>
+	<update id="updateByUpdateQuery" parameterType="com.winit.vms.system.query.MailQueueQuery$UpdateQuery">
+		UPDATE VMS_SYS_MAIL_QUEUE RES
+		<include refid="updateDataCaluseSql"/>
+		<include refid="criteriaSql"/>
+	</update>
+	
+	
+	<sql id="criteriaSql">
+		<where>
+			IS_DELETE='N'
+			<if test="oredCriteria.size()==1">
+				<trim prefix="AND" >
+					<include refid="oredCriteriaSql"/>
+				</trim>
+			
+			</if>
+			<if test="oredCriteria.size()>1">
+				<trim prefix="AND (" suffix=")" >
+					<include refid="oredCriteriaSql"/>
+				</trim>
+			</if>
+		</where>
+	</sql>
+		
+		
+	<sql id="oredCriteriaSql">
+		<foreach  collection="oredCriteria" item="criteria" separator="or">
+			<if test="criteria.valid">
+				<if test="criteria.criteria.size()==1">
+					<trim prefixOverrides="and">
+						<include refid="criterionSql"/>
+					</trim>
+				</if>
+				<if test="criteria.criteria.size()>1">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<include refid="criterionSql"/>
+					</trim>
+				</if>
+			</if>
+		</foreach>
+	</sql>
+	
+	<sql id="criterionSql">
+		<foreach collection="criteria.criteria" item="criterion">
+			<choose>
+				<when test="criterion.noValue">
+					and RES.${criterion.condition}
+				</when>
+				<when test="criterion.singleValue">
+					and RES.${criterion.condition} #{criterion.value}
+				</when>
+				<when test="criterion.betweenValue">
+					and RES.${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+				</when>
+				<when test="criterion.listValue">
+					and RES.${criterion.condition}
+					<foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+						#{listItem}
+					</foreach>
+				</when>
+			</choose>
+		</foreach>
+	</sql>
+		
+	<sql id="updateDataCaluseSql">
+		<set>   
+			<foreach collection="updateClause.dataClauses" item="clause" separator=",">
+				${clause.property} #{clause.value}
+			</foreach>
+		</set>
+	</sql>
+	
+	
+	<sql id="orderByClauseSql">
+		<if test="sort!=null">
+			ORDER BY 
+				${sort.sortSql}
+		</if>
+	</sql>
+	
+</mapper>

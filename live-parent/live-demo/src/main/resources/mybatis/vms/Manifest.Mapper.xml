@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winit.vms.shipment.dao.ManifestDao">
+	<resultMap id="Manifest" type="com.winit.vms.shipment.entity.Manifest">
+		<id property="id" column="ID" jdbcType="NUMERIC"/>
+		<result property="manifestNo" column="MANIFEST_NO" jdbcType="VARCHAR"/>
+		<result property="vendorCode" column="VENDOR_CODE" jdbcType="VARCHAR"/>
+		<result property="productCode" column="PRODUCT_CODE" jdbcType="VARCHAR"/>
+		<result property="venderManifestNo" column="VENDER_MANIFEST_NO" jdbcType="VARCHAR"/>
+		<result property="path" column="PATH" jdbcType="VARCHAR"/>
+		<result property="status" column="STATUS" jdbcType="VARCHAR"/>
+		<result property="organizationId" column="ORGANIZATION_ID" jdbcType="NUMERIC"/>
+		<result property="created" column="CREATED" jdbcType="TIMESTAMP"/>
+		<result property="createdby" column="CREATEDBY" jdbcType="VARCHAR"/>
+		<result property="updated" column="UPDATED" jdbcType="TIMESTAMP"/>
+		<result property="updatedby" column="UPDATEDBY" jdbcType="VARCHAR"/>
+		<result property="isActive" column="IS_ACTIVE" jdbcType="VARCHAR"/>
+		<result property="isDelete" column="IS_DELETE" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<sql id="columns">
+			ID,
+			MANIFEST_NO,
+			VENDOR_CODE,
+			PRODUCT_CODE,
+			VENDER_MANIFEST_NO,
+			PATH,
+			STATUS,
+			ORGANIZATION_ID,
+			CREATED,
+			CREATEDBY,
+			UPDATED,
+			UPDATEDBY,
+			IS_ACTIVE,
+			IS_DELETE
+	</sql>
+	
+	<insert id="add" useGeneratedKeys="true" keyProperty="id"  parameterType="com.winit.vms.shipment.entity.Manifest">
+		INSERT INTO VMS_SHM_MANIFEST
+		(ID,MANIFEST_NO,VENDOR_CODE,PRODUCT_CODE,VENDER_MANIFEST_NO,PATH,STATUS,ORGANIZATION_ID,CREATED,CREATEDBY,UPDATED,UPDATEDBY,IS_ACTIVE,IS_DELETE)
+		VALUES 
+		(#{id,jdbcType=NUMERIC}, #{manifestNo,jdbcType=VARCHAR}, #{vendorCode,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR}, #{venderManifestNo,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{organizationId,jdbcType=NUMERIC}, #{created,jdbcType=TIMESTAMP}, #{createdby,jdbcType=VARCHAR}, #{updated,jdbcType=TIMESTAMP}, #{updatedby,jdbcType=VARCHAR}, #{isActive,jdbcType=VARCHAR}, #{isDelete,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.Long" resultMap="Manifest">
+		SELECT <include refid="columns" /> FROM VMS_SHM_MANIFEST 
+		WHERE 
+			IS_DELETE='N'
+			AND ID=#{id}
+	</select>
+	
+	<select 
+	    id="find" parameterType="com.winit.common.query.Searchable"
+	    resultMap="Manifest"
+	    timeout="60000">
+		SELECT <include refid="columns" /> FROM VMS_SHM_MANIFEST
+	</select>
+	
+	<update id="update" parameterType="com.winit.vms.shipment.entity.Manifest">
+		UPDATE VMS_SHM_MANIFEST SET
+		MANIFEST_NO=#{manifestNo,jdbcType=VARCHAR},
+		VENDOR_CODE=#{vendorCode,jdbcType=VARCHAR},
+		PRODUCT_CODE=#{productCode,jdbcType=VARCHAR},
+		VENDER_MANIFEST_NO=#{venderManifestNo,jdbcType=VARCHAR},
+		PATH=#{path,jdbcType=VARCHAR},
+		STATUS=#{status,jdbcType=VARCHAR},
+		ORGANIZATION_ID=#{organizationId,jdbcType=NUMERIC},
+		CREATED=#{created,jdbcType=TIMESTAMP},
+		CREATEDBY=#{createdby,jdbcType=VARCHAR},
+		UPDATED=#{updated,jdbcType=TIMESTAMP},
+		UPDATEDBY=#{updatedby,jdbcType=VARCHAR},
+		IS_ACTIVE=#{isActive,jdbcType=VARCHAR},
+		IS_DELETE=#{isDelete,jdbcType=VARCHAR}
+		WHERE
+		ID=#{id}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.Long">
+		DELETE FROM VMS_SHM_MANIFEST 
+		WHERE
+		ID=#{id}
+	</delete>
+	
+	<update id="tombstoned" parameterType="java.lang.Long">
+		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()"/>
+		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()"/>
+		UPDATE VMS_SHM_MANIFEST SET
+			IS_DELETE='Y',
+			UPDATED=#{currentTime,jdbcType=TIMESTAMP},
+			UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
+		WHERE
+			ID=#{id}
+	</update>
+	
+	<update id="disable" parameterType="java.lang.Long">
+		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()"/>
+		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()"/>
+		UPDATE VMS_SHM_MANIFEST SET
+			IS_ACTIVE='N',
+			UPDATED=#{currentTime,jdbcType=TIMESTAMP},
+			UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
+		WHERE
+			ID=#{id}
+	</update>
+	<update id="enable" parameterType="java.lang.Long">
+		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()"/>
+		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()"/>
+		UPDATE VMS_SHM_MANIFEST SET
+			IS_ACTIVE='Y',
+			UPDATED=#{currentTime,jdbcType=TIMESTAMP},
+			UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
+		WHERE
+			ID=#{id}
+	</update>
+	
+	<!-- Operate by criteria -->
+	
+	<select id="queryByCriteria" parameterType="com.winit.vms.shipment.query.ManifestQuery$FindQuery" resultMap="Manifest">
+		SELECT 
+			RES.ID,
+			RES.MANIFEST_NO,
+			RES.VENDOR_CODE,
+			RES.PRODUCT_CODE,
+			RES.VENDER_MANIFEST_NO,
+			RES.PATH,
+			RES.STATUS,
+			RES.ORGANIZATION_ID,
+			RES.CREATED,
+			RES.CREATEDBY,
+			RES.UPDATED,
+			RES.UPDATEDBY,
+			RES.IS_ACTIVE,
+			RES.IS_DELETE
+		<include refid="queryByCriteriaSql" />
+		<include refid="orderByClauseSql"/>
+		<if test="first">
+			limit 1
+		</if>
+	</select>
+	
+	<select id="queryCountByCriteria" parameterType="com.winit.vms.shipment.query.ManifestQuery$FindQuery" resultType="Long">
+		SELECT count(1)
+		<include refid="queryByCriteriaSql" />
+	</select>
+
+	<sql id="queryByCriteriaSql">
+		from VMS_SHM_MANIFEST RES
+		<include refid="criteriaSql"/>
+	</sql>
+	<update id="updateByUpdateQuery" parameterType="com.winit.vms.shipment.query.ManifestQuery$UpdateQuery">
+		UPDATE VMS_SHM_MANIFEST RES
+		<include refid="updateDataCaluseSql"/>
+		<include refid="criteriaSql"/>
+	</update>
+	
+	
+	<sql id="criteriaSql">
+		<where>
+			IS_DELETE='N'
+			<if test="oredCriteria.size()==1">
+				<trim prefix="AND" >
+					<include refid="oredCriteriaSql"/>
+				</trim>
+			
+			</if>
+			<if test="oredCriteria.size()>1">
+				<trim prefix="AND (" suffix=")" >
+					<include refid="oredCriteriaSql"/>
+				</trim>
+			</if>
+		</where>
+	</sql>
+		
+		
+	<sql id="oredCriteriaSql">
+		<foreach  collection="oredCriteria" item="criteria" separator="or">
+			<if test="criteria.valid">
+				<if test="criteria.criteria.size()==1">
+					<trim prefixOverrides="and">
+						<include refid="criterionSql"/>
+					</trim>
+				</if>
+				<if test="criteria.criteria.size()>1">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<include refid="criterionSql"/>
+					</trim>
+				</if>
+			</if>
+		</foreach>
+	</sql>
+	
+	<sql id="criterionSql">
+		<foreach collection="criteria.criteria" item="criterion">
+			<choose>
+				<when test="criterion.noValue">
+					and RES.${criterion.condition}
+				</when>
+				<when test="criterion.singleValue">
+					and RES.${criterion.condition} #{criterion.value}
+				</when>
+				<when test="criterion.betweenValue">
+					and RES.${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+				</when>
+				<when test="criterion.listValue">
+					and RES.${criterion.condition}
+					<foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+						#{listItem}
+					</foreach>
+				</when>
+			</choose>
+		</foreach>
+	</sql>
+		
+	<sql id="updateDataCaluseSql">
+		<set>   
+			<foreach collection="updateClause.dataClauses" item="clause" separator=",">
+				${clause.property} #{clause.value}
+			</foreach>
+		</set>
+	</sql>
+	
+	
+	<sql id="orderByClauseSql">
+		<if test="sort!=null">
+			ORDER BY 
+				${sort.sortSql}
+		</if>
+	</sql>
+	
+</mapper>

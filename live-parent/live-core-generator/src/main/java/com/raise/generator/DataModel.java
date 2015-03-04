@@ -1,20 +1,56 @@
 package com.raise.generator;
 
-import java.util.Date;
+import java.util.Properties;
 
 import schemacrawler.schema.Table;
 
 public class DataModel {
-	private Config config;
-	private Table table;
-	private Date currentDate;
+	private Properties properties;
 
-	public Config getConfig() {
-		return config;
+	private String name;
+	private String tablename;
+	private String pkg;
+	private String clazz;
+	private Table table;
+
+	public Properties getProperties() {
+		return properties;
 	}
 
-	public void setConfig(Config config) {
-		this.config = config;
+	public void setProperties(Properties properties) {
+		this.properties = properties;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getTablename() {
+		return tablename;
+	}
+
+	public void setTablename(String tablename) {
+		this.tablename = tablename;
+	}
+
+	public String getPkg() {
+		return pkg;
+	}
+
+	public void setPkg(String pkg) {
+		this.pkg = pkg;
+	}
+
+	public String getClazz() {
+		return clazz;
+	}
+
+	public void setClazz(String clazz) {
+		this.clazz = clazz;
 	}
 
 	public Table getTable() {
@@ -24,19 +60,5 @@ public class DataModel {
 	public void setTable(Table table) {
 		this.table = table;
 	}
-
-	public Date getCurrentDate() {
-		if(currentDate==null){
-			currentDate = new Date();
-		}
-		return currentDate;
-	}
-
-	public void setCurrentDate(Date currentDate) {
-		this.currentDate = currentDate;
-	}
-	
-	
-	
 
 }

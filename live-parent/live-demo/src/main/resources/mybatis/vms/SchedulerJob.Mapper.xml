@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winit.vms.system.dao.SchedulerJobDao">
+	<resultMap id="SchedulerJob" type="com.winit.vms.system.entity.SchedulerJob">
+		<id property="id" column="ID" jdbcType="NUMERIC"/>
+		<result property="jobName" column="JOB_NAME" jdbcType="VARCHAR"/>
+		<result property="beanClass" column="BEAN_CLASS" jdbcType="VARCHAR"/>
+		<result property="methodName" column="METHOD_NAME" jdbcType="VARCHAR"/>
+		<result property="cronExpression" column="CRON_EXPRESSION" jdbcType="VARCHAR"/>
+		<result property="ipAddress" column="IP_ADDRESS" jdbcType="VARCHAR"/>
+		<result property="jobStatus" column="JOB_STATUS" jdbcType="VARCHAR"/>
+		<result property="code" column="CODE" jdbcType="VARCHAR"/>
+		<result property="jobGroup" column="JOB_GROUP" jdbcType="VARCHAR"/>
+		<result property="springId" column="SPRING_ID" jdbcType="VARCHAR"/>
+		<result property="isConcurrent" column="IS_CONCURRENT" jdbcType="VARCHAR"/>
+		<result property="organizationId" column="ORGANIZATION_ID" jdbcType="NUMERIC"/>
+		<result property="created" column="CREATED" jdbcType="TIMESTAMP"/>
+		<result property="createdby" column="CREATEDBY" jdbcType="VARCHAR"/>
+		<result property="updated" column="UPDATED" jdbcType="TIMESTAMP"/>
+		<result property="updatedby" column="UPDATEDBY" jdbcType="VARCHAR"/>
+		<result property="isActive" column="IS_ACTIVE" jdbcType="VARCHAR"/>
+		<result property="isDelete" column="IS_DELETE" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="add"  useGeneratedKeys="true" keyProperty="id"   parameterType="com.winit.vms.system.entity.SchedulerJob">
+		INSERT INTO VMS_SYS_SCHEDULER
+		(ID,JOB_NAME,BEAN_CLASS,METHOD_NAME,CRON_EXPRESSION,IP_ADDRESS,JOB_STATUS,CODE,JOB_GROUP,SPRING_ID,IS_CONCURRENT,ORGANIZATION_ID,CREATED,CREATEDBY,UPDATED,UPDATEDBY,IS_ACTIVE,IS_DELETE)
+		VALUES 
+		(#{id,jdbcType=NUMERIC}, #{jobName,jdbcType=VARCHAR}, #{beanClass,jdbcType=VARCHAR}, #{methodName,jdbcType=VARCHAR}, #{cronExpression,jdbcType=VARCHAR}, #{ipAddress,jdbcType=VARCHAR}, #{jobStatus,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{jobGroup,jdbcType=VARCHAR}, #{springId,jdbcType=VARCHAR}, #{isConcurrent,jdbcType=VARCHAR}, #{organizationId,jdbcType=NUMERIC}, #{created,jdbcType=TIMESTAMP}, #{createdby,jdbcType=VARCHAR}, #{updated,jdbcType=TIMESTAMP}, #{updatedby,jdbcType=VARCHAR}, #{isActive,jdbcType=VARCHAR}, #{isDelete,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.Long" resultMap="SchedulerJob">
+		SELECT ID,JOB_NAME,BEAN_CLASS,METHOD_NAME,CRON_EXPRESSION,IP_ADDRESS,JOB_STATUS,CODE,JOB_GROUP,SPRING_ID,IS_CONCURRENT,ORGANIZATION_ID,CREATED,CREATEDBY,UPDATED,UPDATEDBY,IS_ACTIVE,IS_DELETE FROM VMS_SYS_SCHEDULER 
+		WHERE 
+			IS_DELETE='N'
+			AND ID=#{id}
+	</select>
+	
+	<select 
+	    id="find" parameterType="com.winit.common.query.Searchable"
+	    resultMap="SchedulerJob"
+	    timeout="60000">
+		select ID,JOB_NAME,BEAN_CLASS,METHOD_NAME,CRON_EXPRESSION,IP_ADDRESS,JOB_STATUS,CODE,JOB_GROUP,SPRING_ID,IS_CONCURRENT,ORGANIZATION_ID,CREATED,CREATEDBY,UPDATED,UPDATEDBY,IS_ACTIVE,IS_DELETE from VMS_SYS_SCHEDULER
+	</select>
+	
+	<update id="update" parameterType="com.winit.vms.system.entity.SchedulerJob">
+		UPDATE VMS_SYS_SCHEDULER SET
+		JOB_NAME=#{jobName,jdbcType=VARCHAR},
+		BEAN_CLASS=#{beanClass,jdbcType=VARCHAR},
+		METHOD_NAME=#{methodName,jdbcType=VARCHAR},
+		CRON_EXPRESSION=#{cronExpression,jdbcType=VARCHAR},
+		IP_ADDRESS=#{ipAddress,jdbcType=VARCHAR},
+		JOB_STATUS=#{jobStatus,jdbcType=VARCHAR},
+		CODE=#{code,jdbcType=VARCHAR},
+		JOB_GROUP=#{jobGroup,jdbcType=VARCHAR},
+		SPRING_ID=#{springId,jdbcType=VARCHAR},
+		IS_CONCURRENT=#{isConcurrent,jdbcType=VARCHAR},
+		ORGANIZATION_ID=#{organizationId,jdbcType=NUMERIC},
+		CREATED=#{created,jdbcType=TIMESTAMP},
+		CREATEDBY=#{createdby,jdbcType=VARCHAR},
+		UPDATED=#{updated,jdbcType=TIMESTAMP},
+		UPDATEDBY=#{updatedby,jdbcType=VARCHAR},
+		IS_ACTIVE=#{isActive,jdbcType=VARCHAR},
+		IS_DELETE=#{isDelete,jdbcType=VARCHAR}
+		WHERE
+		ID=#{id}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.Long">
+		DELETE FROM VMS_SYS_SCHEDULER 
+		WHERE
+		ID=#{id}
+	</delete>
+	
+	<update id="tombstoned" parameterType="java.lang.Long">
+		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()"/>
+		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()"/>
+		UPDATE VMS_SYS_SCHEDULER SET
+			IS_DELETE='Y',
+			UPDATED=#{currentTime,jdbcType=TIMESTAMP},
+			UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
+		WHERE
+			ID=#{id}
+	</update>
+	
+	
+	<update id="disable" parameterType="java.lang.Long">
+		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()"/>
+		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()"/>
+		UPDATE VMS_SYS_SCHEDULER SET
+			IS_ACTIVE='N',
+			UPDATED=#{currentTime,jdbcType=TIMESTAMP},
+			UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
+		WHERE
+			ID=#{id}
+	</update>
+	<update id="enable" parameterType="java.lang.Long">
+		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()"/>
+		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()"/>
+		UPDATE VMS_SYS_SCHEDULER SET
+			IS_ACTIVE='Y',
+			UPDATED=#{currentTime,jdbcType=TIMESTAMP},
+			UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
+		WHERE
+			ID=#{id}
+	</update>
+	
+	<!-- Operate by criteria -->
+	
+	<select id="queryByCriteria" parameterType="com.winit.vms.system.query.SchedulerJobQuery$FindQuery" resultMap="SchedulerJob">
+		SELECT ID,JOB_NAME,BEAN_CLASS,METHOD_NAME,CRON_EXPRESSION,IP_ADDRESS,JOB_STATUS,CODE,JOB_GROUP,SPRING_ID,IS_CONCURRENT,ORGANIZATION_ID,CREATED,CREATEDBY,UPDATED,UPDATEDBY,IS_ACTIVE,IS_DELETE
+		<include refid="queryByCriteriaSql" />
+		<include refid="orderByClauseSql"/>
+		<if test="first">
+			limit 1
+		</if>
+	</select>
+	
+	<select id="queryCountByCriteria" parameterType="com.winit.vms.system.query.SchedulerJobQuery$FindQuery" resultType="Long">
+		SELECT count(1)
+		<include refid="queryByCriteriaSql" />
+	</select>
+
+	<sql id="queryByCriteriaSql">
+		from VMS_SYS_SCHEDULER RES
+		<include refid="criteriaSql"/>
+	</sql>
+	<update id="updateByUpdateQuery" parameterType="com.winit.vms.system.query.SchedulerJobQuery$UpdateQuery">
+		UPDATE VMS_SYS_SCHEDULER RES
+		<include refid="updateDataCaluseSql"/>
+		<include refid="criteriaSql"/>
+	</update>
+	
+	
+	<sql id="criteriaSql">
+		<where>
+			IS_DELETE='N'
+			<if test="oredCriteria.size()==1">
+				<trim prefix="AND" >
+					<include refid="oredCriteriaSql"/>
+				</trim>
+			
+			</if>
+			<if test="oredCriteria.size()>1">
+				<trim prefix="AND (" suffix=")" >
+					<include refid="oredCriteriaSql"/>
+				</trim>
+			</if>
+		</where>
+	</sql>
+		
+		
+	<sql id="oredCriteriaSql">
+		<foreach  collection="oredCriteria" item="criteria" separator="or">
+			<if test="criteria.valid">
+				<if test="criteria.criteria.size()==1">
+					<trim prefixOverrides="and">
+						<include refid="criterionSql"/>
+					</trim>
+				</if>
+				<if test="criteria.criteria.size()>1">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<include refid="criterionSql"/>
+					</trim>
+				</if>
+			</if>
+		</foreach>
+	</sql>
+	
+	<sql id="criterionSql">
+		<foreach collection="criteria.criteria" item="criterion">
+			<choose>
+				<when test="criterion.noValue">
+					and RES.${criterion.condition}
+				</when>
+				<when test="criterion.singleValue">
+					and RES.${criterion.condition} #{criterion.value}
+				</when>
+				<when test="criterion.betweenValue">
+					and RES.${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+				</when>
+				<when test="criterion.listValue">
+					and RES.${criterion.condition}
+					<foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+						#{listItem}
+					</foreach>
+				</when>
+			</choose>
+		</foreach>
+	</sql>
+		
+	<sql id="updateDataCaluseSql">
+		<set>   
+			<foreach collection="updateClause.dataClauses" item="clause" separator=",">
+				${clause.property} #{clause.value}
+			</foreach>
+		</set>
+	</sql>
+	
+	
+	<sql id="orderByClauseSql">
+		<if test="sort!=null">
+			ORDER BY 
+				${sort.sortSql}
+		</if>
+	</sql>
+	
+</mapper>

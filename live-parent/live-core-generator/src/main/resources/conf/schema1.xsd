@@ -1,52 +1,65 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-  <xs:complexType name="gConfiguration">
-    <xs:sequence>
-      <xs:element name="files" type="gFile" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="properties">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="entry" minOccurs="0" maxOccurs="unbounded">
-              <xs:complexType>
-                <xs:sequence>
-                  <xs:element name="key" minOccurs="0" type="xs:anyType"/>
-                  <xs:element name="value" minOccurs="0" type="xs:anyType"/>
-                </xs:sequence>
-              </xs:complexType>
-            </xs:element>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="tables" type="gTable" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="templates" type="gTemplate" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
 
-  <xs:complexType name="gFile">
-    <xs:sequence>
-      <xs:element name="dir" type="xs:string" minOccurs="0"/>
-      <xs:element name="filename" type="xs:string" minOccurs="0"/>
-      <xs:element name="refTemplate" type="xs:string" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
 
-  <xs:complexType name="gTable">
-    <xs:sequence>
-      <xs:element name="javaClass" type="xs:string" minOccurs="0"/>
-      <xs:element name="javaPackage" type="xs:string" minOccurs="0"/>
-      <xs:element name="javaRemarks" type="xs:string" minOccurs="0"/>
-      <xs:element name="name" type="xs:string" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
 
-  <xs:complexType name="gTemplate">
-    <xs:sequence>
-      <xs:element name="id" type="xs:string" minOccurs="0"/>
-      <xs:element name="path" type="xs:string" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
 
-    <xs:element name="Configuration" type="gConfiguration"></xs:element>
+    <xs:element name="configuration" type="configuration"></xs:element>
+
+    <xs:complexType name="configuration">
+    	<xs:sequence>
+    		<xs:element name="properties" type="properties"></xs:element>
+    		<xs:element name="templates" type="templates"></xs:element>
+    		<xs:element name="sources" type="sources"></xs:element>
+    		<xs:element name="tables" type="tables"></xs:element>
+    	</xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="properties">
+        <xs:sequence>
+        	<xs:any></xs:any>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="templates">
+    	<xs:sequence>
+    		<xs:element name="template" type="template"></xs:element>
+    	</xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="tables">
+    	<xs:sequence>
+    		<xs:element name="table" type="table"></xs:element>
+    	</xs:sequence>
+    </xs:complexType>
+    
+
+
+    <xs:complexType name="table">
+    	<xs:sequence>
+    		<xs:element name="name" type="xs:string"></xs:element>
+    		<xs:element name="class" type="xs:string"></xs:element>
+    		<xs:element name="package" type="xs:string"></xs:element>
+    	</xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="template">
+    	<xs:attribute name="id" type="xs:string"></xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="sources">
+    	<xs:sequence>
+    		<xs:element name="source" type="source"></xs:element>
+    	</xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="source">
+    	<xs:sequence></xs:sequence>
+    	<xs:attribute name="refTemplate" type="xs:string"></xs:attribute>
+    	<xs:attribute name="filename" type="xs:string"></xs:attribute>
+    	<xs:attribute name="directory" type="xs:string"></xs:attribute>
+    	<xs:attribute name="override" type="xs:boolean"></xs:attribute>
+    </xs:complexType>
 </xs:schema>
 

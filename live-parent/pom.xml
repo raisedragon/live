@@ -17,6 +17,7 @@
 		<module>live-rbac</module>
 		<module>live-demo</module>
 		<module>live-commons</module>
+		<module>live-core-generator</module>
 	</modules>
     
     <properties>

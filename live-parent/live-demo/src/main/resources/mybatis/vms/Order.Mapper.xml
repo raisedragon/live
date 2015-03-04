@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winit.vms.shipment.dao.OrderDao">
+	<resultMap id="Order" type="com.winit.vms.shipment.entity.Order">
+		<id property="id" column="ID" jdbcType="NUMERIC"/>
+		<result property="documentNo" column="DOCUMENT_NO" jdbcType="VARCHAR"/>
+		<result property="orderNo" column="ORDER_NO" jdbcType="VARCHAR"/>
+		<result property="vendorOrderNo" column="VENDOR_ORDER_NO" jdbcType="VARCHAR"/>
+		<result property="orderStatus" column="ORDER_STATUS" jdbcType="VARCHAR"/>
+		<result property="vendorCode" column="VENDOR_CODE" jdbcType="VARCHAR"/>
+		<result property="productCode" column="PRODUCT_CODE" jdbcType="VARCHAR"/>
+		<result property="realLength" column="REAL_LENGTH" jdbcType="NUMERIC"/>
+		<result property="realWidth" column="REAL_WIDTH" jdbcType="NUMERIC"/>
+		<result property="realHeight" column="REAL_HEIGHT" jdbcType="NUMERIC"/>
+		<result property="realVolume" column="REAL_VOLUME" jdbcType="NUMERIC"/>
+		<result property="realWeight" column="REAL_WEIGHT" jdbcType="NUMERIC"/>
+		<result property="manifestNo" column="MANIFEST_NO" jdbcType="VARCHAR"/>
+		<result property="preAdvicePath" column="PRE_ADVICE_PATH" jdbcType="VARCHAR"/>
+		<result property="name" column="NAME" jdbcType="VARCHAR"/>
+		<result property="countryCode" column="COUNTRY_CODE" jdbcType="VARCHAR"/>
+		<result property="state" column="STATE" jdbcType="VARCHAR"/>
+		<result property="city" column="CITY" jdbcType="VARCHAR"/>
+		<result property="postcode" column="POSTCODE" jdbcType="VARCHAR"/>
+		<result property="address1" column="ADDRESS1" jdbcType="VARCHAR"/>
+		<result property="address2" column="ADDRESS2" jdbcType="VARCHAR"/>
+		<result property="address3" column="ADDRESS3" jdbcType="VARCHAR"/>
+		<result property="houseNumber" column="HOUSE_NUMBER" jdbcType="VARCHAR"/>
+		<result property="phone" column="PHONE" jdbcType="VARCHAR"/>
+		<result property="email" column="EMAIL" jdbcType="VARCHAR"/>
+		<result property="vendorManifestNo" column="VENDOR_MANIFEST_NO" jdbcType="VARCHAR"/>
+		<result property="logisticsDist" column="LOGISTICS_DIST" jdbcType="VARCHAR"/>
+		<result property="isCallback" column="IS_CALLBACK" jdbcType="VARCHAR"/>
+		<result property="calcPayableStatus" column="CALC_PAYABLE_STATUS" jdbcType="VARCHAR"/>
+		<result property="accountingDate" column="ACCOUNTING_DATE" jdbcType="TIMESTAMP"/>
+		<result property="organizationId" column="ORGANIZATION_ID" jdbcType="NUMERIC"/>
+		<result property="created" column="CREATED" jdbcType="TIMESTAMP"/>
+		<result property="createdby" column="CREATEDBY" jdbcType="VARCHAR"/>
+		<result property="updated" column="UPDATED" jdbcType="TIMESTAMP"/>
+		<result property="updatedby" column="UPDATEDBY" jdbcType="VARCHAR"/>
+		<result property="isActive" column="IS_ACTIVE" jdbcType="VARCHAR"/>
+		<result property="isDelete" column="IS_DELETE" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<sql id="columns">
+			ID,
+			DOCUMENT_NO,
+			ORDER_NO,
+			VENDOR_ORDER_NO,
+			ORDER_STATUS,
+			VENDOR_CODE,
+			PRODUCT_CODE,
+			REAL_LENGTH,
+			REAL_WIDTH,
+			REAL_HEIGHT,
+			REAL_VOLUME,
+			REAL_WEIGHT,
+			MANIFEST_NO,
+			PRE_ADVICE_PATH,
+			NAME,
+			COUNTRY_CODE,
+			STATE,
+			CITY,
+			POSTCODE,
+			ADDRESS1,
+			ADDRESS2,
+			ADDRESS3,
+			HOUSE_NUMBER,
+			PHONE,
+			EMAIL,
+			VENDOR_MANIFEST_NO,
+			LOGISTICS_DIST,
+			IS_CALLBACK,
+			CALC_PAYABLE_STATUS,
+			ACCOUNTING_DATE,
+			ORGANIZATION_ID,
+			CREATED,
+			CREATEDBY,
+			UPDATED,
+			UPDATEDBY,
+			IS_ACTIVE,
+			IS_DELETE
+	</sql>
+	
+	<insert id="add" useGeneratedKeys="true" keyProperty="id"  parameterType="com.winit.vms.shipment.entity.Order">
+		INSERT INTO VMS_SHM_ORDER
+		(ID,DOCUMENT_NO,ORDER_NO,VENDOR_ORDER_NO,ORDER_STATUS,VENDOR_CODE,PRODUCT_CODE,REAL_LENGTH,REAL_WIDTH,REAL_HEIGHT,REAL_VOLUME,REAL_WEIGHT,MANIFEST_NO,PRE_ADVICE_PATH,NAME,COUNTRY_CODE,STATE,CITY,POSTCODE,ADDRESS1,ADDRESS2,ADDRESS3,HOUSE_NUMBER,PHONE,EMAIL,VENDOR_MANIFEST_NO,LOGISTICS_DIST,IS_CALLBACK,CALC_PAYABLE_STATUS,ACCOUNTING_DATE,ORGANIZATION_ID,CREATED,CREATEDBY,UPDATED,UPDATEDBY,IS_ACTIVE,IS_DELETE)
+		VALUES 
+		(#{id,jdbcType=NUMERIC}, #{documentNo,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, #{vendorOrderNo,jdbcType=VARCHAR}, #{orderStatus,jdbcType=VARCHAR}, #{vendorCode,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR}, #{realLength,jdbcType=NUMERIC}, #{realWidth,jdbcType=NUMERIC}, #{realHeight,jdbcType=NUMERIC}, #{realVolume,jdbcType=NUMERIC}, #{realWeight,jdbcType=NUMERIC}, #{manifestNo,jdbcType=VARCHAR}, #{preAdvicePath,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{countryCode,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{postcode,jdbcType=VARCHAR}, #{address1,jdbcType=VARCHAR}, #{address2,jdbcType=VARCHAR}, #{address3,jdbcType=VARCHAR}, #{houseNumber,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{vendorManifestNo,jdbcType=VARCHAR}, #{logisticsDist,jdbcType=VARCHAR}, #{isCallback,jdbcType=VARCHAR}, #{calcPayableStatus,jdbcType=VARCHAR}, #{accountingDate,jdbcType=TIMESTAMP}, #{organizationId,jdbcType=NUMERIC}, #{created,jdbcType=TIMESTAMP}, #{createdby,jdbcType=VARCHAR}, #{updated,jdbcType=TIMESTAMP}, #{updatedby,jdbcType=VARCHAR}, #{isActive,jdbcType=VARCHAR}, #{isDelete,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.Long" resultMap="Order">
+		SELECT <include refid="columns" /> FROM VMS_SHM_ORDER 
+		WHERE 
+			IS_DELETE='N'
+			AND ID=#{id}
+	</select>
+	
+	<select 
+	    id="find" parameterType="com.winit.common.query.Searchable"
+	    resultMap="Order"
+	    timeout="60000">
+		SELECT <include refid="columns"/> FROM VMS_SHM_ORDER
+	</select>
+	
+	<update id="update" parameterType="com.winit.vms.shipment.entity.Order">
+		UPDATE VMS_SHM_ORDER SET
+		DOCUMENT_NO=#{documentNo,jdbcType=VARCHAR},
+		ORDER_NO=#{orderNo,jdbcType=VARCHAR},
+		VENDOR_ORDER_NO=#{vendorOrderNo,jdbcType=VARCHAR},
+		ORDER_STATUS=#{orderStatus,jdbcType=VARCHAR},
+		VENDOR_CODE=#{vendorCode,jdbcType=VARCHAR},
+		PRODUCT_CODE=#{productCode,jdbcType=VARCHAR},
+		REAL_LENGTH=#{realLength,jdbcType=NUMERIC},
+		REAL_WIDTH=#{realWidth,jdbcType=NUMERIC},
+		REAL_HEIGHT=#{realHeight,jdbcType=NUMERIC},
+		REAL_VOLUME=#{realVolume,jdbcType=NUMERIC},
+		REAL_WEIGHT=#{realWeight,jdbcType=NUMERIC},
+		MANIFEST_NO=#{manifestNo,jdbcType=VARCHAR},
+		PRE_ADVICE_PATH=#{preAdvicePath,jdbcType=VARCHAR},
+		NAME=#{name,jdbcType=VARCHAR},
+		COUNTRY_CODE=#{countryCode,jdbcType=VARCHAR},
+		STATE=#{state,jdbcType=VARCHAR},
+		CITY=#{city,jdbcType=VARCHAR},
+		POSTCODE=#{postcode,jdbcType=VARCHAR},
+		ADDRESS1=#{address1,jdbcType=VARCHAR},
+		ADDRESS2=#{address2,jdbcType=VARCHAR},
+		ADDRESS3=#{address3,jdbcType=VARCHAR},
+		HOUSE_NUMBER=#{houseNumber,jdbcType=VARCHAR},
+		PHONE=#{phone,jdbcType=VARCHAR},
+		EMAIL=#{email,jdbcType=VARCHAR},
+		VENDOR_MANIFEST_NO=#{vendorManifestNo,jdbcType=VARCHAR},
+		LOGISTICS_DIST=#{logisticsDist,jdbcType=VARCHAR},
+		IS_CALLBACK=#{isCallback,jdbcType=VARCHAR},
+		CALC_PAYABLE_STATUS=#{calcPayableStatus,jdbcType=VARCHAR},
+		ACCOUNTING_DATE=#{accountingDate,jdbcType=TIMESTAMP},
+		ORGANIZATION_ID=#{organizationId,jdbcType=NUMERIC},
+		CREATED=#{created,jdbcType=TIMESTAMP},
+		CREATEDBY=#{createdby,jdbcType=VARCHAR},
+		UPDATED=#{updated,jdbcType=TIMESTAMP},
+		UPDATEDBY=#{updatedby,jdbcType=VARCHAR},
+		IS_ACTIVE=#{isActive,jdbcType=VARCHAR},
+		IS_DELETE=#{isDelete,jdbcType=VARCHAR}
+		WHERE
+		ID=#{id}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.Long">
+		DELETE FROM VMS_SHM_ORDER 
+		WHERE
+		ID=#{id}
+	</delete>
+	
+	<update id="tombstoned" parameterType="java.lang.Long">
+		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()"/>
+		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()"/>
+		UPDATE VMS_SHM_ORDER SET
+			IS_DELETE='Y',
+			UPDATED=#{currentTime,jdbcType=TIMESTAMP},
+			UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
+		WHERE
+			ID=#{id}
+	</update>
+	
+	<update id="disable" parameterType="java.lang.Long">
+		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()"/>
+		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()"/>
+		UPDATE VMS_SHM_ORDER SET
+			IS_ACTIVE='N',
+			UPDATED=#{currentTime,jdbcType=TIMESTAMP},
+			UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
+		WHERE
+			ID=#{id}
+	</update>
+	<update id="enable" parameterType="java.lang.Long">
+		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()"/>
+		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()"/>
+		UPDATE VMS_SHM_ORDER SET
+			IS_ACTIVE='Y',
+			UPDATED=#{currentTime,jdbcType=TIMESTAMP},
+			UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
+		WHERE
+			ID=#{id}
+	</update>
+	
+	<!-- Operate by criteria -->
+	
+	<select id="queryByCriteria" parameterType="com.winit.vms.shipment.query.OrderQuery$FindQuery" resultMap="Order">
+		SELECT 
+			RES.ID,
+			RES.DOCUMENT_NO,
+			RES.ORDER_NO,
+			RES.VENDOR_ORDER_NO,
+			RES.ORDER_STATUS,
+			RES.VENDOR_CODE,
+			RES.PRODUCT_CODE,
+			RES.REAL_LENGTH,
+			RES.REAL_WIDTH,
+			RES.REAL_HEIGHT,
+			RES.REAL_VOLUME,
+			RES.REAL_WEIGHT,
+			RES.MANIFEST_NO,
+			RES.PRE_ADVICE_PATH,
+			RES.NAME,
+			RES.COUNTRY_CODE,
+			RES.STATE,
+			RES.CITY,
+			RES.POSTCODE,
+			RES.ADDRESS1,
+			RES.ADDRESS2,
+			RES.ADDRESS3,
+			RES.HOUSE_NUMBER,
+			RES.PHONE,
+			RES.EMAIL,
+			RES.VENDOR_MANIFEST_NO,
+			RES.LOGISTICS_DIST,
+			RES.IS_CALLBACK,
+			RES.CALC_PAYABLE_STATUS,
+			RES.ACCOUNTING_DATE,
+			RES.ORGANIZATION_ID,
+			RES.CREATED,
+			RES.CREATEDBY,
+			RES.UPDATED,
+			RES.UPDATEDBY,
+			RES.IS_ACTIVE,
+			RES.IS_DELETE
+		<include refid="queryByCriteriaSql" />
+		<include refid="orderByClauseSql"/>
+		<if test="first">
+			limit 1
+		</if>
+	</select>
+	
+	<select id="queryCountByCriteria" parameterType="com.winit.vms.shipment.query.OrderQuery$FindQuery" resultType="Long">
+		SELECT count(1)
+		<include refid="queryByCriteriaSql" />
+	</select>
+
+	<select id="queryOrderNoByStatus" parameterType="com.winit.vms.shipment.entity.OrderStatus" resultType="string">
+		SELECT RES.ORDER_NO FROM VMS_SHM_ORDER RES 
+		WHERE RES.ORDER_STATUS = #{status} 
+		AND RES.IS_ACTIVE = 'Y' 
+		AND RES.IS_DELETE='N'
+		AND RES.IS_CALLBACK IS NULL
+	</select>
+	
+	<sql id="queryByCriteriaSql">
+		from VMS_SHM_ORDER RES
+		<include refid="criteriaSql"/>
+	</sql>
+	<update id="updateByUpdateQuery" parameterType="com.winit.vms.shipment.query.OrderQuery$UpdateQuery">
+		UPDATE VMS_SHM_ORDER RES
+		<include refid="updateDataCaluseSql"/>
+		<include refid="criteriaSql"/>
+	</update>
+	
+	
+	<sql id="criteriaSql">
+		<where>
+			IS_DELETE='N'
+			<if test="oredCriteria.size()==1">
+				<trim prefix="AND" >
+					<include refid="oredCriteriaSql"/>
+				</trim>
+			
+			</if>
+			<if test="oredCriteria.size()>1">
+				<trim prefix="AND (" suffix=")" >
+					<include refid="oredCriteriaSql"/>
+				</trim>
+			</if>
+		</where>
+	</sql>
+		
+		
+	<sql id="oredCriteriaSql">
+		<foreach  collection="oredCriteria" item="criteria" separator="or">
+			<if test="criteria.valid">
+				<if test="criteria.criteria.size()==1">
+					<trim prefixOverrides="and">
+						<include refid="criterionSql"/>
+					</trim>
+				</if>
+				<if test="criteria.criteria.size()>1">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<include refid="criterionSql"/>
+					</trim>
+				</if>
+			</if>
+		</foreach>
+	</sql>
+	
+	<sql id="criterionSql">
+		<foreach collection="criteria.criteria" item="criterion">
+			<choose>
+				<when test="criterion.noValue">
+					and RES.${criterion.condition}
+				</when>
+				<when test="criterion.singleValue">
+					and RES.${criterion.condition} #{criterion.value}
+				</when>
+				<when test="criterion.betweenValue">
+					and RES.${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+				</when>
+				<when test="criterion.listValue">
+					and RES.${criterion.condition}
+					<foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+						#{listItem}
+					</foreach>
+				</when>
+			</choose>
+		</foreach>
+	</sql>
+		
+	<sql id="updateDataCaluseSql">
+		<set>   
+			<foreach collection="updateClause.dataClauses" item="clause" separator=",">
+				${clause.property} #{clause.value}
+			</foreach>
+		</set>
+	</sql>
+	
+	
+	<sql id="orderByClauseSql">
+		<if test="sort!=null">
+			ORDER BY 
+				${sort.sortSql}
+		</if>
+	</sql>
+	
+</mapper>

@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SingPost_summary" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bad56ba5-c0ed-4a6d-b5f6-84e371fab854">
+	<property name="ireport.zoom" value="1.2100000000000017"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="no_top_border" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="no_left_border" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="no_bottom_border" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="no_right_border" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="no_top_bottom_border" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="list" uuid="33060426-1fb2-415b-9aae-75b763859c5b">
+		<field name="no" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="date" class="java.lang.String"/>
+	<parameter name="list" class="java.util.List"/>
+	<parameter name="manifestNo" class="java.lang.String"/>
+	<parameter name="tracked" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="395" splitType="Stretch">
+			<textField>
+				<reportElement uuid="64192094-34bb-45b7-9bdf-49a2862e347f" x="143" y="0" width="412" height="65"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font size="26" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Y".equals($P{tracked}) ? " - 新加坡小包挂号交接清单" : " - 新加坡小包平邮交接清单"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="f0318288-04ce-4c0f-bf01-3fd9ec23f13f" x="0" y="0" width="143" height="65"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="28"/>
+				</textElement>
+				<text><![CDATA[Winit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="91a69e6e-25c7-49ce-b401-499cdb1ec7c2" x="0" y="87" width="308" height="35"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[To:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="516df5e1-cc40-4d59-b934-d65419e9fcc0" x="308" y="87" width="245" height="35"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="16" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["交接日期：" + $P{date}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement uuid="9c9707de-4d40-4eb3-b1dd-0ac1507983a5" key="table 1" x="0" y="122" width="553" height="50"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="list" uuid="33715b2a-0171-48e8-b122-67fe175a69bf">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column uuid="29492c10-4c07-43dd-aec7-a49cb59c633d" width="40">
+						<jr:columnHeader height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="36a0be8c-b2b0-4eed-a4e8-9efc36253d2b" style="table" x="0" y="0" width="40" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+								</textElement>
+								<text><![CDATA[序号]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="30" rowSpan="1">
+							<textField isBlankWhenNull="true">
+								<reportElement uuid="29f747bb-b3bc-467e-b4ce-39e3d6fab4d3" style="table" x="0" y="0" width="40" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle" markup="none"/>
+								<textFieldExpression><![CDATA[$F{no}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="598b2922-2005-4710-a07f-cf51a1f88325" width="137">
+						<jr:columnHeader height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="117f8601-c8d9-4bdf-a2bd-4e788a7cc395" style="table" x="0" y="0" width="137" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+								</textElement>
+								<text><![CDATA[详情袋号]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="d15c04a0-d97e-4f51-a212-4977d9fe418c" style="table" x="0" y="0" width="137" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle" markup="none"/>
+								<text><![CDATA[]]></text>
+							</staticText>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="5bf20810-62ac-430f-8aa7-f3abf56d91ee" width="40">
+						<jr:columnHeader height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="72196037-3986-4fc7-95d6-cfca29426208" style="table" x="0" y="0" width="40" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+								</textElement>
+								<text><![CDATA[分区]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="624fd329-7c3e-47bd-9db4-741e6ea0332c" style="table" x="0" y="0" width="40" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle" markup="none"/>
+								<text><![CDATA[]]></text>
+							</staticText>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="52d6aaf7-55a4-4e40-861e-26c2bdea803d" width="60">
+						<jr:columnHeader height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="381ee754-300b-4bcf-bde3-c11145e85a95" style="table" x="0" y="0" width="60" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+								</textElement>
+								<text><![CDATA[件数]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="74e0fb47-94f9-4c66-b219-b8054e387a20" style="table" x="0" y="0" width="60" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle" markup="none"/>
+								<text><![CDATA[]]></text>
+							</staticText>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="121a57d1-9d1d-42e6-85eb-db09e174cfac" width="85">
+						<jr:columnHeader height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="9574627d-e22f-4077-963c-4ff2e5c49b56" style="table" x="0" y="0" width="85" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+								</textElement>
+								<text><![CDATA[重量（KG）]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="8295c3e5-feb1-4a32-b4be-cbbaaf372e5b" style="table" x="0" y="0" width="85" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle" markup="none"/>
+								<text><![CDATA[]]></text>
+							</staticText>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="11991866-b7c3-4bf7-881c-4f5f4131fa8a" width="60">
+						<jr:columnHeader height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="5528de0e-a59e-4a2c-b45c-da73ee55d295" style="table" x="0" y="0" width="60" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+								</textElement>
+								<text><![CDATA[袋数]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="65349241-169a-40a9-a074-7c5fd35dbb23" style="table" x="0" y="0" width="60" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle" markup="none"/>
+								<text><![CDATA[]]></text>
+							</staticText>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="b9c8863e-4683-4270-ba1e-34c5fcd04b2e" width="130">
+						<jr:columnHeader height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="b8bd9842-1ced-4677-82a8-029033b59f20" style="table" x="0" y="0" width="130" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+								</textElement>
+								<text><![CDATA[备注]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="b648a4b7-684c-452a-a25f-82448f64d036" style="table" x="0" y="0" width="130" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle" markup="none"/>
+								<text><![CDATA[]]></text>
+							</staticText>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<break>
+				<reportElement uuid="07c28f6e-c3c1-4d51-8472-c4c72841da3d" x="0" y="196" width="553" height="1"/>
+			</break>
+			<staticText>
+				<reportElement uuid="f0318288-04ce-4c0f-bf01-3fd9ec23f13f" positionType="Float" x="0" y="220" width="143" height="65"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="28"/>
+				</textElement>
+				<text><![CDATA[Winit]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="fa518619-d7f7-4bd8-a254-cac831a16d2c" positionType="Float" x="143" y="220" width="412" height="65"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font size="26" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Y".equals($P{tracked}) ? " - 新加坡小包挂号交接清单" : " - 新加坡小包平邮交接清单"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="91a69e6e-25c7-49ce-b401-499cdb1ec7c2" x="0" y="307" width="308" height="35"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[To:]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement uuid="9c9707de-4d40-4eb3-b1dd-0ac1507983a5" key="table 1" x="0" y="342" width="553" height="50"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="list" uuid="33715b2a-0171-48e8-b122-67fe175a69bf">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column uuid="29492c10-4c07-43dd-aec7-a49cb59c633d" width="40">
+						<jr:columnHeader height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="36a0be8c-b2b0-4eed-a4e8-9efc36253d2b" style="table" x="0" y="0" width="40" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+								</textElement>
+								<text><![CDATA[序号]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="30" rowSpan="1">
+							<textField isBlankWhenNull="true">
+								<reportElement uuid="29f747bb-b3bc-467e-b4ce-39e3d6fab4d3" style="table" x="0" y="0" width="40" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle" markup="none"/>
+								<textFieldExpression><![CDATA[$F{no}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="598b2922-2005-4710-a07f-cf51a1f88325" width="137">
+						<jr:columnHeader height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="117f8601-c8d9-4bdf-a2bd-4e788a7cc395" style="table" x="0" y="0" width="137" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+								</textElement>
+								<text><![CDATA[详情袋号]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="d15c04a0-d97e-4f51-a212-4977d9fe418c" style="table" x="0" y="0" width="137" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle" markup="none"/>
+								<text><![CDATA[]]></text>
+							</staticText>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="5bf20810-62ac-430f-8aa7-f3abf56d91ee" width="40">
+						<jr:columnHeader height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="72196037-3986-4fc7-95d6-cfca29426208" style="table" x="0" y="0" width="40" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+								</textElement>
+								<text><![CDATA[分区]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="624fd329-7c3e-47bd-9db4-741e6ea0332c" style="table" x="0" y="0" width="40" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle" markup="none"/>
+								<text><![CDATA[]]></text>
+							</staticText>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="52d6aaf7-55a4-4e40-861e-26c2bdea803d" width="60">
+						<jr:columnHeader height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="381ee754-300b-4bcf-bde3-c11145e85a95" style="table" x="0" y="0" width="60" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+								</textElement>
+								<text><![CDATA[件数]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="74e0fb47-94f9-4c66-b219-b8054e387a20" style="table" x="0" y="0" width="60" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle" markup="none"/>
+								<text><![CDATA[]]></text>
+							</staticText>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="121a57d1-9d1d-42e6-85eb-db09e174cfac" width="85">
+						<jr:columnHeader height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="9574627d-e22f-4077-963c-4ff2e5c49b56" style="table" x="0" y="0" width="85" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+								</textElement>
+								<text><![CDATA[重量（KG）]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="8295c3e5-feb1-4a32-b4be-cbbaaf372e5b" style="table" x="0" y="0" width="85" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle" markup="none"/>
+								<text><![CDATA[]]></text>
+							</staticText>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="11991866-b7c3-4bf7-881c-4f5f4131fa8a" width="60">
+						<jr:columnHeader height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="5528de0e-a59e-4a2c-b45c-da73ee55d295" style="table" x="0" y="0" width="60" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+								</textElement>
+								<text><![CDATA[袋数]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="65349241-169a-40a9-a074-7c5fd35dbb23" style="table" x="0" y="0" width="60" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle" markup="none"/>
+								<text><![CDATA[]]></text>
+							</staticText>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="b9c8863e-4683-4270-ba1e-34c5fcd04b2e" width="130">
+						<jr:columnHeader height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="b8bd9842-1ced-4677-82a8-029033b59f20" style="table" x="0" y="0" width="130" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+								</textElement>
+								<text><![CDATA[备注]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="b648a4b7-684c-452a-a25f-82448f64d036" style="table" x="0" y="0" width="130" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle" markup="none"/>
+								<text><![CDATA[]]></text>
+							</staticText>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="fff6e6e2-93a5-4c4a-b3f3-e92ea223d8a8" x="308" y="65" width="245" height="22"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["发货单号：" + $P{manifestNo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="516df5e1-cc40-4d59-b934-d65419e9fcc0" x="310" y="307" width="245" height="35"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="16" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["交接日期：" + $P{date}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="fff6e6e2-93a5-4c4a-b3f3-e92ea223d8a8" x="310" y="285" width="245" height="22"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["发货单号：" + $P{manifestNo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

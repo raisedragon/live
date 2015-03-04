@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+  
+<mapper namespace="com.gdcc.live.identity.dao.UserDao">
+	<resultMap id="UserResultMap" type="com.gdcc.live.identity.entity.User">
+		<id property="id" column="ID_" jdbcType="VARCHAR"/>
+		<result property="account" column="ACCOUNT_" jdbcType="VARCHAR"/>
+		<result property="password" column="PASSWORD_" jdbcType="VARCHAR"/>
+		<result property="firstName" column="FIRST_NAME_" jdbcType="VARCHAR"/>
+		<result property="lastName" column="LAST_NAME_" jdbcType="VARCHAR"/>
+		<result property="gender" column="GENDER_" jdbcType="VARCHAR"/>
+		<result property="birthday" column="BIRTHDAY_" jdbcType="DATE"/>
+		<result property="created" column="CREATED_" jdbcType="TIMESTAMP"/>
+		<result property="createdBy" column="CREATED_BY_" jdbcType="VARCHAR"/>
+		<result property="updated" column="UPDATED_" jdbcType="TIMESTAMP"/>
+		<result property="updatedBy" column="UPDATED_BY_" jdbcType="VARCHAR"/>
+		<result property="isActive" column="IS_ACTIVE_" jdbcType="VARCHAR"/>
+		<result property="orgId" column="ORG_ID_" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<sql id="columns">
+			ID_,
+			ACCOUNT_,
+			PASSWORD_,
+			FIRST_NAME_,
+			LAST_NAME_,
+			GENDER_,
+			BIRTHDAY_,
+			CREATED_,
+			CREATED_BY_,
+			UPDATED_,
+			UPDATED_BY_,
+			IS_ACTIVE_,
+			ORG_ID_
+	</sql>
+	
+	<insert id="add" useGeneratedKeys="true" keyProperty="id"  parameterType="com.gdcc.live.identity.entity.User">
+		INSERT INTO ID_USER
+		(ID_,ACCOUNT_,PASSWORD_,FIRST_NAME_,LAST_NAME_,GENDER_,BIRTHDAY_,CREATED_,CREATED_BY_,UPDATED_,UPDATED_BY_,IS_ACTIVE_,ORG_ID_)
+		VALUES 
+		(#{id,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{firstName,jdbcType=VARCHAR}, #{lastName,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, #{created,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, #{updated,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, #{isActive,jdbcType=VARCHAR}, #{orgId,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="UserResultMap">
+		SELECT <include refid="columns" /> FROM ID_USER 
+		WHERE 
+			IS_DELETE='N'
+			AND ID_=#{id}
+	</select>
+	
+	<update id="update" parameterType="com.gdcc.live.identity.entity.User">
+		UPDATE ID_USER SET
+		ACCOUNT_=#{account,jdbcType=VARCHAR},
+		PASSWORD_=#{password,jdbcType=VARCHAR},
+		FIRST_NAME_=#{firstName,jdbcType=VARCHAR},
+		LAST_NAME_=#{lastName,jdbcType=VARCHAR},
+		GENDER_=#{gender,jdbcType=VARCHAR},
+		BIRTHDAY_=#{birthday,jdbcType=DATE},
+		CREATED_=#{created,jdbcType=TIMESTAMP},
+		CREATED_BY_=#{createdBy,jdbcType=VARCHAR},
+		UPDATED_=#{updated,jdbcType=TIMESTAMP},
+		UPDATED_BY_=#{updatedBy,jdbcType=VARCHAR},
+		IS_ACTIVE_=#{isActive,jdbcType=VARCHAR},
+		ORG_ID_=#{orgId,jdbcType=VARCHAR}
+		WHERE
+		ID_=#{id}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.String">
+		DELETE FROM ID_USER 
+		WHERE
+		ID_=#{id}
+	</delete>
+	
+	
+	<update id="tombstoned" parameterType="java.lang.Long">
+		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()"/>
+		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()"/>
+		UPDATE VMS_SHM_ORDER SET
+			IS_DELETE='Y',
+			UPDATED=#{currentTime,jdbcType=TIMESTAMP},
+			UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
+		WHERE
+			ID=#{id}
+	</update>
+	
+	<update id="disable" parameterType="java.lang.Long">
+		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()"/>
+		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()"/>
+		UPDATE VMS_SHM_ORDER SET
+			IS_ACTIVE='N',
+			UPDATED=#{currentTime,jdbcType=TIMESTAMP},
+			UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
+		WHERE
+			ID=#{id}
+	</update>
+	<update id="enable" parameterType="java.lang.Long">
+		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()"/>
+		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()"/>
+		UPDATE VMS_SHM_ORDER SET
+			IS_ACTIVE='Y',
+			UPDATED=#{currentTime,jdbcType=TIMESTAMP},
+			UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
+		WHERE
+			ID=#{id}
+	</update>
+	
+	<select id="selectUserByQueryCriteria" parameterType="com.gdcc.live.identity.query.UserQuery" resultMap="UserResultMap">
+    select RES.* 
+    <include refid="selectUserByQueryCriteriaSql" />
+   	ORDER BY ${orderBy}
+  </select>
+  
+   <select id="selectUserCountByQueryCriteria" parameterType="com.gdcc.live.identity.query.UserQuery" resultType="long">
+    select count(RES.ID_)
+    <include refid="selectUserByQueryCriteriaSql" />
+  </select>
+  
+  <sql id="selectUserByQueryCriteriaSql">
+    from ID_USER RES 
+    <if test="groupId != null">
+      inner join ID_MEMBERSHIP M on RES.ID_ = M.USER_ID_
+      inner join ID_GROUP G on M.GROUP_ID_ = G.ID_
+    </if>
+    <where>
+      <if test="id != null">
+        RES.ID_ = #{id}
+      </if>
+      <if test="firstName != null">
+        and RES.FIRST_ = #{firstName}
+      </if>
+      <if test="firstNameLike != null">
+        and RES.FIRST_ like #{firstNameLike}
+      </if>
+      <if test="lastName != null">
+        and RES.LAST_ = #{lastName}
+      </if>
+      <if test="lastNameLike != null">
+        and RES.LAST_ like #{lastNameLike}
+      </if>
+      <if test="fullNameLike != null">
+        and (RES.FIRST_ like #{fullNameLike} or RES.LAST_ like #{fullNameLike})
+      </if>
+      <if test="email != null">
+        and RES.EMAIL_ = #{email}
+      </if>
+      <if test="emailLike != null">
+        and RES.EMAIL_ like #{emailLike}
+      </if>
+      <if test="groupId != null">
+        and G.ID_ = #{groupId}
+      </if>
+      
+    </where>
+  </sql>
+  
+</mapper>

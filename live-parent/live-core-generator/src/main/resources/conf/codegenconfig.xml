@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:noNamespaceSchemaLocation="codegen.xsd">
-
+<Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<properties>
-		<entry >
-			<key>name</key>
-			<value></value>
-		</entry>
+		<basepackage>com.raise.live</basepackage>
 	</properties>
 	<templates>
+		<template id="entity">entity.ftl</template>
+		<template id="dao">dao.ftl</template>
+		<template id="daoImpl">daoImpl.ftl</template>
 	</templates>
-	<files>
-	</files>
+	<sources>
+		<source refTemplate="entity" override="true" directory="${basepackage}/${package}" filename="${class}.java"></source>
+	</sources>
 	<tables>
-		
+		<table>
+			<name>act_evt_log</name>
+			<class>ActEvtLog</class>
+			<package>act</package>
+		</table>
 	</tables>
-
-
 
 </Configuration>

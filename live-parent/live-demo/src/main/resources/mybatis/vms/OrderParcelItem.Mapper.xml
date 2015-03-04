@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winit.vms.shipment.dao.OrderParcelItemDao">
+	<resultMap id="OrderParcelItem" type="com.winit.vms.shipment.entity.OrderParcelItem">
+		<id property="id" column="ID" jdbcType="NUMERIC"/>
+		<result property="orderNo" column="ORDER_NO" jdbcType="VARCHAR"/>
+		<result property="parcelNo" column="PARCEL_NO" jdbcType="VARCHAR"/>
+		<result property="name" column="NAME" jdbcType="VARCHAR"/>
+		<result property="sku" column="SKU" jdbcType="VARCHAR"/>
+		<result property="length" column="LENGTH" jdbcType="NUMERIC"/>
+		<result property="width" column="WIDTH" jdbcType="NUMERIC"/>
+		<result property="height" column="HEIGHT" jdbcType="NUMERIC"/>
+		<result property="weight" column="WEIGHT" jdbcType="NUMERIC"/>
+		<result property="value" column="VALUE" jdbcType="NUMERIC"/>
+		<result property="currencyUnit" column="CURRENCY_UNIT" jdbcType="VARCHAR"/>
+		<result property="description" column="DESCRIPTION" jdbcType="VARCHAR"/>
+		<result property="quantity" column="QUANTITY" jdbcType="NUMERIC"/>
+		<result property="organizationId" column="ORGANIZATION_ID" jdbcType="NUMERIC"/>
+		<result property="created" column="CREATED" jdbcType="TIMESTAMP"/>
+		<result property="createdby" column="CREATEDBY" jdbcType="VARCHAR"/>
+		<result property="updated" column="UPDATED" jdbcType="TIMESTAMP"/>
+		<result property="updatedby" column="UPDATEDBY" jdbcType="VARCHAR"/>
+		<result property="isActive" column="IS_ACTIVE" jdbcType="VARCHAR"/>
+		<result property="isDelete" column="IS_DELETE" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<sql id="columns">
+			ID,
+			ORDER_NO,
+			PARCEL_NO,
+			NAME,
+			SKU,
+			LENGTH,
+			WIDTH,
+			HEIGHT,
+			WEIGHT,
+			VALUE,
+			CURRENCY_UNIT,
+			DESCRIPTION,
+			QUANTITY,
+			ORGANIZATION_ID,
+			CREATED,
+			CREATEDBY,
+			UPDATED,
+			UPDATEDBY,
+			IS_ACTIVE,
+			IS_DELETE
+	</sql>
+	
+	<insert id="add"  useGeneratedKeys="true" keyProperty="id"   parameterType="com.winit.vms.shipment.entity.OrderParcelItem">
+		INSERT INTO VMS_SHM_ORDER_PARCEL_ITEM
+		(ID,ORDER_NO,PARCEL_NO,NAME,SKU,LENGTH,WIDTH,HEIGHT,WEIGHT,VALUE,CURRENCY_UNIT,DESCRIPTION,QUANTITY,ORGANIZATION_ID,CREATED,CREATEDBY,UPDATED,UPDATEDBY,IS_ACTIVE,IS_DELETE)
+		VALUES 
+		(#{id,jdbcType=NUMERIC}, #{orderNo,jdbcType=VARCHAR}, #{parcelNo,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{sku,jdbcType=VARCHAR}, #{length,jdbcType=NUMERIC}, #{width,jdbcType=NUMERIC}, #{height,jdbcType=NUMERIC}, #{weight,jdbcType=NUMERIC}, #{value,jdbcType=NUMERIC}, #{currencyUnit,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{quantity,jdbcType=NUMERIC}, #{organizationId,jdbcType=NUMERIC}, #{created,jdbcType=TIMESTAMP}, #{createdby,jdbcType=VARCHAR}, #{updated,jdbcType=TIMESTAMP}, #{updatedby,jdbcType=VARCHAR}, #{isActive,jdbcType=VARCHAR}, #{isDelete,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.Long" resultMap="OrderParcelItem">
+		SELECT <include refid="columns" /> FROM VMS_SHM_ORDER_PARCEL_ITEM 
+		WHERE 
+			IS_DELETE='N'
+			AND ID=#{id}
+	</select>
+	
+	<select 
+	    id="find" parameterType="com.winit.common.query.Searchable"
+	    resultMap="OrderParcelItem"
+	    timeout="60000">
+		select <include refid="columns"/> from VMS_SHM_ORDER_PARCEL_ITEM
+	</select>
+	
+	<update id="update" parameterType="com.winit.vms.shipment.entity.OrderParcelItem">
+		UPDATE VMS_SHM_ORDER_PARCEL_ITEM SET
+		ORDER_NO=#{orderNo,jdbcType=VARCHAR},
+		PARCEL_NO=#{parcelNo,jdbcType=VARCHAR},
+		NAME=#{name,jdbcType=VARCHAR},
+		SKU=#{sku,jdbcType=VARCHAR},
+		LENGTH=#{length,jdbcType=NUMERIC},
+		WIDTH=#{width,jdbcType=NUMERIC},
+		HEIGHT=#{height,jdbcType=NUMERIC},
+		WEIGHT=#{weight,jdbcType=NUMERIC},
+		VALUE=#{value,jdbcType=NUMERIC},
+		CURRENCY_UNIT=#{currencyUnit,jdbcType=VARCHAR},
+		DESCRIPTION=#{description,jdbcType=VARCHAR},
+		QUANTITY=#{quantity,jdbcType=NUMERIC},
+		ORGANIZATION_ID=#{organizationId,jdbcType=NUMERIC},
+		CREATED=#{created,jdbcType=TIMESTAMP},
+		CREATEDBY=#{createdby,jdbcType=VARCHAR},
+		UPDATED=#{updated,jdbcType=TIMESTAMP},
+		UPDATEDBY=#{updatedby,jdbcType=VARCHAR},
+		IS_ACTIVE=#{isActive,jdbcType=VARCHAR},
+		IS_DELETE=#{isDelete,jdbcType=VARCHAR}
+		WHERE
+		ID=#{id}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.Long">
+		DELETE FROM VMS_SHM_ORDER_PARCEL_ITEM 
+		WHERE
+		ID=#{id}
+	</delete>
+	
+	<update id="tombstoned" parameterType="java.lang.Long">
+		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()"/>
+		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()"/>
+		UPDATE VMS_SHM_ORDER_PARCEL_ITEM SET
+			IS_DELETE='Y',
+			UPDATED=#{currentTime,jdbcType=TIMESTAMP},
+			UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
+		WHERE
+			ID=#{id}
+	</update>
+	
+	<update id="disable" parameterType="java.lang.Long">
+		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()"/>
+		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()"/>
+		UPDATE VMS_SHM_ORDER_PARCEL_ITEM SET
+			IS_ACTIVE='N',
+			UPDATED=#{currentTime,jdbcType=TIMESTAMP},
+			UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
+		WHERE
+			ID=#{id}
+	</update>
+	<update id="enable" parameterType="java.lang.Long">
+		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()"/>
+		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()"/>
+		UPDATE VMS_SHM_ORDER_PARCEL_ITEM SET
+			IS_ACTIVE='Y',
+			UPDATED=#{currentTime,jdbcType=TIMESTAMP},
+			UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
+		WHERE
+			ID=#{id}
+	</update>
+	
+	<!-- Operate by criteria -->
+	
+	<select id="queryByCriteria" parameterType="com.winit.vms.shipment.query.OrderParcelItemQuery$FindQuery" resultMap="OrderParcelItem">
+		SELECT 
+			RES.ID,
+			RES.ORDER_NO,
+			RES.PARCEL_NO,
+			RES.NAME,
+			RES.SKU,
+			RES.LENGTH,
+			RES.WIDTH,
+			RES.HEIGHT,
+			RES.WEIGHT,
+			RES.VALUE,
+			RES.CURRENCY_UNIT,
+			RES.DESCRIPTION,
+			RES.QUANTITY,
+			RES.ORGANIZATION_ID,
+			RES.CREATED,
+			RES.CREATEDBY,
+			RES.UPDATED,
+			RES.UPDATEDBY,
+			RES.IS_ACTIVE,
+			RES.IS_DELETE
+		<include refid="queryByCriteriaSql" />
+		<include refid="orderByClauseSql"/>
+		<if test="first">
+			limit 1
+		</if>
+	</select>
+	
+	<select id="queryCountByCriteria" parameterType="com.winit.vms.shipment.query.OrderParcelItemQuery$FindQuery" resultType="Long">
+		SELECT count(1)
+		<include refid="queryByCriteriaSql" />
+	</select>
+
+	<sql id="queryByCriteriaSql">
+		from VMS_SHM_ORDER_PARCEL_ITEM RES
+		<include refid="criteriaSql"/>
+	</sql>
+	<update id="updateByUpdateQuery" parameterType="com.winit.vms.shipment.query.OrderParcelItemQuery$UpdateQuery">
+		UPDATE VMS_SHM_ORDER_PARCEL_ITEM RES
+		<include refid="updateDataCaluseSql"/>
+		<include refid="criteriaSql"/>
+	</update>
+	
+	
+	<sql id="criteriaSql">
+		<where>
+			IS_DELETE='N'
+			<if test="oredCriteria.size()==1">
+				<trim prefix="AND" >
+					<include refid="oredCriteriaSql"/>
+				</trim>
+			
+			</if>
+			<if test="oredCriteria.size()>1">
+				<trim prefix="AND (" suffix=")" >
+					<include refid="oredCriteriaSql"/>
+				</trim>
+			</if>
+		</where>
+	</sql>
+		
+		
+	<sql id="oredCriteriaSql">
+		<foreach  collection="oredCriteria" item="criteria" separator="or">
+			<if test="criteria.valid">
+				<if test="criteria.criteria.size()==1">
+					<trim prefixOverrides="and">
+						<include refid="criterionSql"/>
+					</trim>
+				</if>
+				<if test="criteria.criteria.size()>1">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<include refid="criterionSql"/>
+					</trim>
+				</if>
+			</if>
+		</foreach>
+	</sql>
+	
+	<sql id="criterionSql">
+		<foreach collection="criteria.criteria" item="criterion">
+			<choose>
+				<when test="criterion.noValue">
+					and RES.${criterion.condition}
+				</when>
+				<when test="criterion.singleValue">
+					and RES.${criterion.condition} #{criterion.value}
+				</when>
+				<when test="criterion.betweenValue">
+					and RES.${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+				</when>
+				<when test="criterion.listValue">
+					and RES.${criterion.condition}
+					<foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+						#{listItem}
+					</foreach>
+				</when>
+			</choose>
+		</foreach>
+	</sql>
+		
+	<sql id="updateDataCaluseSql">
+		<set>   
+			<foreach collection="updateClause.dataClauses" item="clause" separator=",">
+				${clause.property} #{clause.value}
+			</foreach>
+		</set>
+	</sql>
+	
+	
+	<sql id="orderByClauseSql">
+		<if test="sort!=null">
+			ORDER BY 
+				${sort.sortSql}
+		</if>
+	</sql>
+	
+</mapper>

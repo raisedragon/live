@@ -21,6 +21,8 @@ import schemacrawler.utility.SchemaCrawlerUtility;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import com.raise.freemarker.FreemarkerUtils;
+import com.raise.generator.Configuration;
+import com.raise.generator.ConfigurationParser;
 import com.raise.generator.DataModel;
 import com.raise.generator.ObjectFactory;
 
@@ -45,17 +47,17 @@ public class TestSchema {
 		InputStream in = ClassLoader.class
 				.getResourceAsStream("/conf/codegenconfig.xml");
 
-		com.raise.generator.Config config = getConfig(in);
+		Configuration config = ConfigurationParser.parse(in);
 
 		final DataSource dataSource = makeDataSource();
 		Catalog catalog = SchemaCrawlerUtility.getCatalog(
 				dataSource.getConnection(), new SchemaCrawlerOptions());
 		Schema schema = catalog.getSchema(properties.getProperty("schema"));
 
-		for (com.raise.generator.Config.Table tbl : config.getTable()) {
-			Table table = catalog.getTable(schema, tbl.getTableName());
+		for (com.raise.generator.Table tbl : config.getTables()) {
+			Table table = catalog.getTable(schema, tbl.getName());
 			if(table==null){
-				throw new Exception("Table "+schema.getName()+"."+tbl.getTableName()+" is not exists");
+				throw new Exception("Table "+schema.getName()+"."+tbl.getName()+" is not exists");
 			}
 			System.out.println(table.getRemarks());
 			final List<Column> columns = table.getColumns();
@@ -84,23 +86,9 @@ public class TestSchema {
 
 	}
 
-	private static com.raise.generator.Config getConfig(InputStream in) {
-		try {
-			JAXBContext ctx = JAXBContext.newInstance(ObjectFactory.class);
-			Unmarshaller unmarshaller = ctx.createUnmarshaller();
-			com.raise.generator.Config config = (com.raise.generator.Config) unmarshaller
-					.unmarshal(in);
-			return config;
-		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
-
-	}
 
 	/**
-	 * È¡µÃDataSource
+	 * È¡ï¿½ï¿½DataSource
 	 * 
 	 * @return
 	 * @throws IOException

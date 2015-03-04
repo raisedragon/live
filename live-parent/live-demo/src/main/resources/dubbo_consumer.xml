@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/beans/spring-util-3.0.xsd
+    http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+    
+     <!-- 启动时不检查provider-->
+	<dubbo:consumer timeout="${dubbo.timeout}" check="${dubbo.check}" filter="commandContextFilter" />
+ 	<dubbo:reference id="costCalculatorFeeService" interface="com.winit.pms.spi.vendor.CostCalculatorFeeService" version="1.0.0"/>
+ 	<dubbo:reference id="vendorProductService" interface="com.winit.pms.spi.vendor.VendorProductService" version="1.0.0"/>
+ 	<dubbo:reference id="vendorLogisticsDistService" interface="com.winit.pms.spi.vendor.VendorLogisticsDistService" version="1.0.0"/>
+ 	<dubbo:reference id="financePayablesService" interface="com.winit.erp.spi.finance.FinancePayablesService" version="1.0.0"/>
+ 	<dubbo:reference id="iSPOrderService" interface="com.winit.oms.spi.isp.ISPOrderService" version="1.0.0"/>
+ 	<dubbo:reference id="bpartnerService" interface="com.winit.erp.spi.bpartner.BpartnerService" version="1.0.0"/>
+ 	<dubbo:reference id="currencyRateService" interface="com.winit.erp.spi.common.CurrencyRateService" version="1.0.0"/>
+ 	<dubbo:reference id="warehouseService" interface="com.winit.erp.spi.warehouse.WarehouseService" version="1.0.0"/>
+ 	<dubbo:reference id="dispatchNoticeService" interface="com.winit.oms.spi.isp.DispatchNoticeService" version="1.0.0"/>
+ 	
+</beans>
