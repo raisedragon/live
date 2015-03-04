@@ -1,84 +1,40 @@
-package com.gdcc.live.${package}.entity;
+package ${properties.basepackage}.${module}.${pkg}.entity;
 
 import java.util.Date;
 
-import com.gdcc.live.core.entity.BaseEntity;
-
-
-public class User extends BaseEntity<String> {
-	
-	private static final long serialVersionUID = 1L;
-	
-	protected String id;
-	protected String account;
-	protected String password;
-	protected String firstname;
-	protected String lastname;
-	protected Date birthday;
-	
-	@Override
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	@Override
-	public String getId() {
-		return id;
-	}
-
-	public String getAccount() {
-		return account;
-	}
-
-	public void setAccount(String account) {
-		this.account = account;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getFirstname() {
-		return firstname;
-	}
-
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
-
-	public String getLastname() {
-		return lastname;
-	}
-
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
-
-	public Date getBirthday() {
-		return birthday;
-	}
-
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	
-	
-}
-
+import ${properties.basepackage}.core.entity.BaseEntity;
 
 /**
  * ${table.remarks} entity 
- * company:${vars.company}
- * author:${vars.developer}
+ * company:${properties.company}
+ * author:${properties.developer}
  * date: ${currentDate?string("yyyy-MM-dd HH:mm:ss")}
  * @since 1.
  */
+public class ${clazz} extends BaseEntity<${_Ongl.javaType(primaryKey)}> {
+	
+	private static final long serialVersionUID = 1L;
+	
+	<#list table.columns as column>
+	//${column.remarks}
+	<#if !_Ongl.isCommonColumn(column)>
+	protected ${_Ongl.javaType(column.columnDataType.databaseSpecificTypeName)}  ${Guava_CaseFormat.UPPER_UNDERSCORE.to(Guava_CaseFormat.LOWER_CAMEL, column.name)};
+	</#if>
+	</#list>
+	
+	
+	//getter setter
+	<#list table.columns as column>
+	<#if !_Ongl.isCommonColumn(column)>
+	public ${_Ongl.javaType(column.columnDataType.databaseSpecificTypeName)}  get${Guava_CaseFormat.UPPER_UNDERSCORE.to(Guava_CaseFormat.UPPER_CAMEL, column.name)}(){
+		return this.${Guava_CaseFormat.UPPER_UNDERSCORE.to(Guava_CaseFormat.LOWER_CAMEL, column.name)};
+	}
+	
+	public void set${Guava_CaseFormat.UPPER_UNDERSCORE.to(Guava_CaseFormat.UPPER_CAMEL, column.name)}( ${_Ongl.javaType(column.columnDataType.databaseSpecificTypeName)}   ${Guava_CaseFormat.UPPER_UNDERSCORE.to(Guava_CaseFormat.LOWER_CAMEL, column.name)}){
+		this.${Guava_CaseFormat.UPPER_UNDERSCORE.to(Guava_CaseFormat.LOWER_CAMEL, column.name)}=${Guava_CaseFormat.UPPER_UNDERSCORE.to(Guava_CaseFormat.LOWER_CAMEL, column.name)};
+	}
+	</#if>
+	</#list>
+}
+
+

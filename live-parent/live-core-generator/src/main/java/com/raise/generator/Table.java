@@ -3,6 +3,7 @@ package com.raise.generator;
 public class Table {
 	private String name;
 	private String clazz;
+	private String module;
 	private String pkg;
 	public String getName() {
 		return name;
@@ -15,6 +16,14 @@ public class Table {
 	}
 	public void setClazz(String clazz) {
 		this.clazz = clazz;
+	}
+	
+	
+	public String getModule() {
+		return module;
+	}
+	public void setModule(String module) {
+		this.module = module;
 	}
 	public String getPkg() {
 		return pkg;

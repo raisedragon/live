@@ -58,6 +58,7 @@ public class ConfigurationParser {
 			table.setName(element.elementText("name"));
 			table.setClazz(element.elementText("class"));
 			table.setPkg(element.elementText("package"));
+			table.setModule(element.elementText("module"));
 			tables.add(table);
 		}
 		

@@ -6,13 +6,10 @@ import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.Properties;
 
-import javax.management.RuntimeErrorException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import freemarker.ext.beans.BeansWrapper;
-import freemarker.ext.beans.BeansWrapperBuilder;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateHashModel;
 
@@ -20,8 +17,7 @@ public class FreemarkerUtils {
 	private static Logger log = LoggerFactory.getLogger(FreemarkerUtils.class);
 
 	public static Configuration getConfig() {
-		Configuration config = new Configuration(
-				Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
+		Configuration config = new Configuration();
 		BeansWrapper wrapper = (BeansWrapper) BeansWrapper.BEANS_WRAPPER;  
 		wrapper.setExposureLevel(BeansWrapper.EXPOSE_ALL);
 		InputStream in = null;

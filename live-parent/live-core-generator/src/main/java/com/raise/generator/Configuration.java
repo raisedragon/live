@@ -20,6 +20,15 @@ public class Configuration {
 	public List<Template> getTemplates() {
 		return templates;
 	}
+	
+	public Template getTemplate(String id){
+		for(Template t:templates){
+			if(t.getId().equals(id)){
+				return t;
+			}
+		}
+		return null;
+	}
 
 	public void setTemplates(List<Template> templates) {
 		this.templates = templates;
@@ -41,4 +50,13 @@ public class Configuration {
 		this.tables = tables;
 	}
 
+	
+	public Table getTable(String tablename){
+		for(Table table: tables){
+			if(table.getName().equalsIgnoreCase(tablename)){
+				return table;
+			}
+		}
+		return null;
+	}
 }

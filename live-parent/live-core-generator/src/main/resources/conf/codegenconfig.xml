@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<properties>
+		<developer>longsheng.wang</developer>
+		<company>raise</company>
 		<basepackage>com.raise.live</basepackage>
+		<basepackagedir>src/main/java/com/raise/live</basepackagedir>
+		<basedir>E:\GitRepo\live\live-parent\live-orgs-web</basedir>
 	</properties>
 	<templates>
 		<template id="entity">entity.ftl</template>
@@ -9,13 +13,14 @@
 		<template id="daoImpl">daoImpl.ftl</template>
 	</templates>
 	<sources>
-		<source refTemplate="entity" override="true" directory="${basepackage}/${package}" filename="${class}.java"></source>
+		<source refTemplate="entity" override="true" directory="${basepackagedir}/${module}/${package}/entity" filename="${class}.java"></source>
 	</sources>
 	<tables>
 		<table>
 			<name>act_evt_log</name>
 			<class>ActEvtLog</class>
-			<package>act</package>
+			<module>system</module>
+			<package>audit</package>
 		</table>
 	</tables>
 

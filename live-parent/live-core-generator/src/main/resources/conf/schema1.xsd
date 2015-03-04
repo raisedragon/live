@@ -40,6 +40,7 @@
     	<xs:sequence>
     		<xs:element name="name" type="xs:string"></xs:element>
     		<xs:element name="class" type="xs:string"></xs:element>
+    		<xs:element name="module" type="xs:string"></xs:element>
     		<xs:element name="package" type="xs:string"></xs:element>
     	</xs:sequence>
     </xs:complexType>
