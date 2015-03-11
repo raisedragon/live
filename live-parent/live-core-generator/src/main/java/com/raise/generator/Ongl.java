@@ -14,6 +14,7 @@ public class Ongl {
 		String dbDataType =  key.getColumns().get(0).getColumnDataType().getName();
 		return javaType(dbDataType);
 	}
+	
 
 	public static String javaType(String dbDataType) {
 		MySQLDataType type = MySQLDataType.fromValue(dbDataType);
@@ -98,6 +99,95 @@ public class Ongl {
 		}
 		return jType;
 	}
+	
+	public static String mybatisType(Column column){
+		return mybatisType(column.getColumnDataType().getName());
+	}
+
+	public static String mybatisType(String dbDataType) {
+		MySQLDataType type = MySQLDataType.fromValue(dbDataType);
+		String jType = "String";
+
+		switch (type) {
+		case INT:
+			jType = "INTEGER";
+			break;
+		case TINYINT:
+			jType = "TINYINT";
+			break;
+		case SMALLINT:
+			jType = "SMALLINT";
+			break;
+		case MEDIUMINT:
+			jType = "INTEGER";
+			break;
+		case BIGINT:
+			jType = "BIGINT";
+			break;
+		case FLOAT:
+			jType = "FLOAT";
+			break;
+		case DOUBLE:
+			jType = "DOUBLE";
+			break;
+		case DECIMAL:
+			jType = "DECIMAL";
+			break;
+		case DATE:
+			jType = "DATE";
+			break;
+		case DATETIME:
+			jType = "DATE";
+			break;
+		case TIMESTAMP:
+			jType = "TIMESTAMP";
+			break;
+		case TIME:
+			jType = "TIME";
+			break;
+		case YEAR:
+			jType = "VARCHAR";
+			break;
+		case CHAR:
+			jType = "CHAR";
+			break;
+		case VARCHAR:
+			jType = "VARCHAR";
+			break;
+		case BLOB:
+			jType = "BLOB";
+			break;
+		case TEXT:
+			jType = "CLOB";
+			break;
+		case TINYBLOB:
+			jType = "BLOB";
+			break;
+		case TINYTEXT:
+			jType = "CLOB";
+			break;
+		case MEDIUMBLOB:
+			jType = "BLOB";
+			break;
+		case MEDIUMTEXT:
+			jType = "CLOB";
+			break;
+		case LONGBLOB:
+			jType = "BLOB";
+			break;
+		case LONGTEXT:
+			jType = "CLOB";
+			break;
+		case ENUM:
+			jType = "VARCHAR";
+			break;
+		default:
+			jType = "VARCHAR";
+			break;
+		}
+		return jType;
+	}
+	
 	
 	private static List<String> commonColumns = new ArrayList<String>();
 	static{

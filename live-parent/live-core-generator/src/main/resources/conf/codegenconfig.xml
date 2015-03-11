@@ -9,12 +9,15 @@
 	</properties>
 	<templates>
 		<template id="entity">entity.ftl</template>
+		<template id="mapping">mapping.ftl</template>
 		<template id="dao">dao.ftl</template>
 		<template id="daoImpl">daoImpl.ftl</template>
 	</templates>
 	<sources>
 		<source refTemplate="entity" override="true" directory="${basepackagedir}/${module}/${package}/entity" filename="${class}.java"></source>
+		<source refTemplate="mapping" override="true" directory="src/main/resources/config/mybatis/mapping" filename="${class}.mapping.xml"></source>
 	</sources>
+	
 	<tables>
 		<table>
 			<name>act_evt_log</name>

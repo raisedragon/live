@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 import javax.sql.DataSource;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import schemacrawler.schema.Catalog;
 import schemacrawler.schema.Column;
@@ -93,7 +94,6 @@ public class TestSchema {
 									.getDatabaseSpecificTypeName());
 				}
 				
-				
 				Template template = FreemarkerUtils.getConfig().getTemplate(config.getTemplate(source.getRefTemplate()).getPath());
 	
 				DataModel dataModel = new DataModel(config,table);
@@ -108,6 +108,11 @@ public class TestSchema {
 								+File.separator
 								+source.getFilename();
 				filename = handlePlaceHoder(filename, dataModel);
+//				String dirname = FilenameUtils.getFullPath(filename);
+//				File dir = new File(dirname);
+//				if(!dir.exists()){
+//					dir.mkdir();
+//				}
 				File file = new File(filename);
 				FileUtils.writeByteArrayToFile(file, baos.toByteArray());
 				

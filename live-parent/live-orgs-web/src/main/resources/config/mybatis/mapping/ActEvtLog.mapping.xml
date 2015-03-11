@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.raise.live.audit.dao.ActEvtLogDao">
+	<resultMap id="ActEvtLogResultMap" type="com.raise.live.audit.entity.ActEvtLogEntity">
+		<id property="logNr" column="LOG_NR_" jdbcType="BIGINT"/>
+		<result property="type" column="TYPE_" jdbcType="VARCHAR"/>
+		<result property="procDefId" column="PROC_DEF_ID_" jdbcType="VARCHAR"/>
+		<result property="procInstId" column="PROC_INST_ID_" jdbcType="VARCHAR"/>
+		<result property="executionId" column="EXECUTION_ID_" jdbcType="VARCHAR"/>
+		<result property="taskId" column="TASK_ID_" jdbcType="VARCHAR"/>
+		<result property="timeStamp" column="TIME_STAMP_" jdbcType="TIMESTAMP"/>
+		<result property="userId" column="USER_ID_" jdbcType="VARCHAR"/>
+		<result property="data" column="DATA_" jdbcType="BLOB"/>
+		<result property="lockOwner" column="LOCK_OWNER_" jdbcType="VARCHAR"/>
+		<result property="lockTime" column="LOCK_TIME_" jdbcType="TIMESTAMP"/>
+		<result property="isProcessed" column="IS_PROCESSED_" jdbcType="TINYINT"/>
+	</resultMap>
+	
+	<sql id="columns">
+			LOG_NR_,
+			TYPE_,
+			PROC_DEF_ID_,
+			PROC_INST_ID_,
+			EXECUTION_ID_,
+			TASK_ID_,
+			TIME_STAMP_,
+			USER_ID_,
+			DATA_,
+			LOCK_OWNER_,
+			LOCK_TIME_,
+			IS_PROCESSED_
+	</sql>
+	
+	<insert id="add" parameterType="com.raise.live.audit.entity.ActEvtLogEntity">
+		INSERT INTO act_evt_log
+		(
+			LOG_NR_,
+			TYPE_,
+			PROC_DEF_ID_,
+			PROC_INST_ID_,
+			EXECUTION_ID_,
+			TASK_ID_,
+			TIME_STAMP_,
+			USER_ID_,
+			DATA_,
+			LOCK_OWNER_,
+			LOCK_TIME_,
+			IS_PROCESSED_
+		)
+		VALUES 
+		(
+			#{logNr,jdbcType=BIGINT}, 
+			#{type,jdbcType=VARCHAR}, 
+			#{procDefId,jdbcType=VARCHAR}, 
+			#{procInstId,jdbcType=VARCHAR}, 
+			#{executionId,jdbcType=VARCHAR}, 
+			#{taskId,jdbcType=VARCHAR}, 
+			#{timeStamp,jdbcType=TIMESTAMP}, 
+			#{userId,jdbcType=VARCHAR}, 
+			#{data,jdbcType=BLOB}, 
+			#{lockOwner,jdbcType=VARCHAR}, 
+			#{lockTime,jdbcType=TIMESTAMP}, 
+			#{isProcessed,jdbcType=TINYINT}
+		)
+	</insert>
+	
+	<select id="get"   parameterType="Long" resultMap="ActEvtLogResultMap">
+		SELECT <include refid="columns" /> FROM act_evt_log 
+		WHERE 
+			IS_DELETE='N'
+			AND LOG_NR_=#{logNr}
+	</select>
+	
+	<select 
+	    id="find" parameterType="com.winit.common.query.Searchable"
+	    resultMap="ActEvtLogResultMap"
+	    timeout="60000">
+		SELECT <include refid="columns" /> FROM act_evt_log
+	</select>
+	
+	<update id="update" parameterType="com.raise.live.audit.entity.ActEvtLogEntity">
+		UPDATE act_evt_log SET
+		LOG_NR_=#{logNr,jdbcType=BIGINT},
+		TYPE_=#{type,jdbcType=VARCHAR},
+		PROC_DEF_ID_=#{procDefId,jdbcType=VARCHAR},
+		PROC_INST_ID_=#{procInstId,jdbcType=VARCHAR},
+		EXECUTION_ID_=#{executionId,jdbcType=VARCHAR},
+		TASK_ID_=#{taskId,jdbcType=VARCHAR},
+		TIME_STAMP_=#{timeStamp,jdbcType=TIMESTAMP},
+		USER_ID_=#{userId,jdbcType=VARCHAR},
+		DATA_=#{data,jdbcType=BLOB},
+		LOCK_OWNER_=#{lockOwner,jdbcType=VARCHAR},
+		LOCK_TIME_=#{lockTime,jdbcType=TIMESTAMP},
+		IS_PROCESSED_=#{isProcessed,jdbcType=TINYINT}
+		WHERE
+		LOG_NR_=#{logNr}
+	</update>
+	
+	<delete id="delete"  parameterType="Long">
+		DELETE FROM act_evt_log 
+		WHERE
+		LOG_NR_=#{logNr}
+	</delete>
+	
+	<update id="tombstoned"  parameterType="Long">
+		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()"/>
+		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()"/>
+		UPDATE act_evt_log SET
+			IS_DELETE='Y',
+			UPDATED=#{currentTime,jdbcType=TIMESTAMP},
+			UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
+		WHERE
+			LOG_NR_=#{logNr}
+	</update>
+	
+	<update id="disable"  parameterType="Long">
+		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()"/>
+		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()"/>
+		UPDATE act_evt_log SET
+			IS_ACTIVE='N',
+			UPDATED=#{currentTime,jdbcType=TIMESTAMP},
+			UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
+		WHERE
+			LOG_NR_=#{logNr}
+	</update>
+	<update id="enable"  parameterType="Long">
+		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()"/>
+		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()"/>
+		UPDATE act_evt_log SET
+			IS_ACTIVE='Y',
+			UPDATED=#{currentTime,jdbcType=TIMESTAMP},
+			UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
+		WHERE
+			LOG_NR_=#{logNr}
+	</update>
+	
+	<!-- Operate by criteria -->
+	
+	<select id="queryByCriteria" parameterType="com.raise.liveaudit..query.ActEvtLogQuery$FindQuery" resultMap="ActEvtLogResultMap">
+		SELECT 
+			RES.LOG_NR_,
+			RES.TYPE_,
+			RES.PROC_DEF_ID_,
+			RES.PROC_INST_ID_,
+			RES.EXECUTION_ID_,
+			RES.TASK_ID_,
+			RES.TIME_STAMP_,
+			RES.USER_ID_,
+			RES.DATA_,
+			RES.LOCK_OWNER_,
+			RES.LOCK_TIME_,
+			RES.IS_PROCESSED_
+		<include refid="queryByCriteriaSql" />
+		<include refid="orderByClauseSql"/>
+		<if test="first">
+			limit 1
+		</if>
+	</select>
+	
+	<select id="queryCountByCriteria" parameterType="com.raise.liveaudit..query.ActEvtLogQuery$FindQuery" resultType="Long">
+		SELECT count(1)
+		<include refid="queryByCriteriaSql" />
+	</select>
+
+	<sql id="queryByCriteriaSql">
+		from act_evt_log RES
+		<include refid="criteriaSql"/>
+	</sql>
+	<update id="updateByUpdateQuery" parameterType="com.raise.liveaudit..query.ActEvtLogQuery$UpdateQuery">
+		UPDATE act_evt_log RES
+		<include refid="updateDataCaluseSql"/>
+		<include refid="criteriaSql"/>
+	</update>
+	
+	
+	<sql id="criteriaSql">
+		<where>
+			IS_DELETE='N'
+			<if test="oredCriteria.size()==1">
+				<trim prefix="AND" >
+					<include refid="oredCriteriaSql"/>
+				</trim>
+			
+			</if>
+			<if test="oredCriteria.size()>1">
+				<trim prefix="AND (" suffix=")" >
+					<include refid="oredCriteriaSql"/>
+				</trim>
+			</if>
+		</where>
+	</sql>
+		
+		
+	<sql id="oredCriteriaSql">
+		<foreach  collection="oredCriteria" item="criteria" separator="or">
+			<if test="criteria.valid">
+				<if test="criteria.criteria.size()==1">
+					<trim prefixOverrides="and">
+						<include refid="criterionSql"/>
+					</trim>
+				</if>
+				<if test="criteria.criteria.size()>1">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<include refid="criterionSql"/>
+					</trim>
+				</if>
+			</if>
+		</foreach>
+	</sql>
+	
+	<sql id="criterionSql">
+		<foreach collection="criteria.criteria" item="criterion">
+			<choose>
+				<when test="criterion.noValue">
+					and RES.${criterion.condition}
+				</when>
+				<when test="criterion.singleValue">
+					and RES.${criterion.condition} #{criterion.value}
+				</when>
+				<when test="criterion.betweenValue">
+					and RES.${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+				</when>
+				<when test="criterion.listValue">
+					and RES.${criterion.condition}
+					<foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+						#{listItem}
+					</foreach>
+				</when>
+			</choose>
+		</foreach>
+	</sql>
+		
+	<sql id="updateDataCaluseSql">
+		<set>   
+			<foreach collection="updateClause.dataClauses" item="clause" separator=",">
+				${clause.property} #{clause.value}
+			</foreach>
+		</set>
+	</sql>
+	
+	
+	<sql id="orderByClauseSql">
+		<if test="sort!=null">
+			ORDER BY 
+				${sort.sortSql}
+		</if>
+	</sql>
+	
+</mapper>

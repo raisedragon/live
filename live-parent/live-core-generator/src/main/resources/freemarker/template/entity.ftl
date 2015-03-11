@@ -1,4 +1,4 @@
-package ${properties.basepackage}.${module}.${pkg}.entity;
+package ${properties.basepackage}.${pkg}.entity;
 
 import java.util.Date;
 
