@@ -10,15 +10,47 @@ import com.gdcc.live.identity.dao.UserDao;
 import com.gdcc.live.identity.entity.User;
 
 public class UserQuery extends AbstractQuery<UserQuery,User>  {
+	
+	private List<UserCriteria> oredCriteria;
+	
+	public List<UserCriteria> getOredCriteria() {
+        return oredCriteria;
+    }
 
-	private static final long serialVersionUID = 1L;
+    public void or(UserCriteria criteria) {
+        oredCriteria.add(criteria);
+    }
+
+    public UserCriteria or() {
+    	UserCriteria criteria = createCriteriaInternal();
+        oredCriteria.add(criteria);
+        return criteria;
+    }
+
+    public UserCriteria createCriteria() {
+    	UserCriteria criteria = createCriteriaInternal();
+        if (oredCriteria.size() == 0) {
+            oredCriteria.add(criteria);
+        }
+        return criteria;
+    }
+
+    protected UserCriteria createCriteriaInternal() {
+    	UserCriteria criteria = new UserCriteria();
+        return criteria;
+    }
+
+
+    
+    
+    
+    
 	
 	protected String id;
 	protected String firstName;
 	protected String firstNameLike;
 	protected String lastName;
 	protected String lastNameLike;
-	protected String fullNameLike;
 	protected String email;
 	protected String emailLike;
 	protected String groupId;
@@ -68,13 +100,6 @@ public class UserQuery extends AbstractQuery<UserQuery,User>  {
 		return this;
 	}
 
-	public UserQuery userFullNameLike(String fullNameLike) {
-		if (fullNameLike == null) {
-			throw new LiveException("Provided full name is null");
-		}
-		this.fullNameLike = fullNameLike;
-		return this;
-	}
 
 	public UserQuery userEmail(String email) {
 		if (email == null) {
@@ -103,19 +128,19 @@ public class UserQuery extends AbstractQuery<UserQuery,User>  {
 	// sorting //////////////////////////////////////////////////////////
 
 	public UserQuery orderByUserId() {
-		return orderBy(UserQueryProperty.USER_ID);
+		return orderBy(UserProperty.COLUMN_NAME_id);
 	}
 
 	public UserQuery orderByUserEmail() {
-		return orderBy(UserQueryProperty.EMAIL);
+		return orderBy(UserProperty.COLUMN_NAME_email);
 	}
 
 	public UserQuery orderByUserFirstName() {
-		return orderBy(UserQueryProperty.FIRST_NAME);
+		return orderBy(UserProperty.COLUMN_NAME_firstName);
 	}
 
 	public UserQuery orderByUserLastName() {
-		return orderBy(UserQueryProperty.LAST_NAME);
+		return orderBy(UserProperty.COLUMN_NAME_lastName);
 	}
 
 	// results //////////////////////////////////////////////////////////
@@ -165,7 +190,4 @@ public class UserQuery extends AbstractQuery<UserQuery,User>  {
 		return groupId;
 	}
 
-	public String getFullNameLike() {
-		return fullNameLike;
-	}
 }

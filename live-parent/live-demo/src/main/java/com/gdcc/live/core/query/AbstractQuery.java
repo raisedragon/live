@@ -23,7 +23,7 @@ public abstract class AbstractQuery<T extends Query<?, ?>, U>
 
 	protected ResultType resultType;
 
-	protected QueryProperty orderProperty;
+	protected String orderProperty;
 
 	
 	 protected transient AppContext appContext;
@@ -35,7 +35,7 @@ public abstract class AbstractQuery<T extends Query<?, ?>, U>
 
 
 	@SuppressWarnings("unchecked")
-	public T orderBy(QueryProperty property) {
+	public T orderBy(String property) {
 		this.orderProperty = property;
 		return (T) this;
 	}
@@ -54,7 +54,7 @@ public abstract class AbstractQuery<T extends Query<?, ?>, U>
 			throw new LiveException(
 					"You should call any of the orderBy methods first before specifying a direction");
 		}
-		addOrder(orderProperty.getName(), direction.getName());
+		addOrder(orderProperty, direction.getName());
 		orderProperty = null;
 		return (T) this;
 	}

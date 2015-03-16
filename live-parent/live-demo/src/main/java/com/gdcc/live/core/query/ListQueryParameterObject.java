@@ -54,7 +54,7 @@ public class ListQueryParameterObject {
   
   public String getOrderBy() {
     // the default order column
-    return "RES.ID_ asc";
+    return "ID_ asc";
   }
   
   public void setDatabaseType(String databaseType) {
