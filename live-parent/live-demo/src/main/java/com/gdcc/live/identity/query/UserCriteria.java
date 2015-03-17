@@ -3,45 +3,11 @@ package com.gdcc.live.identity.query;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gdcc.live.core.query.AbstractCriteria;
 import com.gdcc.live.core.query.Criterion;
 
-public class UserCriteria {
+public class UserCriteria extends AbstractCriteria<UserCriteria> {
 	
-	protected List<Criterion> criteria;
-
-	public UserCriteria() {
-		super();
-		this.criteria = new ArrayList<Criterion>();
-	}
-
-	public boolean isValid() {
-		return criteria.size() > 0;
-	}
-
-	public List<Criterion> getCriteria() {
-		return criteria;
-	}
-
-	protected void addCriterion(String condition) {
-		if (condition == null) {
-			throw new RuntimeException("Value for condition cannot be null");
-		}
-		criteria.add(new Criterion(condition));
-	}
-
-	protected void addCriterion(String condition, Object value, String property) {
-		if (value == null) {
-			throw new RuntimeException("Value for " + property + " cannot be null");
-		}
-		criteria.add(new Criterion(condition, value));
-	}
-
-	protected void addCriterion(String condition, Object value1, Object value2, String property) {
-		if (value1 == null || value2 == null) {
-			throw new RuntimeException("Between values for " + property + " cannot be null");
-		}
-		criteria.add(new Criterion(condition, value1, value2));
-	}
 	
 	public UserCriteria andFirstNameIsNull() {
         addCriterion(UserProperty.COLUMN_NAME_firstName + " is null");
@@ -77,5 +43,10 @@ public class UserCriteria {
         addCriterion(UserProperty.COLUMN_NAME_firstName + " not like", value, "firstName");
         return (UserCriteria) this;
     }
+
+	@Override
+	public UserCriteria newInstance() {
+		return new UserCriteria();
+	}
 
 }
