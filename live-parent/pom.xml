@@ -10,22 +10,27 @@
     
     <modules>
 		<module>live-IdGenerator</module>
-		<module>live-orgs</module>
+<!-- 		<module>live-orgs</module> -->
 		<module>live-spring</module>
-		<module>live-orgs-web</module>
+<!-- 		<module>live-orgs-web</module> -->
 		<module>live-test</module>
 		<module>live-rbac</module>
-		<module>live-demo</module>
+<!-- 		<module>live-demo</module> -->
 		<module>live-commons</module>
-		<module>live-core-generator</module>
-	</modules>
+<!-- 		<module>live-core-generator</module> -->
+		<module>live-quartz</module>
+		<module>live-portal</module>
+		<module>live-spi</module>
+		<module>live-core</module>
+		<module>live-label</module>
+    </modules>
     
     <properties>
         <!-- 主要依赖库的版本定义 -->
         <agile.version>0.0.2-SNAPSHOT</agile.version>
         <dubbo.version>2.5.3</dubbo.version>
         <zookeeper.version>3.4.6</zookeeper.version>
-        <spring.version>3.2.8.RELEASE</spring.version>
+        <spring.version>4.1.6.RELEASE</spring.version>
         <mybatis.version>3.2.5</mybatis.version>
         <hibernate.version>4.3.1.Final</hibernate.version>
         <spring-data-jpa.version>1.6.0.RELEASE</spring-data-jpa.version>
@@ -116,7 +121,12 @@
     </distributionManagement>
     <dependencyManagement>
         <dependencies>
-        <dependency>
+        	<dependency>
+				<groupId>com.gdcc</groupId>
+				<artifactId>live-core</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+        	<dependency>
 				<groupId>com.gdcc</groupId>
 				<artifactId>live-demo</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
@@ -146,6 +156,17 @@
 			<dependency>
 				<groupId>com.gdcc</groupId>
 				<artifactId>live-orgs-web</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.gdcc</groupId>
+				<artifactId>live-quartz</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>com.gdcc</groupId>
+				<artifactId>live-spi</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
             <!-- agile module begin -->
@@ -867,6 +888,12 @@
 				<groupId>commons-dbcp</groupId>
 				<artifactId>commons-dbcp</artifactId>
 				<version>1.4</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>5.1.9</version>
 			</dependency>
         </dependencies>
     </dependencyManagement>

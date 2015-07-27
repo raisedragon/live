@@ -1,5 +1,6 @@
-<#assign type="${properties.basepackage}.${pkg}.entity.${clazz}Entity"  />
-<#assign queryType="${properties.basepackage}${pkg}..query.${clazz}Query"  />
+<#assign type="${properties.basepackage}.${pkg}.entity.${clazz}"  />
+<#assign selectQueryType="${properties.basepackage}.${pkg}.query.${clazz}SelectQuery"  />
+<#assign updateQueryType="${properties.basepackage}.${pkg}.query.${clazz}UpdateQuery"  />
 <#assign primaryKeyName="${primaryKey.columns[0].name}"  />
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
@@ -40,7 +41,7 @@
 	<select id="get"   parameterType="${_Ongl.javaType(primaryKey)}" resultMap="${clazz}ResultMap">
 		SELECT <include refid="columns" /> FROM ${tablename} 
 		WHERE 
-			IS_DELETE='N'
+			IS_DELETED_='0'
 			AND ${primaryKeyName}=<#noparse>#{</#noparse>${Guava_CaseFormat.UPPER_UNDERSCORE.to(Guava_CaseFormat.LOWER_CAMEL, primaryKeyName)}}
 	</select>
 	
@@ -68,10 +69,10 @@
 	</delete>
 	
 	<update id="tombstoned"  parameterType="${_Ongl.javaType(primaryKey)}">
-		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()"/>
-		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()"/>
+		<bind name="currentTime" value="@com.gdcc.live.core.security.SCUtils@currentDate()"/>
+		<bind name="currentUserId" value="@com.gdcc.live.core.security.SCUtils@currentUserId()"/>
 		UPDATE ${tablename} SET
-			IS_DELETE='Y',
+			IS_DELETED_='1',
 			UPDATED=<#noparse>#{</#noparse>currentTime,jdbcType=TIMESTAMP},
 			UPDATEDBY=<#noparse>#{</#noparse>currentUserId,jdbcType=VARCHAR}
 		WHERE
@@ -79,20 +80,20 @@
 	</update>
 	
 	<update id="disable"  parameterType="${_Ongl.javaType(primaryKey)}">
-		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()"/>
-		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()"/>
+		<bind name="currentTime" value="@com.gdcc.live.core.security.SCUtils@currentDate()"/>
+		<bind name="currentUserId" value="@com.gdcc.live.core.security.SCUtils@currentUserId()"/>
 		UPDATE ${tablename} SET
-			IS_ACTIVE='N',
+			IS_ACTIVE_='0',
 			UPDATED=<#noparse>#{</#noparse>currentTime,jdbcType=TIMESTAMP},
 			UPDATEDBY=<#noparse>#{</#noparse>currentUserId,jdbcType=VARCHAR}
 		WHERE
 			${primaryKeyName}=<#noparse>#{</#noparse>${Guava_CaseFormat.UPPER_UNDERSCORE.to(Guava_CaseFormat.LOWER_CAMEL, primaryKeyName)}}
 	</update>
 	<update id="enable"  parameterType="${_Ongl.javaType(primaryKey)}">
-		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()"/>
-		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()"/>
+		<bind name="currentTime" value="@com.gdcc.live.core.security.SCUtils@currentDate()"/>
+		<bind name="currentUserId" value="@com.gdcc.live.core.security.SCUtils@currentUserId()"/>
 		UPDATE ${tablename} SET
-			IS_ACTIVE='Y',
+			IS_ACTIVE_='1',
 			UPDATED=<#noparse>#{</#noparse>currentTime,jdbcType=TIMESTAMP},
 			UPDATEDBY=<#noparse>#{</#noparse>currentUserId,jdbcType=VARCHAR}
 		WHERE
@@ -101,28 +102,25 @@
 	
 	<!-- Operate by criteria -->
 	
-	<select id="queryByCriteria" parameterType="${queryType}$FindQuery" resultMap="${clazz}ResultMap">
+	<select id="selectByCriteria" parameterType="${selectQueryType}" resultMap="${clazz}ResultMap">
 		SELECT 
 		<#list table.columns as column>
 			RES.${column.name}<#if column_has_next>,</#if>
 		</#list>
-		<include refid="queryByCriteriaSql" />
+		<include refid="selectByCriteriaSql" />
 		<include refid="orderByClauseSql"/>
-		<if test="first">
-			limit 1
-		</if>
 	</select>
 	
-	<select id="queryCountByCriteria" parameterType="${queryType}$FindQuery" resultType="Long">
+	<select id="selectCountByCriteria" parameterType="${selectQueryType}" resultType="Long">
 		SELECT count(1)
-		<include refid="queryByCriteriaSql" />
+		<include refid="selectByCriteriaSql" />
 	</select>
 
-	<sql id="queryByCriteriaSql">
+	<sql id="selectByCriteriaSql">
 		from ${tablename} RES
 		<include refid="criteriaSql"/>
 	</sql>
-	<update id="updateByUpdateQuery" parameterType="${queryType}$UpdateQuery">
+	<update id="updateByUpdateQuery" parameterType="${updateQueryType}">
 		UPDATE ${tablename} RES
 		<include refid="updateDataCaluseSql"/>
 		<include refid="criteriaSql"/>
@@ -131,14 +129,14 @@
 	
 	<sql id="criteriaSql">
 		<where>
-			IS_DELETE='N'
-			<if test="oredCriteria.size()==1">
+			IS_DELETED_='0'
+			<if test="criteria.oreds.size()==1">
 				<trim prefix="AND" >
 					<include refid="oredCriteriaSql"/>
 				</trim>
 			
 			</if>
-			<if test="oredCriteria.size()>1">
+			<if test="criteria.oreds.size()>1">
 				<trim prefix="AND (" suffix=")" >
 					<include refid="oredCriteriaSql"/>
 				</trim>
@@ -148,14 +146,14 @@
 		
 		
 	<sql id="oredCriteriaSql">
-		<foreach  collection="oredCriteria" item="criteria" separator="or">
-			<if test="criteria.valid">
-				<if test="criteria.criteria.size()==1">
+		<foreach  collection="criteria.oreds" item="ored" separator="or">
+			<if test="ored.valid">
+				<if test="ored.criterions.size()==1">
 					<trim prefixOverrides="and">
 						<include refid="criterionSql"/>
 					</trim>
 				</if>
-				<if test="criteria.criteria.size()>1">
+				<if test="ored.criterions.size()>1">
 					<trim prefix="(" prefixOverrides="and" suffix=")">
 						<include refid="criterionSql"/>
 					</trim>
@@ -165,7 +163,7 @@
 	</sql>
 	
 	<sql id="criterionSql">
-		<foreach collection="criteria.criteria" item="criterion">
+		<foreach collection="ored.criterions" item="criterion">
 			<choose>
 				<when test="criterion.noValue">
 					and RES.<#noparse>${</#noparse>criterion.condition}
@@ -196,10 +194,8 @@
 	
 	
 	<sql id="orderByClauseSql">
-		<if test="sort!=null">
-			ORDER BY 
-				<#noparse>${</#noparse>sort.sortSql}
-		</if>
+		ORDER BY 
+			<#noparse>${</#noparse>orderBy}
 	</sql>
 	
 </mapper>

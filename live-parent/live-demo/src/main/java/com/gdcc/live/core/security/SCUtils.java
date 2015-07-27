@@ -9,7 +9,7 @@ import com.winit.common.spi.context.CommandContext;
 public class SCUtils {
 
     private static ThreadLocal<CommandContext> commandContextLocal = new ThreadLocal<CommandContext>();
-
+    private static ThreadLocal<Date> currentDateLocal = new ThreadLocal<Date>();
     public static void setCommandContextLocal(CommandContext ctx) {
         commandContextLocal.set(ctx);
     }
@@ -23,7 +23,14 @@ public class SCUtils {
     }
 
     public static Date currentDate() {
-        return new Date();
+    	if(currentDateLocal.get()==null){
+    		currentDateLocal.set(new Date());
+    	}
+    	return currentDateLocal.get();
+    }
+    
+    public static void removeCurrentDateLocal(){
+    	currentDateLocal.remove();
     }
 
     public static String currentUserId() {
@@ -33,10 +40,10 @@ public class SCUtils {
         return "0";
     }
 
-    public static Long currentOrgId() {
+    public static String currentOrgId() {
         if (CommandContext.getContext().getOrgId() != null) {
-            return CommandContext.getContext().getOrgId();
+            return CommandContext.getContext().getOrgId()+"";
         }
-        return 0L;
+        return "0";
     }
 }

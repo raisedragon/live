@@ -94,7 +94,7 @@
 	<!-- hibernate validator -->
 	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
 	
-	<bean id="appUtil" class="com.winit.vms.core.utils.AppUtil" lazy-init="false"/>
+<!-- 	<bean id="appUtil" class="com.winit.vms.core.utils.AppUtil" lazy-init="false"/> -->
 	
 	<bean id="idGenerator" class="com.winit.vms.core.identity.DefaultIdGenerator">
 		<constructor-arg index="0" value="1"></constructor-arg>

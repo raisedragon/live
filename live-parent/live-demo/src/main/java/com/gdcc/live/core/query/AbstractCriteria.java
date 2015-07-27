@@ -7,35 +7,35 @@ public abstract class AbstractCriteria<T extends AbstractCriteria<T>> {
 
 	protected T next;
 
-	protected List<Criterion> criteria = new ArrayList<Criterion>();
+	protected List<Criterion> criterions = new ArrayList<Criterion>();
 
 	public boolean isValid() {
-		return criteria.size() > 0;
+		return criterions.size() > 0;
 	}
 
 	public List<Criterion> getCriteria() {
-		return criteria;
+		return criterions;
 	}
 
 	protected void addCriterion(String condition) {
 		if (condition == null) {
 			throw new RuntimeException("Value for condition cannot be null");
 		}
-		criteria.add(new Criterion(condition));
+		criterions.add(new Criterion(condition));
 	}
 
 	protected void addCriterion(String condition, Object value, String property) {
 		if (value == null) {
 			throw new RuntimeException("Value for " + property + " cannot be null");
 		}
-		criteria.add(new Criterion(condition, value));
+		criterions.add(new Criterion(condition, value));
 	}
 
 	protected void addCriterion(String condition, Object value1, Object value2, String property) {
 		if (value1 == null || value2 == null) {
 			throw new RuntimeException("Between values for " + property + " cannot be null");
 		}
-		criteria.add(new Criterion(condition, value1, value2));
+		criterions.add(new Criterion(condition, value1, value2));
 	}
 
 
@@ -48,7 +48,7 @@ public abstract class AbstractCriteria<T extends AbstractCriteria<T>> {
 	public abstract T newInstance();
 
 	@SuppressWarnings("unchecked")
-	public List<T> getCriterias() {
+	public List<T> getOreds() {
 		List<T> list = new ArrayList<T>();
 		list.add((T) this);
 		T item = (T) this;

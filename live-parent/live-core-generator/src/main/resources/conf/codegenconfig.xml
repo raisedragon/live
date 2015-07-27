@@ -3,27 +3,31 @@
 	<properties>
 		<developer>longsheng.wang</developer>
 		<company>raise</company>
-		<basepackage>com.raise.live</basepackage>
-		<basepackagedir>src/main/java/com/raise/live</basepackagedir>
-		<basedir>E:\GitRepo\live\live-parent\live-orgs-web</basedir>
+		<basepackage>com.gdcc.live</basepackage>
+		<basepackagedir>src/main/java/com/gdcc/live</basepackagedir>
+		<basepackagetestdir>src/main/java/com/gdcc/live</basepackagetestdir>
+		<basedir>E:\GitRepo\live\live-parent\live-demo</basedir>
 	</properties>
 	<templates>
 		<template id="entity">entity.ftl</template>
 		<template id="mapping">mapping.ftl</template>
 		<template id="dao">dao.ftl</template>
 		<template id="daoImpl">daoImpl.ftl</template>
+		<template id="daoTest">daoTest.ftl</template>
 	</templates>
 	<sources>
-		<source refTemplate="entity" override="true" directory="${basepackagedir}/${module}/${package}/entity" filename="${class}.java"></source>
-		<source refTemplate="mapping" override="true" directory="src/main/resources/config/mybatis/mapping" filename="${class}.mapping.xml"></source>
+		<source refTemplate="entity" override="true" directory="${basepackagedir}/${package}/entity" filename="${class}.java"></source>
+		<source refTemplate="mapping" override="true" directory="src/main/resources/conf/mybatis/mapper" filename="${class}.mapping.xml"></source>
+<!-- 		<source refTemplate="daoTest" override="true" directory="${basepackagetestdir}/${package}/dao" filename="${class}Test.java"></source> -->
+		
 	</sources>
 	
 	<tables>
 		<table>
-			<name>act_evt_log</name>
-			<class>ActEvtLog</class>
-			<module>system</module>
-			<package>audit</package>
+			<name>id_user</name>
+			<class>User</class>
+			<module>identity</module>
+			<package>identity</package>
 		</table>
 	</tables>
 

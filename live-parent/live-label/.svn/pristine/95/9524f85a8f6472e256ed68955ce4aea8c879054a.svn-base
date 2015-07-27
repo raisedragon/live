@@ -1,0 +1,13 @@
+package com.winit.label.service;
+
+
+
+/**
+ * 
+ * <P>系统参数</P>
+ * @author {庄坚发}
+ */
+public interface SysConfigService {
+	
+	public String getValue(String key);
+}

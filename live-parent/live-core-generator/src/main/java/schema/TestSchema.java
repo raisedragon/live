@@ -114,6 +114,7 @@ public class TestSchema {
 //					dir.mkdir();
 //				}
 				File file = new File(filename);
+				System.out.println("写文件："+filename);
 				FileUtils.writeByteArrayToFile(file, baos.toByteArray());
 				
 				baos.close();

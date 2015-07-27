@@ -16,8 +16,8 @@ public class ${clazz} extends BaseEntity<${_Ongl.javaType(primaryKey)}> {
 	private static final long serialVersionUID = 1L;
 	
 	<#list table.columns as column>
-	//${column.remarks}
 	<#if !_Ongl.isCommonColumn(column)>
+	//${column.remarks}
 	protected ${_Ongl.javaType(column.columnDataType.databaseSpecificTypeName)}  ${Guava_CaseFormat.UPPER_UNDERSCORE.to(Guava_CaseFormat.LOWER_CAMEL, column.name)};
 	</#if>
 	</#list>

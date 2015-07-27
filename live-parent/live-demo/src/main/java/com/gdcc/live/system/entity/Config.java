@@ -78,13 +78,13 @@ public class Config extends BaseEntity<String> {
             .append("name", this.name)
             .append("value", this.value)
             .append("description", this.description)
-            .append("organizationId", this.organizationId)
+            .append("organizationId", this.orgId)
             .append("created", this.created)
-            .append("createdby", this.createdby)
+            .append("createdby", this.createdBy)
             .append("updated", this.updated)
-            .append("updatedby", this.updatedby)
+            .append("updatedby", this.updatedBy)
             .append("isActive", this.isActive)
-            .append("isDelete", this.isDelete)
+            .append("isDelete", this.isDeleted)
             .toString();
     }
 }

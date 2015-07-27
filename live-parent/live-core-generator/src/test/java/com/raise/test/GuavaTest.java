@@ -7,7 +7,7 @@ import com.google.common.base.CaseFormat;
 public class GuavaTest {
 	@Test
 	public void test(){
-		String str = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_UNDERSCORE, "Lon_gA_baC");
+		String str = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, "ABC_CDE_");
 		System.out.println(str);
 	}
 }

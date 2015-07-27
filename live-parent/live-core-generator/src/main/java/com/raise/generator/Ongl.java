@@ -1,8 +1,10 @@
 package com.raise.generator;
 
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import com.google.common.base.CaseFormat;
 
@@ -191,11 +193,12 @@ public class Ongl {
 	
 	private static List<String> commonColumns = new ArrayList<String>();
 	static{
-		commonColumns.add("ID");
+//		commonColumns.add("ID");
 		commonColumns.add("CREATED");
 		commonColumns.add("CREATEDBY");
 		commonColumns.add("UPDATED");
 		commonColumns.add("UPDATEDBY");
+		commonColumns.add("ISACTIVE");
 		commonColumns.add("ISDELETED");
 		commonColumns.add("ORGANIZATIONID");
 	}
@@ -210,5 +213,45 @@ public class Ongl {
 		String a  = "abc${b}}";
 		a = a.replaceAll("\\$\\{[^\\}+]}", "....");
 		System.out.println(a);
+	}
+	
+	public static String getRandomValue(Column column){
+		MySQLDataType type = MySQLDataType.fromValue(column.getColumnDataType().getName());
+		Double.valueOf(Math.random()).intValue();
+		switch (type) {
+		case INT:
+		case TINYINT:
+		case SMALLINT:
+		case MEDIUMINT:
+		case BIGINT:
+			return "random.nextInt(10*"+column.getSize()+");";
+		case FLOAT:
+			return "random.nextFloat();";
+		case DOUBLE:
+			return "random.nextDouble();";
+		case DECIMAL:
+			return "BigDecimal.valueOf(random.nextInt());";
+		case DATE:
+		case DATETIME:
+		case TIMESTAMP:
+		case TIME:
+		case YEAR:
+			return "new java.util.Date()";
+		case CHAR:
+		case VARCHAR:
+			return "\"\"+random.nextInt(10*"+column.getSize()+");";
+		case BLOB:
+		case TINYBLOB:
+		case MEDIUMBLOB:
+		case LONGBLOB:
+			return "\"BLOB\".toBytes()";
+		case TEXT:
+		case TINYTEXT:
+		case MEDIUMTEXT:
+		case LONGTEXT:
+			return  "\"CLOB\"";
+		default:
+			return  "\"unknow\"";
+		}
 	}
 }

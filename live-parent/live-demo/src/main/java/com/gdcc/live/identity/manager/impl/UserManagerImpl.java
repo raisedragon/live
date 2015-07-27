@@ -11,7 +11,7 @@ import com.gdcc.live.core.query.Page;
 import com.gdcc.live.identity.dao.UserDao;
 import com.gdcc.live.identity.entity.User;
 import com.gdcc.live.identity.manager.UserManager;
-import com.gdcc.live.identity.query.UserQuery;
+import com.gdcc.live.identity.query.UserSelectQuery;
 
 
 @Component
@@ -26,8 +26,8 @@ public class UserManagerImpl extends AbstractManager<User,String> implements Use
 	}
 
 	@Override
-	public UserQuery createUserQuery() {
-		return new UserQuery(appContext);
+	public UserSelectQuery createUserQuery() {
+		return new UserSelectQuery(appContext);
 	}
 
 

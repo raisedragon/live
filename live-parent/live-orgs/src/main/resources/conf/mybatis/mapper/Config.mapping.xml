@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.raise.orgs.dao.ConfigDao">
+	<resultMap id="Config" type="com.raise.orgs.entity.ConfigEntity">
+		<id property="id" column="ID_" jdbcType="VARCHAR"/>
+		<result property="name" column="NAME_" jdbcType="VARCHAR"/>
+		<result property="value" column="VALUE_" jdbcType="VARCHAR"/>
+		<result property="description" column="DESCRIPTION_" jdbcType="VARCHAR"/>
+		<result property="organizationId" column="ORGANIZATION_ID_" jdbcType="VARCHAR"/>
+		<result property="created" column="CREATED_" jdbcType="TIMESTAMP"/>
+		<result property="createdBy" column="CREATED_BY_" jdbcType="VARCHAR"/>
+		<result property="updated" column="UPDATED_" jdbcType="TIMESTAMP"/>
+		<result property="updatedBy" column="UPDATED_BY_" jdbcType="VARCHAR"/>
+		<result property="isActive" column="IS_ACTIVE_" jdbcType="VARCHAR"/>
+		<result property="isDeleted" column="IS_DELETED_" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<sql id="columns">
+			ID_,
+			NAME_,
+			VALUE_,
+			DESCRIPTION_,
+			ORGANIZATION_ID_,
+			CREATED_,
+			CREATED_BY_,
+			UPDATED_,
+			UPDATED_BY_,
+			IS_ACTIVE_,
+			IS_DELETED_
+	</sql>
+	
+	<insert id="add"  parameterType="com.raise.orgs.entity.ConfigEntity">
+		INSERT INTO ORGS_CONFIG
+		(ID_,NAME_,VALUE_,DESCRIPTION_,ORGANIZATION_ID_,CREATED_,CREATED_BY_,UPDATED_,UPDATED_BY_,IS_ACTIVE_,IS_DELETED_)
+		VALUES
+		(#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{organizationId,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, #{updated,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, #{isActive,jdbcType=VARCHAR}, #{isDeleted,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="get"   parameterType="java.lang.String" resultMap="Config">
+		SELECT <include refid="columns" /> FROM ORGS_CONFIG 
+		WHERE 
+			IS_DELETED_='0'
+			AND ID_=#{id}
+	</select>
+	
+	
+	<update id="update" parameterType="com.raise.orgs.entity.ConfigEntity">
+		UPDATE ORGS_CONFIG SET
+		NAME_=#{name,jdbcType=VARCHAR},
+		VALUE_=#{value,jdbcType=VARCHAR},
+		DESCRIPTION_=#{description,jdbcType=VARCHAR},
+		ORGANIZATION_ID_=#{organizationId,jdbcType=VARCHAR},
+		CREATED_=#{created,jdbcType=TIMESTAMP},
+		CREATED_BY_=#{createdBy,jdbcType=VARCHAR},
+		UPDATED_=#{updated,jdbcType=TIMESTAMP},
+		UPDATED_BY_=#{updatedBy,jdbcType=VARCHAR},
+		IS_ACTIVE_=#{isActive,jdbcType=VARCHAR},
+		IS_DELETED_=#{isDeleted,jdbcType=VARCHAR}
+		WHERE
+		ID_=#{id}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.String">
+		DELETE FROM ORGS_CONFIG 
+		WHERE
+		ID_=#{id}
+	</delete>
+	
+	<update id="tombstoned" parameterType="java.lang.String">
+		<bind name="currentTime" value="@com.raise.core.ctx.Context@currentDate()"/>
+		<bind name="currentUserId" value="@com.raise.core.ctx.Context@currentUserId()"/>
+		UPDATE ORGS_CONFIG SET
+			IS_DELETED_='1',
+			UPDATED_=#{currentTime,jdbcType=TIMESTAMP},
+			UPDATED_BY_=#{currentUserId,jdbcType=VARCHAR}
+		WHERE
+			ID_=#{id}
+	</update>
+	
+	<update id="disable" parameterType="java.lang.String">
+		<bind name="currentTime" value="@com.raise.core.ctx.Context@currentDate()"/>
+		<bind name="currentUserId" value="@com.raise.core.ctx.Context@currentUserId()"/>
+		UPDATE ORGS_CONFIG SET
+			IS_ACTIVE_='0',
+			UPDATED_=#{currentTime,jdbcType=TIMESTAMP},
+			UPDATED_BY_=#{currentUserId,jdbcType=VARCHAR}
+		WHERE
+			ID_=#{id}
+	</update>
+	<update id="enable" parameterType="java.lang.String">
+		<bind name="currentTime" value="@com.raise.core.ctx.Context@currentDate()"/>
+		<bind name="currentUserId" value="@com.raise.core.ctx.Context@currentUserId()"/>
+		UPDATE ORGS_CONFIG SET
+			IS_ACTIVE_='1',
+			UPDATED_=#{currentTime,jdbcType=TIMESTAMP},
+			UPDATED_BY_=#{currentUserId,jdbcType=VARCHAR}
+		WHERE
+			ID_=#{id}
+	</update>
+	
+	
+	
+</mapper>

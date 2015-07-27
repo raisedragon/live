@@ -1,0 +1,86 @@
+package com.winit.label.manager.impl.us.ups;
+
+import static org.junit.Assert.*;
+
+import java.net.URLDecoder;
+import java.util.List;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.alibaba.fastjson.JSONObject;
+import com.winit.label.manager.LabelHandler.Result;
+import com.winit.label.manager.impl.au.ubi.UbiLabelHandler;
+import com.winit.label.manager.impl.au.ubi.UbiLabelHandlerTest;
+import com.winit.label.model.DeliveryWay;
+import com.winit.label.model.RequestMessage;
+import com.winit.label.service.DeliveryWayService;
+import com.winit.test.RequestMessageUtils;
+
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "classpath:/conf/spring.test.xml" })
+public class UpsLabelHandlerTest 
+{
+	@Autowired
+	private UpsLabelHandler upsLabelHandler;
+	
+	Logger logger = LoggerFactory.getLogger(UbiLabelHandlerTest.class);
+	private static List<RequestMessage>	requestMessages;
+
+	@Autowired(required = true)
+	private DeliveryWayService			deliveryWayService;
+
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception
+	{
+		
+		String path = UpsLabelHandlerTest.class.getPackage().getName().replace('.', '/');
+
+		String filename = ClassLoader.getSystemResource(path + "/" + "DATA_UPS.xls").getFile();
+		filename = URLDecoder.decode(filename, "UTF-8");
+		System.out.println(filename);
+		requestMessages = RequestMessageUtils.getRequestMessageFromExcel(filename, "sheet1");
+	}
+
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception
+	{
+	}
+
+	@Test
+	public void testHandle()
+	{
+
+		for (RequestMessage requestMessage : requestMessages)
+		{
+			try
+			{
+				System.out.println(JSONObject.toJSONString(requestMessage));
+				String logisticsCode = requestMessage.getLogisticsCode();
+				DeliveryWay deliveryWay = deliveryWayService.findByCode(logisticsCode);
+				Result result = upsLabelHandler.handle(requestMessage, deliveryWay);
+				assertNotNull(result.getBase64Code());
+				logger.info(result.getBase64Code());
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Test
+	public void testIsIdempotent()
+	{
+		assertTrue(upsLabelHandler.isIdempotent());
+	}
+
+}

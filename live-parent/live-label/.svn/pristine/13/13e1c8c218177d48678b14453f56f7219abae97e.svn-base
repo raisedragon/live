@@ -1,0 +1,55 @@
+package com.winit.label.manager.impl.gb.dpd;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.winit.label.manager.LabelHandler;
+import com.winit.label.manager.impl.BaseLabelHandlerTest;
+import com.winit.label.manager.impl.gb.ups.UpsLabelHandler;
+
+public class DpdLabelHandlerTest extends BaseLabelHandlerTest
+{
+	@Autowired
+	private DpdLabelHandler labelHandler;
+	
+
+	@Override
+	public LabelHandler getLabelHandler()
+	{
+		return labelHandler;
+	}
+
+	@Override
+	@Test
+	public void testIsIdempotent()
+	{
+		
+	}
+
+	@Override
+	public String getInputFile()
+	{
+		return "D:\\work\\MyWork\\面单服务\\test\\GB\\dpd\\input.xls";
+	}
+
+	@Override
+	public String[] getSheets()
+	{
+		return new String[]{
+				"DPD_UK_001",
+				"DPD_UK_002",
+				"DPD_UK_003",
+				"DPD_UK_004"
+				};
+	}
+
+	@Override
+	public String getOutputFile()
+	{
+		return "D:\\work\\MyWork\\面单服务\\test\\GB\\dpd\\output.xls";
+	}
+
+}

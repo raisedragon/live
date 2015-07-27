@@ -1,54 +1,68 @@
 <?xml version="1.0" encoding="UTF-8" ?> 
 
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
-  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.gdcc.live.identity.dao.UserDao">
 	<resultMap id="UserResultMap" type="com.gdcc.live.identity.entity.User">
-		<id property="id" column="ID_" jdbcType="VARCHAR"/>
-		<result property="account" column="ACCOUNT_" jdbcType="VARCHAR"/>
-		<result property="password" column="PASSWORD_" jdbcType="VARCHAR"/>
-		<result property="firstName" column="FIRST_NAME_" jdbcType="VARCHAR"/>
-		<result property="lastName" column="LAST_NAME_" jdbcType="VARCHAR"/>
-		<result property="gender" column="GENDER_" jdbcType="VARCHAR"/>
-		<result property="birthday" column="BIRTHDAY_" jdbcType="DATE"/>
-		<result property="created" column="CREATED_" jdbcType="TIMESTAMP"/>
-		<result property="createdBy" column="CREATED_BY_" jdbcType="VARCHAR"/>
-		<result property="updated" column="UPDATED_" jdbcType="TIMESTAMP"/>
-		<result property="updatedBy" column="UPDATED_BY_" jdbcType="VARCHAR"/>
-		<result property="isActive" column="IS_ACTIVE_" jdbcType="VARCHAR"/>
-		<result property="orgId" column="ORG_ID_" jdbcType="VARCHAR"/>
+		<id property="id" column="ID_" jdbcType="VARCHAR" />
+		<result property="account" column="ACCOUNT_" jdbcType="VARCHAR" />
+		<result property="password" column="PASSWORD_" jdbcType="VARCHAR" />
+		<result property="firstName" column="FIRST_NAME_" jdbcType="VARCHAR" />
+		<result property="lastName" column="LAST_NAME_" jdbcType="VARCHAR" />
+		<result property="gender" column="GENDER_" jdbcType="VARCHAR" />
+		<result property="birthday" column="BIRTHDAY_" jdbcType="DATE" />
+		<result property="created" column="CREATED_" jdbcType="TIMESTAMP" />
+		<result property="createdBy" column="CREATED_BY_" jdbcType="VARCHAR" />
+		<result property="updated" column="UPDATED_" jdbcType="TIMESTAMP" />
+		<result property="updatedBy" column="UPDATED_BY_" jdbcType="VARCHAR" />
+		<result property="isActive" column="IS_ACTIVE_" jdbcType="VARCHAR" />
+		<result property="orgId" column="ORG_ID_" jdbcType="VARCHAR" />
 	</resultMap>
-	
+
 	<sql id="columns">
-			ID_,
-			ACCOUNT_,
-			PASSWORD_,
-			FIRST_NAME_,
-			LAST_NAME_,
-			GENDER_,
-			BIRTHDAY_,
-			CREATED_,
-			CREATED_BY_,
-			UPDATED_,
-			UPDATED_BY_,
-			IS_ACTIVE_,
-			ORG_ID_
+		ID_,
+		ACCOUNT_,
+		PASSWORD_,
+		FIRST_NAME_,
+		LAST_NAME_,
+		GENDER_,
+		BIRTHDAY_,
+		CREATED_,
+		CREATED_BY_,
+		UPDATED_,
+		UPDATED_BY_,
+		IS_ACTIVE_,
+		ORG_ID_
 	</sql>
-	
-	<insert id="add" useGeneratedKeys="true" keyProperty="id"  parameterType="com.gdcc.live.identity.entity.User">
+
+	<insert id="add" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.gdcc.live.identity.entity.User">
 		INSERT INTO ID_USER
 		(ID_,ACCOUNT_,PASSWORD_,FIRST_NAME_,LAST_NAME_,GENDER_,BIRTHDAY_,CREATED_,CREATED_BY_,UPDATED_,UPDATED_BY_,IS_ACTIVE_,ORG_ID_)
-		VALUES 
-		(#{id,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{firstName,jdbcType=VARCHAR}, #{lastName,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, #{created,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, #{updated,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, #{isActive,jdbcType=VARCHAR}, #{orgId,jdbcType=VARCHAR})
+		VALUES
+		(#{id,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR},
+		#{password,jdbcType=VARCHAR},
+		#{firstName,jdbcType=VARCHAR},
+		#{lastName,jdbcType=VARCHAR},
+		#{gender,jdbcType=VARCHAR},
+		#{birthday,jdbcType=DATE},
+		#{created,jdbcType=TIMESTAMP},
+		#{createdBy,jdbcType=VARCHAR},
+		#{updated,jdbcType=TIMESTAMP},
+		#{updatedBy,jdbcType=VARCHAR},
+		#{isActive,jdbcType=VARCHAR},
+		#{orgId,jdbcType=VARCHAR})
 	</insert>
-	
-	<select id="get"   parameterType="java.lang.String" resultMap="UserResultMap">
-		SELECT <include refid="columns" /> FROM ID_USER 
-		WHERE 
-			IS_DELETE='N'
-			AND ID_=#{id}
+
+	<select id="get" parameterType="java.lang.String" resultMap="UserResultMap">
+		SELECT
+		<include refid="columns" />
+		FROM ID_USER
+		WHERE
+		IS_DELETE='N'
+		AND ID_=#{id}
 	</select>
-	
+
 	<update id="update" parameterType="com.gdcc.live.identity.entity.User">
 		UPDATE ID_USER SET
 		ACCOUNT_=#{account,jdbcType=VARCHAR},
@@ -66,93 +80,142 @@
 		WHERE
 		ID_=#{id}
 	</update>
-	
+
 	<delete id="delete" parameterType="java.lang.String">
-		DELETE FROM ID_USER 
+		DELETE FROM ID_USER
 		WHERE
 		ID_=#{id}
 	</delete>
-	
-	
+
+
 	<update id="tombstoned" parameterType="java.lang.Long">
-		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()"/>
-		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()"/>
+		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()" />
+		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()" />
 		UPDATE VMS_SHM_ORDER SET
-			IS_DELETE='Y',
-			UPDATED=#{currentTime,jdbcType=TIMESTAMP},
-			UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
+		IS_DELETE='Y',
+		UPDATED=#{currentTime,jdbcType=TIMESTAMP},
+		UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
 		WHERE
-			ID=#{id}
+		ID=#{id}
 	</update>
-	
+
 	<update id="disable" parameterType="java.lang.Long">
-		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()"/>
-		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()"/>
+		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()" />
+		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()" />
 		UPDATE VMS_SHM_ORDER SET
-			IS_ACTIVE='N',
-			UPDATED=#{currentTime,jdbcType=TIMESTAMP},
-			UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
+		IS_ACTIVE='N',
+		UPDATED=#{currentTime,jdbcType=TIMESTAMP},
+		UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
 		WHERE
-			ID=#{id}
+		ID=#{id}
 	</update>
 	<update id="enable" parameterType="java.lang.Long">
-		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()"/>
-		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()"/>
+		<bind name="currentTime" value="@com.winit.vms.core.security.SCUtils@currentDate()" />
+		<bind name="currentUserId" value="@com.winit.vms.core.security.SCUtils@currentUserId()" />
 		UPDATE VMS_SHM_ORDER SET
-			IS_ACTIVE='Y',
-			UPDATED=#{currentTime,jdbcType=TIMESTAMP},
-			UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
+		IS_ACTIVE='Y',
+		UPDATED=#{currentTime,jdbcType=TIMESTAMP},
+		UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
 		WHERE
-			ID=#{id}
+		ID=#{id}
 	</update>
-	
-	<select id="selectUserByQueryCriteria" parameterType="com.gdcc.live.identity.query.UserQuery" resultMap="UserResultMap">
-    select RES.* 
-    <include refid="selectUserByQueryCriteriaSql" />
-   	ORDER BY ${orderBy}
-  </select>
-  
-   <select id="selectUserCountByQueryCriteria" parameterType="com.gdcc.live.identity.query.UserQuery" resultType="long">
-    select count(RES.ID_)
-    <include refid="selectUserByQueryCriteriaSql" />
-  </select>
-  
-  <sql id="selectUserByQueryCriteriaSql">
-    from ID_USER RES 
-    <if test="groupId != null">
-      inner join ID_MEMBERSHIP M on RES.ID_ = M.USER_ID_
-      inner join ID_GROUP G on M.GROUP_ID_ = G.ID_
-    </if>
-    <where>
-      <if test="id != null">
-        RES.ID_ = #{id}
-      </if>
-      <if test="firstName != null">
-        and RES.FIRST_ = #{firstName}
-      </if>
-      <if test="firstNameLike != null">
-        and RES.FIRST_ like #{firstNameLike}
-      </if>
-      <if test="lastName != null">
-        and RES.LAST_ = #{lastName}
-      </if>
-      <if test="lastNameLike != null">
-        and RES.LAST_ like #{lastNameLike}
-      </if>
-      <if test="fullNameLike != null">
-        and (RES.FIRST_ like #{fullNameLike} or RES.LAST_ like #{fullNameLike})
-      </if>
-      <if test="email != null">
-        and RES.EMAIL_ = #{email}
-      </if>
-      <if test="emailLike != null">
-        and RES.EMAIL_ like #{emailLike}
-      </if>
-      <if test="groupId != null">
-        and G.ID_ = #{groupId}
-      </if>
-      
-    </where>
-  </sql>
-  
+
+
+	<select id="selectByCriteria" parameterType="com.gdcc.live.identity.query.UserSelectQuery"
+		resultMap="UserResultMap">
+		SELECT RES.*
+		<include refid="selectByCriteriaSql" />
+	</select>
+	<select id="selectCountByCriteria" parameterType="com.gdcc.live.identity.query.UserSelectQuery"
+		resultType="Long">
+		SELECT count(1)
+		<include refid="selectByCriteriaSql" />
+	</select>
+
+	<sql id="selectByCriteriaSql">
+		from ID_USER RES
+		<if test="criteria.groupId != null">
+			inner join ID_MEMBERSHIP M on RES.ID_ = M.USER_ID_
+			inner
+			join ID_GROUP G on M.GROUP_ID_ = G.ID_ and G.ID_ =
+			#{criteria.groupId}
+		</if>
+		<include refid="criteriaSql" />
+		ORDER BY ${orderBy}
+	</sql>
+	<update id="updateByUpdateQuery" parameterType="com.gdcc.live.identity.query.UserUpdateQuery">
+		UPDATE ID_USER RES
+		<include refid="updateDataCaluseSql" />
+		<include refid="criteriaSql" />
+	</update>
+
+
+	<sql id="criteriaSql">
+		<where>
+			IS_DELETED_='N'
+			<if test="criteria.oreds.size()==1">
+				<trim prefix="AND">
+					<include refid="oredCriteriaSql" />
+				</trim>
+
+			</if>
+			<if test="criteria.oreds.size()>1">
+				<trim prefix="AND (" suffix=")">
+					<include refid="oredCriteriaSql" />
+				</trim>
+			</if>
+		</where>
+	</sql>
+
+
+	<sql id="oredCriteriaSql">
+		<foreach collection="criteria.oreds" item="ored" separator="or">
+			<if test="ored.valid">
+				<if test="ored.criterions.size()==1">
+					<trim prefixOverrides="and">
+						<include refid="criterionSql" />
+					</trim>
+				</if>
+				<if test="ored.criterions.size()>1">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<include refid="criterionSql" />
+					</trim>
+				</if>
+			</if>
+		</foreach>
+	</sql>
+
+	<sql id="criterionSql">
+		<foreach collection="ored.criterions" item="criterion">
+			<choose>
+				<when test="criterion.noValue">
+					and RES.${criterion.condition}
+				</when>
+				<when test="criterion.singleValue">
+					and RES.${criterion.condition} #{criterion.value}
+				</when>
+				<when test="criterion.betweenValue">
+					and RES.${criterion.condition} #{criterion.value}
+					and #{criterion.secondValue}
+				</when>
+				<when test="criterion.listValue">
+					and RES.${criterion.condition}
+					<foreach close=")" collection="criterion.value" item="listItem"
+						open="(" separator=",">
+						#{listItem}
+					</foreach>
+				</when>
+			</choose>
+		</foreach>
+	</sql>
+
+	<sql id="updateDataCaluseSql">
+		<set>
+			<foreach collection="updateClause.dataClauses" item="clause"
+				separator=",">
+				${clause.property} #{clause.value}
+			</foreach>
+		</set>
+	</sql>
+
 </mapper>

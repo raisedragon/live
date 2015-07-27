@@ -51,17 +51,17 @@ public abstract class AbstractManager<E extends BaseEntity<PK>,PK extends Serial
         if (entity.getCreated() == null) {
             entity.setCreated(new java.util.Date());
         }
-        if (entity.getCreatedby() == null) {
-            entity.setCreatedby(SCUtils.currentUserId());
+        if (entity.getCreatedBy() == null) {
+            entity.setCreatedBy(SCUtils.currentUserId());
         }
         if (entity.getUpdated() == null) {
             entity.setUpdated(new java.util.Date());
         }
-        if (entity.getUpdatedby() == null) {
-            entity.setUpdatedby(SCUtils.currentUserId());
+        if (entity.getUpdatedBy() == null) {
+            entity.setUpdatedBy(SCUtils.currentUserId());
         }
-        if (entity.getOrganizationId() == null) {
-            entity.setOrganizationId(SCUtils.currentOrgId());
+        if (entity.getOrgId() == null) {
+            entity.setOrgId(SCUtils.currentOrgId());
         }
         getDao().add(entity);
     }
@@ -73,8 +73,8 @@ public abstract class AbstractManager<E extends BaseEntity<PK>,PK extends Serial
      */
     public void update(E entity) {
         entity.setUpdated(new Date());
-        if (entity.getUpdatedby() == null) {
-            entity.setUpdatedby(SCUtils.currentUserId());
+        if (entity.getUpdatedBy() == null) {
+            entity.setUpdatedBy(SCUtils.currentUserId());
         }
         getDao().update(entity);
     }

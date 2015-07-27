@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"     
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"     
+        xmlns:context="http://www.springframework.org/schema/context"     
+   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd   
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd   
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd   
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+   
+   
+     <!-- 创建一个流程引擎的配置对象 -->
+  <bean id="processEngineConfiguration" class="com.raise.live.spring.SpringProcessEngineConfiguration">
+    <property name="dataSource" ref="dataSource" />
+    <property name="transactionManager" ref="transactionManager" />
+    <!-- 设置数据库schema的更新方式 -->
+    <property name="databaseSchemaUpdate" value="true" />
+  </bean>
+   <!-- 创建一个流程引擎bean -->
+  <bean id="processEngine" class="com.raise.live.spring.ProcessEngineFactoryBean">
+    <property name="processEngineConfiguration" ref="processEngineConfiguration" />
+  </bean>
+  <!--  工作流管理服务-->
+  <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService" />
+  <!-- 工作流唯一服务 -->
+  <bean id="IdentityService" factory-bean="processEngine" factory-method="getIdentityService" />
+  
+  
+	<!-- 文件模版引擎配置 -->
+	<bean id="freemarkerConfiguration" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
+	    <property name="templateLoaderPath" value="classpath:freemarker/template/" />
+	    <property name="defaultEncoding" value="UTF-8"/>
+	</bean>
+   
+</beans>
