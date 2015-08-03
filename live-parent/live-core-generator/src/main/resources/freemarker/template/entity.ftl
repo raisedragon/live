@@ -5,13 +5,13 @@ import java.util.Date;
 import ${properties.basepackage}.core.entity.BaseEntity;
 
 /**
- * ${table.remarks} entity 
+ * ${table.description} entity 
  * company:${properties.company}
  * author:${properties.developer}
  * date: ${currentDate?string("yyyy-MM-dd HH:mm:ss")}
  * @since 1.
  */
-public class ${clazz} extends BaseEntity<${_Ongl.javaType(primaryKey)}> {
+public class ${table.jName} extends BaseEntity<${_Ongl.javaType(primaryKey)}> {
 	
 	private static final long serialVersionUID = 1L;
 	

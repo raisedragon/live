@@ -8,18 +8,18 @@
 	<packaging>jar</packaging>
 
 	<parent>
-		<groupId>com.gdcc</groupId>
+		<groupId>com.raise</groupId>
 		<artifactId>live-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>
 		<dependency>
-			<groupId>com.gdcc</groupId>
+			<groupId>com.raise</groupId>
 			<artifactId>live-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.gdcc</groupId>
+			<groupId>com.raise</groupId>
 			<artifactId>live-IdGenerator</artifactId>
 		</dependency>
 		<dependency>
