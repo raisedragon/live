@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http:/www.raise.net/schema/generator"    
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+    http:/www.raise.net/schema/generator generator-1.0.xsd"
+    >
+    
+    <configuration name="configuration">
+		<entities>
+			<list>
+				<entity jName="SysConfig" name="Sys_config" module="system" >
+					<columns>
+						<list>
+							<column name="status">
+								<jType name="Status">
+									
+								</jType>
+							</column>
+						</list>
+					</columns>
+				</entity>
+			</list>
+		</entities>
+    </configuration>
+    
+</beans:beans>

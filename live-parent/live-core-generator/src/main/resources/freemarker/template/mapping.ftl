@@ -1,4 +1,4 @@
-<#assign type="${properties.basepackage}.${pkg}.entity.${clazz}"  />
+<#assign type="${properties.groupId}.${properties.system}.${table.module}.entity.${table.jName}"  />
 <#assign selectQueryType="${properties.basepackage}.${pkg}.query.${clazz}SelectQuery"  />
 <#assign updateQueryType="${properties.basepackage}.${pkg}.query.${clazz}UpdateQuery"  />
 <#assign primaryKeyName="${primaryKey.columns[0].name}"  />

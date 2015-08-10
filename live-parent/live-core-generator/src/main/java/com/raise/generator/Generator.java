@@ -1,5 +1,10 @@
 package com.raise.generator;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
 import javax.sql.DataSource;
 
 import org.apache.ddlutils.Platform;
@@ -9,9 +14,15 @@ import org.apache.ddlutils.model.Table;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.raise.generator.entity.ColumnEntity;
+import com.raise.generator.entity.TableEntity;
 import com.raise.generator.exception.GeneratorException;
+import com.raise.generator.freemarker.FreemarkEngine;
+
+import freemarker.template.TemplateException;
 
 @Component
 public class Generator {
@@ -19,6 +30,12 @@ public class Generator {
     private static Logger logger = LoggerFactory.getLogger(Generator.class);
 
     private Database      database;
+
+    @Autowired
+    private FreemarkEngine freemarkerEngine;
+
+    @Value("#{generatorProperties}")
+    private Properties     properties;
 
     @Autowired
     public Generator(DataSource dataSource){
@@ -38,6 +55,23 @@ public class Generator {
         // step5 - save target content as file
     }
 
+    public void generated(TableEntity table) throws IOException, TemplateException {
+        Map<String, Object> data = new HashMap<String, Object>();
+        String out;
+        
+        data.put("table", table);
+        data.put("properties", properties);
+        for (ColumnEntity column : table.getColumns()) {
+            if (column.getjType().isEnum() && column.getjType().isCreate()) {
+                data.put("enum", column.getjType());
+                out = freemarkerEngine.parse("enum.ftl", data);
+                System.out.println(out);
+            }
+        }
+        
+        out = freemarkerEngine.parse("entity.ftl", data);
+        System.out.println(out);
+    }
 
     private Table loadTable(String tName) throws GeneratorException {
         Table table = database.findTable(tName);

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns="http://www.raise.com/generator/code"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.raise.com/generator/code schema1.xsd">
+	<entity name="SysConfig" module="system" table="SYS_CONFIG">
+		<field column="id" property="id">
+			<javaType type="Long"></javaType>
+		</field>
+		<field column="status" property="status">
+			<javaType type="Enum" name="SysConfigStatus" new="true">
+				<values>
+					<value>ACTIVE</value>
+					<value>ARCHIVE</value>
+				</values>
+			</javaType>
+		</field>
+	</entity>
+	<entity name="SysConfig" module="system" table="SYS_CONFIG">
+		<field column="id" property="id">
+			<javaType type="Long"></javaType>
+		</field>
+		<field column="status" property="status">
+			<javaType type="Enum" name="SysConfigStatus" new="true">
+				<values>
+					<value>ACTIVE</value>
+					<value>ARCHIVE</value>
+				</values>
+			</javaType>
+		</field>
+	</entity>
+</configuration>

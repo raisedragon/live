@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<xsd:schema xmlns="http://www.raise.com/generator/code"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.raise.com/generator/code">
+
+	<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+	<xsd:element name="configuration">
+		<xsd:annotation>
+			<![CDATA[
+				top level element
+			]]>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:choice minOccurs="0" maxOccurs="unbounded">
+				<xsd:element ref="entity"></xsd:element>
+			</xsd:choice>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="entity">
+		<xsd:complexType>
+			<xsd:group ref="entityElements" />
+			<xsd:attributeGroup ref="entityAttributes" />
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:group name="entityElements">
+		<xsd:sequence>
+			<xsd:element ref="field" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:group>
+
+	<xsd:attributeGroup name="entityAttributes">
+		<xsd:attribute name="name" type="xsd:string">
+		</xsd:attribute>
+	</xsd:attributeGroup>
+
+	<xsd:element name="field">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="javaType" type="JavaType"></xs:element>
+			</xs:sequence>
+			<xs:attribute name="property" type="xs:string"></xs:attribute>
+			<xs:attribute name="column" type="xs:string"></xs:attribute>
+		</xs:complexType>
+	</xsd:element>
+	<xs:complexType name="JavaType">
+		<xs:sequence>
+			<xs:element name="values" type="Values" maxOccurs="1"
+				minOccurs="0">
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="type">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Integer"></xs:enumeration>
+					<xs:enumeration value="Long"></xs:enumeration>
+					<xs:enumeration value="String"></xs:enumeration>
+					<xs:enumeration value="BigDecimal"></xs:enumeration>
+					<xs:enumeration value="Enum"></xs:enumeration>
+					<xs:enumeration value="Bytes"></xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="name" type="xs:string"></xs:attribute>
+		<xs:attribute name="new" type="xs:boolean"></xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="JavaTypeValues"></xs:complexType>
+
+	<xs:complexType name="Values">
+		<xs:sequence>
+			<xs:element name="value" type="xs:string" maxOccurs="unbounded"
+				minOccurs="1">
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xsd:schema>

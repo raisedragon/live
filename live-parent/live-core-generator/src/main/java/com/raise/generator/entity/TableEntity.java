@@ -1,17 +1,21 @@
 package com.raise.generator.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.common.base.CaseFormat;
 
 public class TableEntity {
 
-    private String                   name;
-    private String                   description;
-    private String                   type;
+    private String             name;
+    private String             description;
+    private String             type;
 
-    private String                   jName;
-    private String                   jDescription;
+    private String             jName;
+    private String             jDescription;
+    private String             module;
 
-
+    private List<ColumnEntity> columns;
 
     public String getName() {
         return name;
@@ -57,6 +61,34 @@ public class TableEntity {
 
     public void setjDescription(String jDescription) {
         this.jDescription = jDescription;
+    }
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
+    }
+
+    public List<ColumnEntity> getColumns() {
+        if (this.columns == null) {
+            this.columns = new ArrayList<ColumnEntity>();
+        }
+        return columns;
+    }
+
+    public void setColumns(List<ColumnEntity> columns) {
+        this.columns = columns;
+    }
+
+    public String getPrimaryKeyJavaType() {
+        for (ColumnEntity c : getColumns()) {
+            if (c.isPrimaryKey()) {
+                return c.getjType().getName();
+            }
+        }
+        return "Long";
     }
 
 }

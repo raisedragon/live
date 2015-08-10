@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns="http://www.raise.net/schema/generator"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.raise.net/schema/generator">
+	<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+
+	<!-- base types -->
+	<xsd:complexType name="identifiedType" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation><![CDATA[
+	The unique identifier for a bean. The scope of the identifier
+	is the enclosing bean factory.
+			]]></xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="id" type="xsd:string">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
+	The unique identifier for a bean. A bean id may not be used more than once
+	within the same <beans> element.
+				]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+
+	<xsd:element name="description">
+		<xsd:annotation>
+			<xsd:documentation><![CDATA[
+	Contains informative text describing the purpose of the enclosing element.
+	Used primarily for user documentation of XML bean definition documents.
+			]]></xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType mixed="true">
+			<xsd:choice minOccurs="0" maxOccurs="unbounded" />
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="configuration">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="identifiedType">
+					<xsd:sequence>
+						<xsd:element ref="entities"></xsd:element>
+					</xsd:sequence>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="entities">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="list"></xsd:element>
+				<xsd:any namespace="##other" processContents="strict"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="entity">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="identifiedType">
+					<xsd:sequence>
+						<xsd:element ref="columns"></xsd:element>
+					</xsd:sequence>
+					<xsd:attribute name="name" type="xsd:string" />
+					<xsd:attribute name="description" type="xsd:string" />
+					<xsd:attribute name="type">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:enumeration value="Table"></xsd:enumeration>
+								<xsd:enumeration value="View"></xsd:enumeration>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="jName" type="xsd:string" />
+					<xsd:attribute name="jDescription" type="xsd:string" />
+					<xsd:attribute name="module" type="xsd:string" />
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="columns">
+		<xsd:complexType>
+			<xsd:choice>
+				<xsd:element ref="list"></xsd:element>
+			</xsd:choice>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="column">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="identifiedType">
+					<xsd:sequence>
+						<xsd:element ref="jType">
+						</xsd:element>
+					</xsd:sequence>
+					<xsd:attribute name="name" type="xsd:string" />
+					<xsd:attribute name="description" type="xsd:string" />
+					<xsd:attribute name="type">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:enumeration value="String"></xsd:enumeration>
+								<xsd:enumeration value="Integer"></xsd:enumeration>
+								<xsd:enumeration value="Long"></xsd:enumeration>
+								<xsd:enumeration value="Short"></xsd:enumeration>
+								<xsd:enumeration value="Enum"></xsd:enumeration>
+								<xsd:enumeration value="BigDecimal"></xsd:enumeration>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="jName" type="xsd:string" />
+					<xsd:attribute name="jDescription" type="xsd:string" />
+					<xsd:attribute name="primaryKey" type="xsd:boolean" />
+					<xsd:attribute name="required" type="xsd:boolean" />
+					<xsd:attribute name="autoIncrement" type="xsd:boolean" />
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="jType">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="identifiedType">
+					<xsd:attribute name="name" type="xsd:string" />
+					<xsd:attribute name="description" type="xsd:string" />
+					<xsd:attribute name="type">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:enumeration value="String"></xsd:enumeration>
+								<xsd:enumeration value="Integer"></xsd:enumeration>
+								<xsd:enumeration value="Long"></xsd:enumeration>
+								<xsd:enumeration value="Short"></xsd:enumeration>
+								<xsd:enumeration value="Enum"></xsd:enumeration>
+								<xsd:enumeration value="BigDecimal"></xsd:enumeration>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attribute name="jName" type="xsd:string" />
+					<xsd:attribute name="jDescription" type="xsd:string" />
+					<xsd:attribute name="primaryKey" type="xsd:boolean" />
+					<xsd:attribute name="required" type="xsd:boolean" />
+					<xsd:attribute name="autoIncrement" type="xsd:boolean" />
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:complexType name="collectionType">
+		<xsd:attribute name="value-type" type="xsd:string">
+			<xsd:annotation>
+				<xsd:documentation source="java:java.lang.Class"><![CDATA[
+	The default Java type for nested values. Must be a fully qualified
+	class name.
+				]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<!-- Collection Elements -->
+	<xsd:group name="collectionElements">
+		<xsd:sequence>
+			<xsd:element ref="description" minOccurs="0" />
+			<xsd:choice minOccurs="0" maxOccurs="unbounded">
+				<xsd:element ref="list" />
+				<xsd:any namespace="##other" processContents="strict"
+					minOccurs="0" maxOccurs="unbounded" />
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:group>
+
+	<xsd:complexType name="listOrSetType">
+		<xsd:complexContent>
+			<xsd:extension base="collectionType">
+				<xsd:group ref="collectionElements" />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="list">
+		<xsd:annotation>
+			<xsd:documentation><![CDATA[
+	A list can contain multiple inner bean, ref, collection, or value elements.
+	A list can also map to an array type; the necessary conversion is performed
+	automatically.
+			]]></xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="listOrSetType">
+					<xsd:attribute name="merge" default="default"
+						type="defaultable-boolean">
+						<xsd:annotation>
+							<xsd:documentation><![CDATA[
+	Enables/disables merging for collections when using parent/child beans.
+							]]></xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- simple internal types -->
+	<xsd:simpleType name="defaultable-boolean">
+		<xsd:restriction base="xsd:NMTOKEN">
+			<xsd:enumeration value="default" />
+			<xsd:enumeration value="true" />
+			<xsd:enumeration value="false" />
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>

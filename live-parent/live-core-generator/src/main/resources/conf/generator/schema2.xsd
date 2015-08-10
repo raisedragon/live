@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xs:schema xmlns="http://www.raise.com/generator/code"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.raise.com/generator/code" >
+	<xs:import namespace="http://www.w3.org/XML/1998/namespace" />
+	<xs:element name="configuration" type="Configuration"></xs:element>
+
+	<xs:complexType name="Configuration">
+		<xs:choice>
+			<xs:element name="properties" type="Properties" maxOccurs="1"
+				minOccurs="0">
+			</xs:element>
+			<xs:element name="templates" type="Templates" maxOccurs="1"
+				minOccurs="0">
+			</xs:element>
+			<xs:element name="sources" type="Sources" maxOccurs="1"
+				minOccurs="0">
+			</xs:element>
+			<xs:element name="entity" type="Entity" maxOccurs="unbounded"
+				minOccurs="0">
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+
+	<xs:complexType name="Properties">
+		<xs:sequence>
+			<xs:any></xs:any>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Templates">
+		<xs:sequence>
+			<xs:element name="template" type="Template"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+
+
+
+	<xs:complexType name="Entity">
+		<xs:sequence>
+			<xs:element name="field" type="Field" maxOccurs="unbounded"
+				minOccurs="0">
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string"></xs:attribute>
+		<xs:attribute name="module" type="xs:string"></xs:attribute>
+		<xs:attribute name="table" type="xs:string"></xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="Template">
+		<xs:attribute name="id" type="xs:string"></xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="Sources">
+		<xs:sequence>
+			<xs:element name="source" type="Source"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Source">
+		<xs:sequence></xs:sequence>
+		<xs:attribute name="refTemplate" type="xs:string"></xs:attribute>
+		<xs:attribute name="filename" type="xs:string"></xs:attribute>
+		<xs:attribute name="directory" type="xs:string"></xs:attribute>
+		<xs:attribute name="override" type="xs:boolean"></xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="Field">
+		<xs:sequence>
+			<xs:element name="javaType" type="JavaType"></xs:element>
+		</xs:sequence>
+		<xs:attribute name="property" type="xs:string"></xs:attribute>
+		<xs:attribute name="column" type="xs:string"></xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="JavaType">
+		<xs:sequence>
+			<xs:element name="values" type="Values" maxOccurs="1"
+				minOccurs="0">
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="type">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Integer"></xs:enumeration>
+					<xs:enumeration value="Long"></xs:enumeration>
+					<xs:enumeration value="String"></xs:enumeration>
+					<xs:enumeration value="BigDecimal"></xs:enumeration>
+					<xs:enumeration value="Enum"></xs:enumeration>
+					<xs:enumeration value="Bytes"></xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="name" type="xs:string"></xs:attribute>
+		<xs:attribute name="new" type="xs:boolean"></xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="JavaTypeValues"></xs:complexType>
+
+	<xs:complexType name="Values">
+		<xs:sequence>
+			<xs:element name="value" type="xs:string"
+				maxOccurs="unbounded" minOccurs="1">
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
+

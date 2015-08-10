@@ -9,18 +9,19 @@ import com.google.common.base.CaseFormat;
 
 public class ColumnEntity {
 
-    private String  name;
-    private String  description;
-    private boolean primaryKey;
-    private boolean required;
-    private boolean autoIncrement;
-    private String  type;
+    private String                           name;
+    private String                           description;
+    private boolean                          primaryKey;
+    private boolean                          required;
+    private boolean                          autoIncrement;
+    private String                           type;
 
-    private String  jName;
-    private String  jDescription;
-    private String  jType;
+    private String                           jName;
+    private String                           jDescription;
 
-    private static final Set<String> COMMON_COLUMNS = new HashSet<String>();
+    private JavaTypeEntity                   jType;
+
+    private static final Set<String>         COMMON_COLUMNS = new HashSet<String>();
     static {
         COMMON_COLUMNS.add("ID");
         COMMON_COLUMNS.add("CREATED");
@@ -100,6 +101,10 @@ public class ColumnEntity {
         this.jName = jName;
     }
 
+    public String getjNameLowerCamel() {
+        return CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, jName);
+    }
+
     public String getjDescription() {
         if (jDescription == null) {
             jDescription = description;
@@ -111,15 +116,15 @@ public class ColumnEntity {
         this.jDescription = jDescription;
     }
 
-    public String getjType() {
+    public JavaTypeEntity getjType() {
         return jType;
     }
 
-    public void setjType(String jType) {
+    public void setjType(JavaTypeEntity jType) {
         this.jType = jType;
     }
 
-    public boolean commonColumn() {
+    public boolean isCommonColumn() {
         if (COMMON_COLUMNS.contains(this.name.toUpperCase())) {
             return true;
         }

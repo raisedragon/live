@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="http://www.raise.com/generator/code" 
+xmlns:tns="http://www.raise.com/generator/code" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="configuration" type="tns:Configuration"/>
+
+  <xs:complexType name="Configuration">
+    <xs:sequence>
+      <xs:element name="properties" type="tns:Properties" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="templates" type="tns:Templates" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="sources" type="tns:Sources" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="entity" type="tns:Entity" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Properties">
+    <xs:sequence>
+      <xs:any processContents="lax" namespace="##other"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Templates">
+    <xs:sequence>
+      <xs:element name="template" type="tns:Template"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Template">
+    <xs:sequence/>
+    <xs:attribute name="id" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="Source">
+    <xs:sequence/>
+    <xs:attribute name="refTemplate" type="xs:string"/>
+    <xs:attribute name="filename" type="xs:string"/>
+    <xs:attribute name="directory" type="xs:string"/>
+    <xs:attribute name="override" type="xs:boolean"/>
+  </xs:complexType>
+
+  <xs:complexType name="JavaType">
+    <xs:sequence>
+      <xs:element name="values" type="tns:Values" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="type" type="xs:string"/>
+    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute name="new" type="xs:boolean"/>
+  </xs:complexType>
+
+  <xs:complexType name="Values">
+    <xs:sequence>
+      <xs:element name="value" type="xs:string" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Sources">
+    <xs:sequence>
+      <xs:element name="source" type="tns:Source"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="JavaTypeValues">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="Tables">
+    <xs:sequence>
+      <xs:element name="Entity" type="tns:Entity"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Entity">
+    <xs:sequence>
+      <xs:element name="field" type="tns:Field" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute name="module" type="xs:string"/>
+    <xs:attribute name="table" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="Field">
+    <xs:sequence>
+      <xs:element name="javaType" type="tns:JavaType"/>
+    </xs:sequence>
+    <xs:attribute name="property" type="xs:string"/>
+    <xs:attribute name="column" type="xs:string"/>
+  </xs:complexType>
+</xs:schema>
+
