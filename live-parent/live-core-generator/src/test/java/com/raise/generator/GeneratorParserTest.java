@@ -7,14 +7,13 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.junit.Test;
 
 import com.raise.generator.mode.Configuration;
 import com.raise.generator.mode.ObjectFactory;
 
 public class GeneratorParserTest extends GeneratorParser {
 
-    @Test
+    // @Test
     public void testParse() throws IOException, JAXBException {
         GeneratorParser parser = new GeneratorParser();
         Configuration config = parser.parse();

@@ -1,17 +1,42 @@
 package com.raise.generator.entity;
 
-import java.util.List;
-
 public class Configuration {
 
-    private List<TableEntity> tableEntities;
+    private String author;
+    private String organization;
+    private String groupId;
+    private String system;
 
-    public List<TableEntity> getTableEntities() {
-        return tableEntities;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setTableEntities(List<TableEntity> tableEntities) {
-        this.tableEntities = tableEntities;
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(String organization) {
+        this.organization = organization;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    public String getSystem() {
+        return system;
+    }
+
+    public void setSystem(String system) {
+        this.system = system;
     }
 
 }

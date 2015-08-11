@@ -10,4 +10,5 @@
 	<context:property-placeholder location="classpath:conf/jdbc.properties" />
 	<import resource="classpath:conf/spring/spring-mybatis.xml" />
 	<import resource="classpath:conf/spring/spring-beans.xml" />
+	<import resource="classpath:conf/generator/generator.xml" />
 </beans>

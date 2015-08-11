@@ -1,12 +1,14 @@
 package com.raise.generator;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.ddlutils.Platform;
 import org.apache.ddlutils.PlatformFactory;
 import org.apache.ddlutils.model.Database;
@@ -14,10 +16,10 @@ import org.apache.ddlutils.model.Table;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.raise.generator.entity.ColumnEntity;
+import com.raise.generator.entity.Configuration;
 import com.raise.generator.entity.TableEntity;
 import com.raise.generator.exception.GeneratorException;
 import com.raise.generator.freemarker.FreemarkEngine;
@@ -34,18 +36,31 @@ public class Generator {
     @Autowired
     private FreemarkEngine freemarkerEngine;
 
-    @Value("#{generatorProperties}")
-    private Properties     properties;
+    @Autowired
+    private Configuration  configuration;
 
     @Autowired
-    public Generator(DataSource dataSource){
+    private List<TableEntity> entities;
+
+    @Autowired
+    public Generator(DataSource dataSource) throws IllegalAccessException, InvocationTargetException,
+                                           GeneratorException{
         Platform platform = PlatformFactory.createNewPlatformInstance(dataSource);
         database = platform.readModelFromDatabase("label");
+
+        for (TableEntity t : entities) {
+            Table table = loadTable(t.getName());
+            BeanUtils.copyProperties(table, t);
+        }
+
+        System.out.println(entities);
+
     }
+
 
     public void generated(String tName) throws GeneratorException {
         // step1 - load schema information
-        Table table = loadTable(tName);
+        // Table table = loadTable(tName);
         // step2 - construct freemarker data model
 
         // step3 - load freemarker template
@@ -60,7 +75,7 @@ public class Generator {
         String out;
         
         data.put("table", table);
-        data.put("properties", properties);
+        data.put("configuration", configuration);
         for (ColumnEntity column : table.getColumns()) {
             if (column.getjType().isEnum() && column.getjType().isCreate()) {
                 data.put("enum", column.getjType());
@@ -73,7 +88,8 @@ public class Generator {
         System.out.println(out);
     }
 
-    private Table loadTable(String tName) throws GeneratorException {
+    private Table loadTable(String tName) throws GeneratorException, IllegalAccessException,
+                                               InvocationTargetException {
         Table table = database.findTable(tName);
         if (table == null) {
             throw new GeneratorException("table with name %s not found");
