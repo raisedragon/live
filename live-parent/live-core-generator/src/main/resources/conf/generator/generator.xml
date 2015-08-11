@@ -1,29 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns="http:/www.raise.net/schema/generator"    
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+     xmlns:util="http://www.springframework.org/schema/util"  
 	xsi:schemaLocation="
     http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
-    http:/www.raise.net/schema/generator generator-1.0.xsd"
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.2.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+    http://www.springframework.org/schema/util
+    http://www.springframework.org/schema/util/spring-util-3.2.xsd"
     >
-    
-    <configuration name="configuration">
-		<entities>
-			<list>
-				<entity jName="SysConfig" name="Sys_config" module="system" >
-					<columns>
-						<list>
-							<column name="status">
-								<jType name="Status">
-									
-								</jType>
-							</column>
-						</list>
-					</columns>
-				</entity>
-			</list>
-		</entities>
-    </configuration>
-    
-</beans:beans>
+
+	<bean id="configuration" class="com.raise.generator.entity.Configuration">
+		<property name="author" value="longsheng.wang"/>
+		<property name="organization" value="raise"></property>
+		<property name="system" value="live"></property>
+		<property name="groupId" value="com.raise"></property>
+	</bean>
+	
+<!-- 	<bean class="com.raise.generator.entity.JavaTypeEntity"></bean> -->
+	<bean id="config" class="com.raise.generator.entity.TableEntity">
+		<property name="name" value="sys_config"></property>
+	</bean>
+	
+	<!-- Construct List --> 
+	<bean id="entities" class="java.util.ArrayList"> 
+	  <constructor-arg> 
+	   <list> 
+			<ref bean="config"/>
+	   </list> 
+	  </constructor-arg> 
+	</bean> 
+</beans>
