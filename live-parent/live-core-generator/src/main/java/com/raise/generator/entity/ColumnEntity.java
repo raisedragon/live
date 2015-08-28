@@ -37,11 +37,13 @@ public class ColumnEntity {
 
     private static final Map<String, String> TYPE_MAP       = new HashMap<String, String>();
     static {
-        TYPE_MAP.put("varchar", "String");
+        TYPE_MAP.put("VARCHAR", "String");
+        TYPE_MAP.put("CHAR", "String");
         TYPE_MAP.put("TEXT", "String");
         TYPE_MAP.put("INTEGER", "Integer");
         TYPE_MAP.put("INT", "Integer");
         TYPE_MAP.put("DECIMAL", "BigDecimal");
+        TYPE_MAP.put("TIMESTAMP", "Date");
 
     }
 
@@ -105,7 +107,7 @@ public class ColumnEntity {
     }
 
     public String getjNameLowerCamel() {
-        return CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, jName);
+        return CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, getjName());
     }
 
     public String getjDescription() {
@@ -120,6 +122,12 @@ public class ColumnEntity {
     }
 
     public JavaTypeEntity getjType() {
+        if (jType == null) {
+            jType = new JavaTypeEntity();
+            String type = TYPE_MAP.get(this.type);
+            jType.setName(type);
+        }
+
         return jType;
     }
 

@@ -2,8 +2,7 @@ package com.raise.generator.freemarker;
 
 import java.io.IOException;
 
-import javax.annotation.Resource;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
@@ -15,7 +14,7 @@ import freemarker.template.TemplateException;
 public class FreemarkEngine {
 
     // 配置来自app-resources.xml
-    @Resource
+    @Autowired
     private Configuration configuration;
 
     public void setConfiguration(Configuration configuration) {

@@ -7,6 +7,8 @@ public class Configuration {
     private String groupId;
     private String system;
 
+    private String outputDirectory;
+
     public String getAuthor() {
         return author;
     }
@@ -37,6 +39,14 @@ public class Configuration {
 
     public void setSystem(String system) {
         this.system = system;
+    }
+
+    public String getOutputDirectory() {
+        return outputDirectory;
+    }
+
+    public void setOutputDirectory(String outputDirectory) {
+        this.outputDirectory = outputDirectory;
     }
 
 }

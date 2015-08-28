@@ -10,7 +10,7 @@ public class JavaTypeEntity {
 
     private String  name;
     private List<String> values;
-    private boolean      create;
+    private boolean      create = true;
 
     public boolean isEnum() {
         if (values != null && values.size() > 0) {

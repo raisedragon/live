@@ -2,8 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
-     xmlns:util="http://www.springframework.org/schema/util"  
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="
     http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
@@ -12,27 +11,60 @@
     http://www.springframework.org/schema/mvc
     http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
     http://www.springframework.org/schema/util
-    http://www.springframework.org/schema/util/spring-util-3.2.xsd"
-    >
+    http://www.springframework.org/schema/util/spring-util-3.2.xsd">
 
-	<bean id="configuration" class="com.raise.generator.entity.Configuration">
-		<property name="author" value="longsheng.wang"/>
+	<bean id="configuration" name="configuration"
+		class="com.raise.generator.entity.Configuration">
+		<property name="author" value="longsheng.wang" />
 		<property name="organization" value="raise"></property>
 		<property name="system" value="live"></property>
 		<property name="groupId" value="com.raise"></property>
+		<property name="outputDirectory"
+			value="E:\GitRepo\live\live-parent\live-test\src\main\java"></property>
 	</bean>
-	
-<!-- 	<bean class="com.raise.generator.entity.JavaTypeEntity"></bean> -->
-	<bean id="config" class="com.raise.generator.entity.TableEntity">
-		<property name="name" value="sys_config"></property>
+
+	<bean class="com.raise.generator.entity.JavaTypeEntity">
+		<property name="name" value="Status" />
+		<property name="values">
+			<list>
+				<value>DELETED</value>
+				<value>ARCHIVED</value>
+			</list>
+		</property>
 	</bean>
+
+	<bean id="user" class="com.raise.generator.entity.TableEntity">
+		<property name="name" value="usr_account"></property>
+		<property name="module" value="user" />
+		<property name="jName" value="Account"></property>
+		<property name="columns">
+			<list>
+				<bean class="com.raise.generator.entity.ColumnEntity">
+					<property name="name" value="status"/>
+					<property name="jType">
+						<bean class="com.raise.generator.entity.JavaTypeEntity">
+							<property name="name" value="Status" />
+							<property name="values">
+								<list>
+									<value>DELETED</value>
+									<value>ARCHIVED</value>
+								</list>
+							</property>
+						</bean>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
 	
-	<!-- Construct List --> 
-	<bean id="entities" class="java.util.ArrayList"> 
-	  <constructor-arg> 
-	   <list> 
-			<ref bean="config"/>
-	   </list> 
-	  </constructor-arg> 
-	</bean> 
+
+	<!-- Construct List -->
+	<bean id="entities" name="entities" class="java.util.ArrayList">
+		<constructor-arg>
+			<list>
+				<ref bean="user" />
+			</list>
+		</constructor-arg>
+	</bean>
 </beans>

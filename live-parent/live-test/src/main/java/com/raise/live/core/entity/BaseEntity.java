@@ -6,6 +6,7 @@ import java.util.Date;
 @SuppressWarnings("serial")
 public abstract class BaseEntity<PK extends Serializable> implements Serializable {
 
+    protected PK      id;
     // 创建人
     protected String  createdBy;
     // 更新人
@@ -85,13 +86,17 @@ public abstract class BaseEntity<PK extends Serializable> implements Serializabl
      * 
      * @param id
      */
-    public abstract void setId(PK id);
+    public void setId(PK id) {
+        this.id = id;
+    }
 
     /**
      * 获取主键ID
      * 
      * @return
      */
-    public abstract PK getId();
+    public PK getId() {
+        return id;
+    }
 
 }
