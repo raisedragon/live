@@ -111,68 +111,54 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>com.gdcc</groupId>
+				<groupId>com.raise</groupId>
 				<artifactId>live-core</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
-				<groupId>com.gdcc</groupId>
+				<groupId>com.raise</groupId>
 				<artifactId>live-demo</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
-				<groupId>com.gdcc</groupId>
+				<groupId>com.raise</groupId>
 				<artifactId>live-commons</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
-				<groupId>com.gdcc</groupId>
+				<groupId>com.raise</groupId>
 				<artifactId>live-IdGenerator</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
-				<groupId>com.gdcc</groupId>
+				<groupId>com.raise</groupId>
 				<artifactId>live-orgs</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
-				<groupId>com.gdcc</groupId>
+				<groupId>com.raise</groupId>
 				<artifactId>live-spring</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
-				<groupId>com.gdcc</groupId>
+				<groupId>com.raise</groupId>
 				<artifactId>live-orgs-web</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
-				<groupId>com.gdcc</groupId>
+				<groupId>com.raise</groupId>
 				<artifactId>live-quartz</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
-				<groupId>com.gdcc</groupId>
+				<groupId>com.raise</groupId>
 				<artifactId>live-spi</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
-			<!-- agile module begin -->
-			<dependency>
-				<groupId>com.winit</groupId>
-				<artifactId>agile</artifactId>
-				<version>${agile.version}</version>
-				<scope>compile</scope>
-			</dependency>
 			<!-- agile module end -->
-			<!-- spark module begin -->
-			<dependency>
-				<groupId>com.winit</groupId>
-				<artifactId>wop-api</artifactId>
-				<version>${spark.version}</version>
-				<scope>compile</scope>
-			</dependency>
 
 			<!-- spark module end -->
 			<dependency>

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gdcc.live.identity.dao.UserDao">
+	<resultMap id="UserResultMap" type="com.gdcc.live.identity.entity.User">
+		<id property="id" column="ID" jdbcType="VARCHAR"/>
+		<result property="name" column="NAME" jdbcType="VARCHAR"/>
+		<result property="account" column="ACCOUNT" jdbcType="VARCHAR"/>
+		<result property="password" column="PASSWORD" jdbcType="VARCHAR"/>
+		<result property="email" column="EMAIL" jdbcType="VARCHAR"/>
+		<result property="created" column="CREATED" jdbcType="TIMESTAMP"/>
+		<result property="createBy" column="CREATED_BY" jdbcType="VARCHAR"/>
+		<result property="updated" column="UPDATED" jdbcType="TIMESTAMP"/>
+		<result property="updateBy" column="UPDATED_BY" jdbcType="VARCHAR"/>
+		<result property="groupId" column="GROUP_ID" jdbcType="VARCHAR"/>
+		<result property="isDeleted" column="IS_DELETED" jdbcType="CHAR"/>
+		<result property="isActive" column="IS_ACTIVE" jdbcType="CHAR"/>
+	</resultMap>
+	
+	<sql id="columns">
+			ID,
+			ACCOUNT,
+			PASSWORD,
+			FIRST_NAME,
+			LAST_NAME,
+			GENDER,
+			BIRTHDAY,
+			CREATED,
+			CREATED_BY,
+			UPDATED,
+			UPDATED_BY,
+			IS_ACTIVE,
+			ORG_ID,
+			IS_DELETED_
+	</sql>
+	
+	<insert id="add" parameterType="com.gdcc.live.identity.entity.User">
+		INSERT INTO id_user
+		(
+			ID,
+			ACCOUNT,
+			PASSWORD,
+			FIRST_NAME,
+			LAST_NAME,
+			GENDER,
+			BIRTHDAY,
+			CREATED,
+			CREATED_BY,
+			UPDATED,
+			UPDATED_BY,
+			IS_ACTIVE,
+			ORG_ID,
+			IS_DELETED_
+		)
+		VALUES 
+		(
+			#{id,jdbcType=VARCHAR}, 
+			#{account,jdbcType=VARCHAR}, 
+			#{password,jdbcType=VARCHAR}, 
+			#{firstName,jdbcType=VARCHAR}, 
+			#{lastName,jdbcType=VARCHAR}, 
+			#{gender,jdbcType=VARCHAR}, 
+			#{birthday,jdbcType=DATE}, 
+			#{created,jdbcType=TIMESTAMP}, 
+			#{createdBy,jdbcType=VARCHAR}, 
+			#{updated,jdbcType=TIMESTAMP}, 
+			#{updatedBy,jdbcType=VARCHAR}, 
+			#{isActive,jdbcType=CHAR}, 
+			#{orgId,jdbcType=VARCHAR}, 
+			#{isDeleted,jdbcType=CHAR}
+		)
+	</insert>
+	
+	<select id="get"   parameterType="String" resultMap="UserResultMap">
+		SELECT <include refid="columns" /> FROM id_user 
+		WHERE 
+			IS_DELETED_='0'
+			AND ID_=#{id}
+	</select>
+	
+	<select 
+	    id="find" parameterType="com.winit.common.query.Searchable"
+	    resultMap="UserResultMap"
+	    timeout="60000">
+		SELECT <include refid="columns" /> FROM id_user
+	</select>
+	
+	<update id="update" parameterType="com.gdcc.live.identity.entity.User">
+		UPDATE id_user SET
+		ID_=#{id,jdbcType=VARCHAR},
+		ACCOUNT_=#{account,jdbcType=VARCHAR},
+		PASSWORD_=#{password,jdbcType=VARCHAR},
+		FIRST_NAME_=#{firstName,jdbcType=VARCHAR},
+		LAST_NAME_=#{lastName,jdbcType=VARCHAR},
+		GENDER_=#{gender,jdbcType=VARCHAR},
+		BIRTHDAY_=#{birthday,jdbcType=DATE},
+		CREATED_=#{created,jdbcType=TIMESTAMP},
+		CREATED_BY_=#{createdBy,jdbcType=VARCHAR},
+		UPDATED_=#{updated,jdbcType=TIMESTAMP},
+		UPDATED_BY_=#{updatedBy,jdbcType=VARCHAR},
+		IS_ACTIVE_=#{isActive,jdbcType=CHAR},
+		ORG_ID_=#{orgId,jdbcType=VARCHAR},
+		IS_DELETED_=#{isDeleted,jdbcType=CHAR}
+		WHERE
+		ID_=#{id}
+	</update>
+	
+	<delete id="delete"  parameterType="String">
+		DELETE FROM id_user 
+		WHERE
+		ID_=#{id}
+	</delete>
+	
+	<update id="tombstoned"  parameterType="String">
+		<bind name="currentTime" value="@com.gdcc.live.core.security.SCUtils@currentDate()"/>
+		<bind name="currentUserId" value="@com.gdcc.live.core.security.SCUtils@currentUserId()"/>
+		UPDATE id_user SET
+			IS_DELETED_='1',
+			UPDATED=#{currentTime,jdbcType=TIMESTAMP},
+			UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
+		WHERE
+			ID_=#{id}
+	</update>
+	
+	<update id="disable"  parameterType="String">
+		<bind name="currentTime" value="@com.gdcc.live.core.security.SCUtils@currentDate()"/>
+		<bind name="currentUserId" value="@com.gdcc.live.core.security.SCUtils@currentUserId()"/>
+		UPDATE id_user SET
+			IS_ACTIVE_='0',
+			UPDATED=#{currentTime,jdbcType=TIMESTAMP},
+			UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
+		WHERE
+			ID_=#{id}
+	</update>
+	<update id="enable"  parameterType="String">
+		<bind name="currentTime" value="@com.gdcc.live.core.security.SCUtils@currentDate()"/>
+		<bind name="currentUserId" value="@com.gdcc.live.core.security.SCUtils@currentUserId()"/>
+		UPDATE id_user SET
+			IS_ACTIVE_='1',
+			UPDATED=#{currentTime,jdbcType=TIMESTAMP},
+			UPDATEDBY=#{currentUserId,jdbcType=VARCHAR}
+		WHERE
+			ID_=#{id}
+	</update>
+	
+	<!-- Operate by criteria -->
+	
+	<select id="selectByCriteria" parameterType="com.gdcc.live.identity.query.UserSelectQuery" resultMap="UserResultMap">
+		SELECT 
+			RES.ID,
+			RES.NAME,
+			RES.ACCOUNT,
+			RES.PASSWORD,
+			RES.EMAIL,
+			RES.CREATED,
+			RES.CREATE_BY,
+			RES.UPDATED,
+			RES.UPDATE_BY,
+			RES.IS_ACTIVE,
+			RES.GROUP_ID,
+			RES.IS_DELETED
+		<include refid="selectByCriteriaSql" />
+		<include refid="orderByClauseSql"/>
+	</select>
+	
+	<select id="selectCountByCriteria" parameterType="com.gdcc.live.identity.query.UserSelectQuery" resultType="Long">
+		SELECT count(1)
+		<include refid="selectByCriteriaSql" />
+	</select>
+
+	<sql id="selectByCriteriaSql">
+		from id_user RES
+		<include refid="criteriaSql"/>
+	</sql>
+	<update id="updateByUpdateQuery" parameterType="com.gdcc.live.identity.query.UserUpdateQuery">
+		UPDATE id_user RES
+		<include refid="updateDataCaluseSql"/>
+		<include refid="criteriaSql"/>
+	</update>
+	
+	
+	<sql id="criteriaSql">
+		<where>
+			IS_DELETED_='0'
+			<if test="criteria.oreds.size()==1">
+				<trim prefix="AND" >
+					<include refid="oredCriteriaSql"/>
+				</trim>
+			
+			</if>
+			<if test="criteria.oreds.size()>1">
+				<trim prefix="AND (" suffix=")" >
+					<include refid="oredCriteriaSql"/>
+				</trim>
+			</if>
+		</where>
+	</sql>
+		
+		
+	<sql id="oredCriteriaSql">
+		<foreach  collection="criteria.oreds" item="ored" separator="or">
+			<if test="ored.valid">
+				<if test="ored.criterions.size()==1">
+					<trim prefixOverrides="and">
+						<include refid="criterionSql"/>
+					</trim>
+				</if>
+				<if test="ored.criterions.size()>1">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<include refid="criterionSql"/>
+					</trim>
+				</if>
+			</if>
+		</foreach>
+	</sql>
+	
+	<sql id="criterionSql">
+		<foreach collection="ored.criterions" item="criterion">
+			<choose>
+				<when test="criterion.noValue">
+					and RES.${criterion.condition}
+				</when>
+				<when test="criterion.singleValue">
+					and RES.${criterion.condition} #{criterion.value}
+				</when>
+				<when test="criterion.betweenValue">
+					and RES.${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+				</when>
+				<when test="criterion.listValue">
+					and RES.${criterion.condition}
+					<foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+						#{listItem}
+					</foreach>
+				</when>
+			</choose>
+		</foreach>
+	</sql>
+		
+	<sql id="updateDataCaluseSql">
+		<set>   
+			<foreach collection="updateClause.dataClauses" item="clause" separator=",">
+				${clause.property} #{clause.value}
+			</foreach>
+		</set>
+	</sql>
+	
+	
+	<sql id="orderByClauseSql">
+		ORDER BY 
+			${orderBy}
+	</sql>
+	
+</mapper>

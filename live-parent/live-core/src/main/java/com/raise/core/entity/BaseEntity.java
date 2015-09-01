@@ -4,81 +4,82 @@ import java.util.Date;
 
 /**
  * 实体类的基础类
+ * 
  * @author longsheng.wang
- *
  */
 public abstract class BaseEntity {
-	private String id;
-	private String organizationId;
-	private Date created;
-	private String createdBy;
-	private Date updated;
-	private String updatedBy;
-	private boolean isActive;
-	private boolean isDeleted;
 
-	public String getId() {
-		return id;
-	}
+    private String  id;
+    private String  groupId;
+    private Date    created;
+    private String  createBy;
+    private Date    updated;
+    private String  updateBy;
+    private boolean isActive;
+    private boolean isDeleted;
 
-	public void setId(String id) {
-		this.id = id;
-	}
-	
-	public String getOrganizationId() {
-		return organizationId;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setOrganizationId(String organizationId) {
-		this.organizationId = organizationId;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public Date getCreated() {
-		return created;
-	}
+    public String getGroupId() {
+        return groupId;
+    }
 
-	public void setCreated(Date created) {
-		this.created = created;
-	}
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
 
-	public String getCreatedBy() {
-		return createdBy;
-	}
+    public Date getCreated() {
+        return created;
+    }
 
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
+    public void setCreated(Date created) {
+        this.created = created;
+    }
 
-	public Date getUpdated() {
-		return updated;
-	}
+    public String getCreateBy() {
+        return createBy;
+    }
 
-	public void setUpdated(Date updated) {
-		this.updated = updated;
-	}
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
 
-	public String getUpdatedBy() {
-		return updatedBy;
-	}
+    public Date getUpdated() {
+        return updated;
+    }
 
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
-	}
+    public void setUpdated(Date updated) {
+        this.updated = updated;
+    }
 
-	public boolean isActive() {
-		return isActive;
-	}
+    public String getUpdateBy() {
+        return updateBy;
+    }
 
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
-	}
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
 
-	public boolean isDeleted() {
-		return isDeleted;
-	}
+    public boolean isActive() {
+        return isActive;
+    }
 
-	public void setDeleted(boolean isDeleted) {
-		this.isDeleted = isDeleted;
-	}
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
 
 }

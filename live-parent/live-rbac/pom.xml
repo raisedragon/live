@@ -20,6 +20,10 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>com.raise</groupId>
+			<artifactId>live-core</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
