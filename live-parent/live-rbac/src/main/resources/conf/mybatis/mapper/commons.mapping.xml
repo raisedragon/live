@@ -39,22 +39,66 @@
 	
 	<sql id="criterionSql">
 		<foreach collection="ored.criterions" item="criterion">
-			and RES.${criterion.propertyName} ${criterion.criteriaOperator} 
 			<choose>
-				<when test="criterion.noValue">
-					and RES.${criterion.propert}
+				<when test="criterion.criteriaOperator.name()=='Equal'">
+					and RES.${criterion.propertyName} = #{criterion.value}
 				</when>
-				<when test="criterion.singleValue">
-					and RES.${criterion.condition} #{criterion.value}
+				<when test="criterion.criteriaOperator.name()=='LessThanOrEqual'">
+					and RES.${criterion.propertyName} &lt;= #{criterion.value}
 				</when>
-				<when test="criterion.doubleValue">
-					and RES.${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+				<when test="criterion.criteriaOperator.name()=='GreaterThanOrEqual'">
+					and RES.${criterion.propertyName} >= #{criterion.value}
 				</when>
-				<when test="criterion.listValue">
-					and RES.${criterion.condition}
+				<when test="criterion.criteriaOperator.name()=='NotEqual'">
+					and RES.${criterion.propertyName} != #{criterion.value}
+				</when>
+				<when test="criterion.criteriaOperator.name()=='IsNull'">
+					and RES.${criterion.propertyName} is null
+				</when>
+				<when test="criterion.criteriaOperator.name()=='IsNotNull'">
+					and RES.${criterion.propertyName} is not null
+				</when>
+				<when test="criterion.criteriaOperator.name()=='Like'">
+					<bind name="pattern" value="'%' + criterion.value + '%'" />
+					and RES.${criterion.propertyName} like = #{pattern}
+				</when>
+				<when test="criterion.criteriaOperator.name()=='FirstLike'">
+					<bind name="pattern" value="'%' + criterion.value" />
+					and RES.${criterion.propertyName} like = #{pattern}
+				</when>
+				<when test="criterion.criteriaOperator.name()=='LastLike'">
+					<bind name="pattern" value="criterion.value + '%'" />
+					and RES.${criterion.propertyName} like #{pattern}
+				</when>
+				<when test="criterion.criteriaOperator.name()=='NotLike'">
+					<bind name="pattern" value="'%' + criterion.value + '%'" />
+					and RES.${criterion.propertyName} not like = #{pattern}
+				</when>
+				<when test="criterion.criteriaOperator.name()=='NotFirstLike'">
+					<bind name="pattern" value="'%' + criterion.value" />
+					and RES.${criterion.propertyName} not like = #{pattern}
+				</when>
+				<when test="criterion.criteriaOperator.name()=='NotLastLike'">
+					<bind name="pattern" value="criterion.value + '%'" />
+					and RES.${criterion.propertyName} not like #{pattern}
+				</when>
+				<when test="criterion.criteriaOperator.name()=='In'">
+					and RES.${criterion.propertyName} IN 
 					<foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
 						#{listItem}
 					</foreach>
+				</when>
+				<when test="criterion.criteriaOperator.name()=='NotIn'">
+					and RES.${criterion.propertyName} NOT IN 
+					<foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+						#{listItem}
+					</foreach>
+				</when>
+				<when test="criterion.criteriaOperator.name()=='Between'">
+					and RES.${criterion.propertyName} NOT BETWEEN  #{criterion.value[0]} AND #{criterion.value[1]} 
+				</when>
+				<when test="criterion.criteriaOperator.name()=='NotBetween'">
+					and RES.${criterion.propertyName} BETWEEN  #{criterion.value[0]} AND #{criterion.value[1]} 
 				</when>
 			</choose>
 		</foreach>

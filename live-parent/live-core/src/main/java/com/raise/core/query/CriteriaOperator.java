@@ -75,7 +75,4 @@ public enum CriteriaOperator {
         return name();
     }
 
-    public String getValue() {
-        return value();
-    }
 }
