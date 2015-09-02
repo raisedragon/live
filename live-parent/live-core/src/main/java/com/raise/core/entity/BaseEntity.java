@@ -2,6 +2,9 @@ package com.raise.core.entity;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * 实体类的基础类
  * 
@@ -10,13 +13,18 @@ import java.util.Date;
 public abstract class BaseEntity {
 
     private String  id;
-    private String  groupId;
-    private Date    created;
-    private String  createBy;
-    private Date    updated;
-    private String  updateBy;
     private boolean isActive;
     private boolean isDeleted;
+    private String  groupId;
+    private Date    created;
+    private String  createdBy;
+    private Date    updated;
+    private String  updatedBy;
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
 
     public String getId() {
         return id;
@@ -24,6 +32,22 @@ public abstract class BaseEntity {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
     public String getGroupId() {
@@ -42,12 +66,12 @@ public abstract class BaseEntity {
         this.created = created;
     }
 
-    public String getCreateBy() {
-        return createBy;
+    public String getCreatedBy() {
+        return createdBy;
     }
 
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
     public Date getUpdated() {
@@ -58,28 +82,12 @@ public abstract class BaseEntity {
         this.updated = updated;
     }
 
-    public String getUpdateBy() {
-        return updateBy;
+    public String getUpdatedBy() {
+        return updatedBy;
     }
 
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean isActive) {
-        this.isActive = isActive;
-    }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean isDeleted) {
-        this.isDeleted = isDeleted;
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
     }
 
 }

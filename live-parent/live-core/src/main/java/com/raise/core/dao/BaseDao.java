@@ -1,6 +1,9 @@
 package com.raise.core.dao;
 
+import java.util.List;
+
 import com.raise.core.entity.BaseEntity;
+import com.raise.core.query.Query;
 
 /**
  * 基础DAO
@@ -46,4 +49,8 @@ public interface BaseDao<E extends BaseEntity> {
 	 * @param id
 	 */
 	void enable(String id);
+
+    List<E> getByCriteria(Query query);
+
+    List<E> countByCriteria(Query query);
 }

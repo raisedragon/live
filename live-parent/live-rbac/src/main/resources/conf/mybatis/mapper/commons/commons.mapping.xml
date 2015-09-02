@@ -2,35 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="Commons">
 	
-	<sql id="criteriaSql">
+	<sql id="querySql">
 		<where>
-			IS_DELETED_='0'
+			IS_DELETED='0'
 			<if test="criterias.size()==1">
 				<trim prefix="AND" >
-					<include refid="oredCriteriaSql"/>
+					<include refid="Commons.criteriasSql"/>
 				</trim>
 			
 			</if>
 			<if test="criterias.size()>1">
 				<trim prefix="AND (" suffix=")" >
-					<include refid="oredCriteriaSql"/>
+					<include refid="Commons.criteriasSql"/>
 				</trim>
 			</if>
 		</where>
 	</sql>
 		
 		
-	<sql id="oredCriteriaSql">
-		<foreach  collection="criterias." item="ored" separator="or">
-			<if test="ored.valid">
-				<if test="ored.criterions.size()==1">
+	<sql id="criteriasSql">
+		<foreach  collection="criterias" item="criteria" separator="or">
+			<if test="!criteria.criterions.empty">
+				<if test="criteria.criterions.size()==1">
 					<trim prefixOverrides="and">
-						<include refid="criterionSql"/>
+						<include refid="Commons.criterionSql"/>
 					</trim>
 				</if>
-				<if test="ored.criterions.size()>1">
+				<if test="criteria.criterions.size()>1">
 					<trim prefix="(" prefixOverrides="and" suffix=")">
-						<include refid="criterionSql"/>
+						<include refid="Commons.criterionSql"/>
 					</trim>
 				</if>
 			</if>
@@ -38,7 +38,7 @@
 	</sql>
 	
 	<sql id="criterionSql">
-		<foreach collection="ored.criterions" item="criterion">
+		<foreach collection="criteria.criterions" item="criterion">
 			<choose>
 				<when test="criterion.criteriaOperator.name()=='Equal'">
 					and RES.${criterion.propertyName} = #{criterion.value}
@@ -60,11 +60,11 @@
 				</when>
 				<when test="criterion.criteriaOperator.name()=='Like'">
 					<bind name="pattern" value="'%' + criterion.value + '%'" />
-					and RES.${criterion.propertyName} like = #{pattern}
+					and RES.${criterion.propertyName} like #{pattern}
 				</when>
 				<when test="criterion.criteriaOperator.name()=='FirstLike'">
 					<bind name="pattern" value="'%' + criterion.value" />
-					and RES.${criterion.propertyName} like = #{pattern}
+					and RES.${criterion.propertyName} like #{pattern}
 				</when>
 				<when test="criterion.criteriaOperator.name()=='LastLike'">
 					<bind name="pattern" value="criterion.value + '%'" />
@@ -72,11 +72,11 @@
 				</when>
 				<when test="criterion.criteriaOperator.name()=='NotLike'">
 					<bind name="pattern" value="'%' + criterion.value + '%'" />
-					and RES.${criterion.propertyName} not like = #{pattern}
+					and RES.${criterion.propertyName} not like #{pattern}
 				</when>
 				<when test="criterion.criteriaOperator.name()=='NotFirstLike'">
 					<bind name="pattern" value="'%' + criterion.value" />
-					and RES.${criterion.propertyName} not like = #{pattern}
+					and RES.${criterion.propertyName} not like #{pattern}
 				</when>
 				<when test="criterion.criteriaOperator.name()=='NotLastLike'">
 					<bind name="pattern" value="criterion.value + '%'" />
